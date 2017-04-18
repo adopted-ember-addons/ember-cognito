@@ -1,12 +1,13 @@
 {
   "name": "ember-cognito",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "ember-simple-auth and AWS Cognito integration",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "cognito"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Paul Watts <paulcwatts@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -18,6 +19,7 @@
     "test": "ember try:each"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^1.16.0",
     "ember-cli-babel": "^6.0.0-beta.3"
   },
   "devDependencies": {
@@ -37,7 +39,7 @@
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
-    "ember-source": "~2.13.0-beta.1",
+    "ember-source": "~2.12.1",
     "ember-welcome-page": "^3.0.0",
     "loader.js": "^4.2.3"
   },
