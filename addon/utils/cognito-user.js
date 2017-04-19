@@ -14,28 +14,24 @@ export default EmberObject.extend({
     return this.get('user').getUsername();
   }),
 
-  getSession() {
+  _callback(method) {
     return new RSVP.Promise((resolve, reject) => {
-      this.get('user').getSession((err, session) => {
+      this.get('user')[method]((err, result) => {
         if (err) {
           reject(err);
         } else {
-          resolve(session);
+          resolve(result);
         }
       });
-    }, 'cognito-user#getSession');
+    }, `cognito-user#${method}`);
+  },
+
+  getSession() {
+    return this._callback('getSession');
   },
 
   getUserAttributes() {
-    return new RSVP.Promise((resolve, reject) => {
-      this.get('user').getUserAttributes((err, attributes) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(attributes);
-        }
-      });
-    }, 'cognito-user#getUserAttributes');
+    return this._callback('getUserAttributes');
   },
 
   signOut() {
