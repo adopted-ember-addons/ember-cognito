@@ -1,5 +1,19 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      {{#link-to 'index' class='navbar-brand'}}ember-cognito{{/link-to}}
+    </div>
 
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        {{#if session.isAuthenticated}}
+          <li><a href="#">{{currentUser.username}}</a></li>
+          <li><a href="#" onclick={{action 'logout'}}>Logout</a></li>
+        {{else}}
+          <li>{{#link-to 'login'}}Login{{/link-to}}</li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+</nav>
 {{outlet}}

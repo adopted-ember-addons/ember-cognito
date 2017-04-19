@@ -1,0 +1,124 @@
+import { AuthenticationDetails } from 'ember-cognito/aws-cognito';
+import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'ember-cognito/aws-cognito';
+import Base from 'ember-simple-auth/authenticators/base';
+import CognitoStorage from '../utils/cognito-storage';
+import CognitoUser from '../utils/cognito-user';
+import Ember from 'ember';
+
+const {
+  computed: { readOnly },
+  inject: { service },
+  merge,
+  RSVP
+} = Ember;
+
+export default Base.extend({
+  cognito: service(),
+  poolId: readOnly('cognito.poolId'),
+  clientId: readOnly('cognito.clientId'),
+
+  _getCurrentUser(data) {
+    let pool = new CognitoUserPool({ UserPoolId: data.poolId, ClientId: data.clientId });
+    // Overwrite the storage with the restored auth data.
+    pool.storage = new CognitoStorage(data);
+    let user = pool.getCurrentUser();
+    if (!user) {
+      return null;
+    }
+    // Make sure the user uses the same storage.
+    user.storage = pool.storage;
+    return CognitoUser.create({ user });
+  },
+
+  restore(data) {
+    let user = this._getCurrentUser(data);
+    if (user) {
+      return user.getSession().then((session) => {
+        if (session.isValid()) {
+          this.set('cognito.user', user);
+          // Resolve with the new data the user set, in case
+          // the session needed to be refreshed.
+          return user.getStorageData();
+        } else {
+          return RSVP.reject();
+        }
+      });
+    }
+    return RSVP.reject();
+  },
+
+  _resolveAuth(resolve, result, { pool, user }) {
+    /* eslint-disable camelcase */
+
+    // Make sure to put the idToken in a place where the DataAdapterMixin wants it (access_token)
+    // Add any data that's from the user's and pool's storage.
+    let data = merge({
+      access_token: result.getIdToken().getJwtToken(),
+      poolId: pool.getUserPoolId(),
+      clientId: pool.getClientId()
+    }, pool.storage.getData());
+
+    this.set('cognito.user', CognitoUser.create({ user }));
+    resolve(data);
+  },
+
+  authenticate({ username, password, state }) {
+    if (state && state.name === 'newPasswordRequired') {
+      return new RSVP.Promise((resolve, reject) => {
+        let that = this;
+        state.user.completeNewPasswordChallenge(password, state.userAttributes, {
+          onSuccess(result) {
+            that._resolveAuth(resolve, result, state);
+          },
+          onFailure(err) {
+            reject(err);
+          }
+        });
+      }, 'cognito:newPasswordRequired');
+
+    } else {
+      return new RSVP.Promise((resolve, reject) => {
+        let that = this;
+
+        let { poolId, clientId } = this.getProperties('poolId', 'clientId');
+        let pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
+        pool.storage = new CognitoStorage({});
+        let user = new AWSCognitoUser({ Username: username, Pool: pool });
+        user.storage = pool.storage;
+
+        let authDetails = new AuthenticationDetails({ Username: username, Password: password });
+
+        user.authenticateUser(authDetails, {
+          onSuccess(result) {
+            that._resolveAuth(resolve, result, { pool, user });
+          },
+          onFailure(err) {
+            reject(err);
+          },
+          newPasswordRequired(userAttributes /* , requiredAttributes */) {
+            // ember-simple-auth doesn't allow a "half" state like this --
+            // the promise either resolves, or rejects.
+            // In this case, we have to reject, because we can't let
+            // ember-simple-auth think that the user is successfully
+            // authenticated.
+            delete userAttributes.email_verified;
+            reject({
+              state: {
+                name: 'newPasswordRequired',
+                user,
+                userAttributes,
+                pool
+              }
+            });
+          }
+        });
+      }, 'cognito:authenticate');
+    }
+  },
+
+  invalidate(data) {
+    let user = this._getCurrentUser(data);
+    user.signOut();
+    return RSVP.resolve(data);
+  }
+});

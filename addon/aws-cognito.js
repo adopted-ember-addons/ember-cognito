@@ -1,9 +1,27 @@
 import AmazonCognitoIdentity from 'npm:amazon-cognito-identity-js';
 
 const {
-  CognitoUserPool
+  AuthenticationDetails,
+  AuthenticationHelper,
+  CognitoAccessToken,
+  CognitoIdToken,
+  CognitoRefreshToken,
+  CognitoUser,
+  CognitoUserAttribute,
+  CognitoUserPool,
+  CognitoUserSession,
+  DateHelper
 } = AmazonCognitoIdentity;
 
 export {
-  CognitoUserPool
+  AuthenticationDetails,
+  AuthenticationHelper,
+  CognitoAccessToken,
+  CognitoIdToken,
+  CognitoRefreshToken,
+  CognitoUser,
+  CognitoUserAttribute,
+  CognitoUserPool,
+  CognitoUserSession,
+  DateHelper
 };
