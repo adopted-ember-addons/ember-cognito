@@ -1,4 +1,6 @@
 /* eslint-env node */
+// Allow var while we still theoretically support Node 4
+/* eslint-disable no-var */
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {

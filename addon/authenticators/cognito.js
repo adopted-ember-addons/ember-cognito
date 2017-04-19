@@ -17,6 +17,10 @@ export default Base.extend({
   poolId: readOnly('cognito.poolId'),
   clientId: readOnly('cognito.clientId'),
 
+  _stubUser(user) {
+    return user;
+  },
+
   _getCurrentUser(data) {
     let pool = new CognitoUserPool({ UserPoolId: data.poolId, ClientId: data.clientId });
     // Overwrite the storage with the restored auth data.
@@ -27,7 +31,7 @@ export default Base.extend({
     }
     // Make sure the user uses the same storage.
     user.storage = pool.storage;
-    return CognitoUser.create({ user });
+    return CognitoUser.create({ user: this._stubUser(user) });
   },
 
   restore(data) {
@@ -40,11 +44,11 @@ export default Base.extend({
           // the session needed to be refreshed.
           return user.getStorageData();
         } else {
-          return RSVP.reject();
+          return RSVP.reject('session is invalid');
         }
       });
     }
-    return RSVP.reject();
+    return RSVP.reject('no current user');
   },
 
   _resolveAuth(resolve, result, { pool, user }) {
@@ -83,7 +87,7 @@ export default Base.extend({
         let { poolId, clientId } = this.getProperties('poolId', 'clientId');
         let pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
         pool.storage = new CognitoStorage({});
-        let user = new AWSCognitoUser({ Username: username, Pool: pool });
+        let user = this._stubUser(new AWSCognitoUser({ Username: username, Pool: pool }));
         user.storage = pool.storage;
 
         let authDetails = new AuthenticationDetails({ Username: username, Password: password });

@@ -11,6 +11,9 @@ test('it works', function(assert) {
 
   storage.setItem(key, 'xyxyxyx');
   assert.equal(storage.getItem(key), 'xyxyxyx');
+  assert.deepEqual(storage.getData(), {
+    'Cognito.ClientId.idToken': 'xyxyxyx'
+  });
 
   let result = storage.removeItem(key);
   assert.equal(result, 'xyxyxyx');
