@@ -24,15 +24,17 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
-  - npm config set spin false
-  - npm install -g phantomjs-prebuilt
+  - yarn global add phantomjs-prebuilt
   - phantomjs --version
 
 install:
-  - npm install
-
+  - yarn
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+
+addons:
+    code_climate:
+        repo_token: 1560e537b0df829d41568c69e1a50f88a93246ebe0e6485ef4ccce4a70714c4b
