@@ -123,6 +123,7 @@ export default Base.extend({
   invalidate(data) {
     let user = this._getCurrentUser(data);
     user.signOut();
+    this.set('cognito.user', undefined);
     return RSVP.resolve(data);
   }
 });

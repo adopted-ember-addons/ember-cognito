@@ -199,7 +199,11 @@ test('invalidate', function(assert) {
     'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
   };
   let service = this.subject();
+  service.set('cognito.user', 'user');
+
   return service.invalidate(data).then((resolvedData) => {
     assert.deepEqual(data, resolvedData);
+    // Cognito user no longer exists on service
+    assert.equal(service.get('cognito.user'), undefined);
   });
 });
