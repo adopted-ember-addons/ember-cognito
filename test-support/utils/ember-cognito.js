@@ -11,7 +11,7 @@ const MockUser = EmberObject.extend({
 
   getUserAttributes() {
     return RSVP.resolve(this.get('userAttributes').map(({ name, value }) => {
-      return new CognitoUserAttribute({ Name: name, Value: value })
+      return new CognitoUserAttribute({ Name: name, Value: value });
     }));
   }
 });
