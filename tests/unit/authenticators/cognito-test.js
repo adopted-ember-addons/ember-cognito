@@ -3,7 +3,7 @@ import {
   CognitoIdToken,
   CognitoRefreshToken,
   CognitoUserSession
-} from 'ember-cognito/aws-cognito';
+} from 'amazon-cognito-identity-js';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 

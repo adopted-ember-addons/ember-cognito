@@ -5,7 +5,7 @@ import {
   CognitoUserAttribute,
   CognitoUserPool,
   CognitoUserSession
-} from 'ember-cognito/aws-cognito';
+} from 'amazon-cognito-identity-js';
 import CognitoStorage from 'dummy/utils/cognito-storage';
 import CognitoUser from 'dummy/utils/cognito-user';
 import { module } from 'qunit';

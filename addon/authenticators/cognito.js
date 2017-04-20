@@ -1,5 +1,5 @@
-import { AuthenticationDetails } from 'ember-cognito/aws-cognito';
-import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'ember-cognito/aws-cognito';
+import { AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import Base from 'ember-simple-auth/authenticators/base';
 import CognitoStorage from '../utils/cognito-storage';
 import CognitoUser from '../utils/cognito-user';
