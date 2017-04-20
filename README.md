@@ -149,6 +149,70 @@ export default Ember.Service.extend({
 See [the dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/dummy/app/services/current-user.js)
 for an example of this in action.
 
+#### Advanced Configuration
+
+If you don't want to specify the Pool ID and Client ID in the Ember environment, you can override the CognitoService
+in your own app and provide the configuration there. 
+
+```js
+// app/services/cognito.js
+import CognitoService from 'ember-cognito/services/cognito';
+
+export default CognitoService.extend({
+  poolId: '<my pool ID>',
+  clientId: '<my client ID>'
+});
+```
+
+In this case, you can have the properties be computed or retrieved through some dynamic mechanism.
+
+## Testing
+
+ember-cognito provides some helpers and utilities that make it easier to work with Cognito in tests.
+
+### MockUser
+
+`MockUser` can be used to mock `CognitoUser` so you don't make Cognito calls in tests. 
+
+```js
+import { MockUser } from '<app>/tests/utils/ember-cognito';
+
+let mockUser = MockUser.create({
+  username: 'testuser',
+  userAttributes: [
+    { name: 'sub', value: 'aaaabbbb-cccc-dddd-eeee-ffffgggghhhh' },
+    { name: 'first_name', value: 'Steve' }
+  ]
+});
+```
+
+This can be used in unit or integration tests where a `CognitoUser` is needed.
+
+### mockCognitoUser
+
+In acceptance tests, you can use ember-simple-auth's `authenticateSession` to create a user, but
+you will may also need to mock the user on the Cognito service. You can do this using `mockCognitoUser`:
+
+```js
+import { authenticateSession } from '<app>/tests/helpers/ember-simple-auth';
+import { mockCognitoUser } from '<app>/tests/helpers/ember-cognito';
+
+test('authenticated route', function(assert) {
+  authenticateSession(this.application);
+  mockCognitoUser(this.application, {
+    username: 'testuser',
+    userAttributes: [
+      { name: 'sub', value: 'aaaabbbb-cccc-dddd-eeee-ffffgggghhhh' },
+      { name: 'email', value: 'testuser@gmail.com' }
+    ]
+  });
+  // ..
+});
+```
+
+See [the dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/acceptance/profile-test.js)
+for an example of this type of test.
+
 ## Support
 
 ember-cognito is tested on Ember versions 2.4, 2.8, and 2.12+.
