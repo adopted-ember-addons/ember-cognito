@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>User Attributes</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>User Attribute</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each attributes as |attr|}}
+            <tr>
+              <td>{{attr}}</td>
+              <td>{{get currentUser attr}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
