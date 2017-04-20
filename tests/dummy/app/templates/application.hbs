@@ -4,16 +4,14 @@
       {{#link-to 'index' class='navbar-brand'}}ember-cognito{{/link-to}}
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        {{#if session.isAuthenticated}}
-          <li><a href="#">{{currentUser.username}}</a></li>
-          <li><a href="#" onclick={{action 'logout'}}>Logout</a></li>
-        {{else}}
-          <li>{{#link-to 'login'}}Login{{/link-to}}</li>
-        {{/if}}
-      </ul>
-    </div>
+    <ul class="nav navbar-nav navbar-right">
+      {{#if session.isAuthenticated}}
+        <li>{{#link-to 'profile' class='profile-link'}}{{currentUser.username}}{{/link-to}}</li>
+        <li><a href="#" onclick={{action 'logout'}}>Logout</a></li>
+      {{else}}
+        <li>{{#link-to 'login' class='login-link'}}Login{{/link-to}}</li>
+      {{/if}}
+    </ul>
   </div>
 </nav>
 {{outlet}}
