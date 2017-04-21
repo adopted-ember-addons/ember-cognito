@@ -14,3 +14,7 @@ export function unmockCognitoUser(app) {
   cognito.set('user', undefined);
   return wait();
 }
+
+export function getAuthenticator(app) {
+  return app.__container__.lookup('authenticator:cognito');
+}
