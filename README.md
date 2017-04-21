@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/paulcwatts/ember-cognito.svg?branch=master)](https://travis-ci.org/paulcwatts/ember-cognito)
 [![Code Climate](https://codeclimate.com/github/paulcwatts/ember-cognito/badges/gpa.svg)](https://codeclimate.com/github/paulcwatts/ember-cognito)
 [![Test Coverage](https://codeclimate.com/github/paulcwatts/ember-cognito/badges/coverage.svg)](https://codeclimate.com/github/paulcwatts/ember-cognito/coverage)
+[![npm version](https://badge.fury.io/js/ember-cognito.svg)](https://badge.fury.io/js/ember-cognito)
 [![Greenkeeper badge](https://badges.greenkeeper.io/paulcwatts/ember-cognito.svg)](https://greenkeeper.io/)
 
 Ember Cognito is an Ember Addon that integrates [ember-simple-auth](https://github.com/simplabs/ember-simple-auth/) 
