@@ -2,7 +2,8 @@
 /* eslint-disable object-shorthand */
 
 module.exports = {
-  description: '',
+  description: 'Default ember-cognito blueprint.',
+  normalizeEntityName: function() {},
 
   afterInstall: function() {
     return this.addPackagesToProject([
