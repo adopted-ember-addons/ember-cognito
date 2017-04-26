@@ -39,10 +39,13 @@ export default Base.extend({
     if (user) {
       return user.getSession().then((session) => {
         if (session.isValid()) {
+          /* eslint-disable camelcase */
           this.set('cognito.user', user);
           // Resolve with the new data the user set, in case
           // the session needed to be refreshed.
-          return user.getStorageData();
+          let newData = user.getStorageData();
+          newData.access_token = session.getIdToken().getJwtToken();
+          return newData;
         } else {
           return RSVP.reject('session is invalid');
         }

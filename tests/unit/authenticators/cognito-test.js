@@ -28,12 +28,18 @@ moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
   }
 });
 
-function newSession() {
+function newSession({ idToken, refreshToken, accessToken } = { idToken: 'xxxx', refreshToken: 'yyyy', accessToken: 'yyyy' }) {
   return new CognitoUserSession({
-    IdToken: new CognitoIdToken({ IdToken: 'xxxx' }),
-    RefreshToken: new CognitoRefreshToken({ RefreshToken: 'yyyy' }),
-    AccessToken: new CognitoAccessToken({ AccessToken: 'yyyy' })
+    IdToken: new CognitoIdToken({ IdToken: idToken }),
+    RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken }),
+    AccessToken: new CognitoAccessToken({ AccessToken: accessToken })
   });
+}
+
+// Makes a JWT token from a payload
+function makeToken(payload) {
+  // The only thing the SDK ever reads is the payload, not the header.
+  return `header.${btoa(JSON.stringify(payload))}`;
 }
 
 test('config is set correctly', function(assert) {
@@ -60,6 +66,69 @@ test('restore', function(assert) {
     assert.deepEqual(resolvedData, data, 'The resolved data is correct.');
     assert.ok(service.get('cognito.user'), 'The cognito service user is populated.');
     assert.equal(service.get('cognito.user.username'), 'testuser', 'The username is set correctly.');
+  });
+});
+
+test('restore, refresh session', function(assert) {
+  /* eslint-disable camelcase */
+  //
+  // This digs deeper into the Cognito SDK to test that we reset our own access_token property
+  // correctly on session refresh.
+  //
+  const now = Math.floor(new Date() / 1000);
+  const oldIdToken = makeToken({ exp: 1492032752 });
+  const oldAccessToken = makeToken({ exp: 1492032752 });
+  const newIdToken = makeToken({ exp: now + 3600 });
+  const newAccessToken = makeToken({ exp: now + 3600 });
+  const refreshToken = 'xxxxrefresh';
+
+  let service = this.subject();
+  this.stub(service, '_stubUser').callsFake((user) => {
+    this.stub(user.client, 'makeUnauthenticatedRequest').callsFake((request, params, callback) => {
+      assert.equal(request, 'initiateAuth');
+      assert.deepEqual(params, {
+        AuthFlow: 'REFRESH_TOKEN_AUTH',
+        AuthParameters: {
+          DEVICE_KEY: undefined,
+          REFRESH_TOKEN: 'xxxxrefresh'
+        },
+        ClientId: 'TEST'
+      });
+      callback(null, {
+        AuthenticationResult: {
+          AccessToken: newAccessToken,
+          ExpiresIn: 3600,
+          IdToken: newIdToken,
+          TokenType: 'Bearer'
+        },
+        ChallengeParameters: {}
+      });
+    });
+    return user;
+  });
+
+  let data = {
+    authenticator: 'authenticator:cognito',
+    access_token: oldIdToken,
+    poolId: 'us-east-1_TEST',
+    clientId: 'TEST',
+    'CognitoIdentityServiceProvider.TEST.testuser.idToken': oldIdToken,
+    'CognitoIdentityServiceProvider.TEST.testuser.accessToken': oldAccessToken,
+    'CognitoIdentityServiceProvider.TEST.testuser.refreshToken': refreshToken,
+    'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
+  };
+
+  return service.restore(data).then((resolvedData) => {
+    assert.deepEqual(resolvedData, {
+      authenticator: 'authenticator:cognito',
+      access_token: newAccessToken,
+      poolId: 'us-east-1_TEST',
+      clientId: 'TEST',
+      'CognitoIdentityServiceProvider.TEST.testuser.idToken': newIdToken,
+      'CognitoIdentityServiceProvider.TEST.testuser.accessToken': newAccessToken,
+      'CognitoIdentityServiceProvider.TEST.testuser.refreshToken': refreshToken,
+      'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
+    });
   });
 });
 
