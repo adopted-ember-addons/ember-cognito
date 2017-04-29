@@ -54,5 +54,12 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "ember-cli",
+      "ember-cli-babel",
+      "ember-cli-htmlbars-inline-precompile"
+    ]
   }
 }
