@@ -22,15 +22,15 @@ export default Base.extend({
   },
 
   _getCurrentUser(data) {
-    let pool = new CognitoUserPool({ UserPoolId: data.poolId, ClientId: data.clientId });
-    // Overwrite the storage with the restored auth data.
-    pool.storage = new CognitoStorage(data);
+    let pool = new CognitoUserPool({
+      UserPoolId: data.poolId,
+      ClientId: data.clientId,
+      Storage: new CognitoStorage(data)
+    });
     let user = pool.getCurrentUser();
     if (!user) {
       return null;
     }
-    // Make sure the user uses the same storage.
-    user.storage = pool.storage;
     return CognitoUser.create({ user: this._stubUser(user) });
   },
 
@@ -88,11 +88,12 @@ export default Base.extend({
         let that = this;
 
         let { poolId, clientId } = this.getProperties('poolId', 'clientId');
-        let pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
-        pool.storage = new CognitoStorage({});
-        let user = this._stubUser(new AWSCognitoUser({ Username: username, Pool: pool }));
-        user.storage = pool.storage;
-
+        let pool = new CognitoUserPool({
+          UserPoolId: poolId,
+          ClientId: clientId,
+          Storage: new CognitoStorage({})
+        });
+        let user = this._stubUser(new AWSCognitoUser({ Username: username, Pool: pool, Storage: pool.storage }));
         let authDetails = new AuthenticationDetails({ Username: username, Password: password });
 
         user.authenticateUser(authDetails, {

@@ -19,7 +19,7 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^1.16.0",
+    "amazon-cognito-identity-js": "^1.17.0",
     "ember-cli-babel": "^6.0.0",
     "ember-cli-node-assets": "^0.2.2"
   },
