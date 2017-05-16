@@ -594,7 +594,7 @@ babel-plugin-dead-code-elimination@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/babel-plugin-dead-code-elimination/-/babel-plugin-dead-code-elimination-1.0.2.tgz#5f7c451274dcd7cccdbfbb3e0b85dd28121f0f65"
 
-babel-plugin-debug-macros@^0.1.1:
+babel-plugin-debug-macros@^0.1.1, babel-plugin-debug-macros@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/babel-plugin-debug-macros/-/babel-plugin-debug-macros-0.1.6.tgz#6e0a29c6f3c3e122a8bd6fdb41fc2475d8f894ce"
   dependencies:
@@ -2082,7 +2082,22 @@ ember-cli-babel@^5.1.5, ember-cli-babel@^5.1.6, ember-cli-babel@^5.1.7:
     ember-cli-version-checker "^1.0.2"
     resolve "^1.1.2"
 
-ember-cli-babel@^6.0.0-beta.3, ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6.0.0-beta.9:
+ember-cli-babel@^6.0.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.1.0.tgz#d9c83a7d0c67cc8a3ccb9bd082971c3593e54fad"
+  dependencies:
+    amd-name-resolver "0.0.6"
+    babel-plugin-debug-macros "^0.1.6"
+    babel-plugin-transform-es2015-modules-amd "^6.24.0"
+    babel-polyfill "^6.16.0"
+    babel-preset-env "^1.2.0"
+    broccoli-babel-transpiler "^6.0.0"
+    broccoli-funnel "^1.0.0"
+    broccoli-source "^1.1.0"
+    clone "^2.0.0"
+    ember-cli-version-checker "^1.2.0"
+
+ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6.0.0-beta.9:
   version "6.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.0.0-beta.11.tgz#ce34fa46bf7fe0bc1e7381b985824e14d5f5e9ef"
   dependencies:
@@ -2238,16 +2253,16 @@ ember-cli-preprocess-registry@^3.1.0:
     process-relative-require "^1.0.0"
     silent-error "^1.0.0"
 
-ember-cli-qunit@^4.0.0-beta.1:
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-qunit/-/ember-cli-qunit-4.0.0-beta.1.tgz#979f8bc34f9ee8e9e2568567d1a6948bbe27bf20"
+ember-cli-qunit@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-qunit/-/ember-cli-qunit-4.0.0.tgz#1f0022469a5bd64f627b8102880a25e94e533a3b"
   dependencies:
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^2.0.0"
     ember-cli-babel "^6.0.0-beta.7"
     ember-cli-test-loader "^2.0.0"
     ember-cli-version-checker "^1.1.4"
-    ember-qunit "^2.0.0-beta.1"
+    ember-qunit "^2.1.3"
     qunit-notifications "^0.1.1"
     qunitjs "^2.0.1"
     resolve "^1.1.6"
@@ -2317,9 +2332,9 @@ ember-cli-version-checker@^1.0.2, ember-cli-version-checker@^1.1.4, ember-cli-ve
   dependencies:
     semver "^5.3.0"
 
-ember-cli@2.13.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-2.13.0.tgz#c80d06ff8e16a47b0b2e5fbdb8761feebca86368"
+ember-cli@2.13.1:
+  version "2.13.1"
+  resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-2.13.1.tgz#ac02ca2d967bb660b577286e4c88c7cea13806b3"
   dependencies:
     amd-name-resolver "0.0.6"
     babel-plugin-transform-es2015-modules-amd "^6.24.0"
@@ -2458,11 +2473,11 @@ ember-network@^0.3.0:
     node-fetch "^1.3.3"
     whatwg-fetch "^0.11.0"
 
-ember-qunit@^2.0.0-beta.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/ember-qunit/-/ember-qunit-2.1.2.tgz#ede8e56f098206c1d0834a592acefa0c47dc9ad7"
+ember-qunit@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/ember-qunit/-/ember-qunit-2.1.3.tgz#b3d9d4ddbcdb157cbd89ce6ad9caf51e3775f282"
   dependencies:
-    ember-test-helpers "^0.6.0-beta.1"
+    ember-test-helpers "^0.6.3"
 
 ember-resolver@^4.0.0:
   version "4.1.0"
@@ -2536,7 +2551,7 @@ ember-source@~2.13.0:
     simple-dom "^0.3.0"
     simple-html-tokenizer "^0.3.0"
 
-ember-test-helpers@^0.6.0-beta.1:
+ember-test-helpers@^0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/ember-test-helpers/-/ember-test-helpers-0.6.3.tgz#f864cdf6f4e75f3f8768d6537785b5ab6e82d907"
 
