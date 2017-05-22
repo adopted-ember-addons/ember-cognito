@@ -9,7 +9,6 @@ module.exports = {
       'amazon-cognito-identity-js': function() {
         return {
           vendor: {
-            enabled: process.env.EMBER_CLI_FASTBOOT !== 'true',
             srcDir: 'dist',
             include: [
               'aws-cognito-sdk.js',
