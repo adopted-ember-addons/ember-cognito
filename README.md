@@ -59,7 +59,11 @@ export default Ember.Controller.extend({
   actions: {
     authenticate() {
       let { username, password } = this.getProperties('username', 'password');
-      this.get('session').authenticate('authenticator:cognito', username, password).then((cognitoUserSession) => {
+      let credentials = { 
+        username: username,
+        password: password
+      };
+      this.get('session').authenticate('authenticator:cognito', credentials).then((cognitoUserSession) => {
         // Successfully authenticated!  
       }).catch((error) => {
         this.set('errorMessage', error.message || error);
