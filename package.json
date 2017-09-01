@@ -37,6 +37,7 @@
     "ember-cli-shims": "^1.1.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^1.2.0",
+    "ember-cli-update": "^0.6.4",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
@@ -61,7 +62,8 @@
       "ember-cli-babel",
       "ember-cli-dependency-checker",
       "ember-cli-htmlbars",
-      "ember-cli-htmlbars-inline-precompile"
+      "ember-cli-htmlbars-inline-precompile",
+      "loader.js"
     ]
   }
 }
