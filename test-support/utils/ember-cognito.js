@@ -1,10 +1,6 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import RSVP from 'rsvp';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-
-const {
-  Object: EmberObject,
-  RSVP
-} = Ember;
 
 const MockUser = EmberObject.extend({
   userAttributes: [],
