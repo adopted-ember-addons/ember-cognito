@@ -1,11 +1,6 @@
-import Ember from 'ember';
-
-const {
-  computed: { readOnly },
-  inject: { service },
-  RSVP,
-  Service
-} = Ember;
+import { readOnly } from '@ember/object/computed';
+import RSVP from 'rsvp';
+import Service, { inject as service } from '@ember/service';
 
 export default Service.extend({
   session: service(),

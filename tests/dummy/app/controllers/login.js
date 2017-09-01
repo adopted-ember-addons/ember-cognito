@@ -1,39 +1,36 @@
-import Ember from 'ember';
-
-const {
-  computed: { equal },
-  Controller,
-  inject: { service }
-} = Ember;
+import { equal } from '@ember/object/computed';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+import { set, getProperties, get } from '@ember/object';
 
 export default Controller.extend({
   session: service(),
   newPasswordRequired: equal('state.name', 'newPasswordRequired'),
 
-  authenticate(params) {
-    this.get('session').authenticate('authenticator:cognito', params).then(() => {
-      // Nothing to do.
-    }).catch((err) => {
-      if (err.state && err.state.name === 'newPasswordRequired') {
-        this.set('errorMessage', '');
-        this.set('state', err.state);
-      } else {
-        this.set('errorMessage', err.message || err);
-      }
-    });
-  },
-
   actions: {
     login(e) {
       e.preventDefault();
-      let params = this.getProperties('username', 'password');
+      let params = getProperties(this, 'username', 'password');
       this.authenticate(params);
     },
 
     newPassword(e) {
       e.preventDefault();
-      let { newPassword, state } = this.getProperties('newPassword', 'state');
+      let { newPassword, state } = getProperties(this, 'newPassword', 'state');
       this.authenticate({ password: newPassword, state });
     }
+  },
+
+  authenticate(params) {
+    get(this, 'session').authenticate('authenticator:cognito', params).then(() => {
+      // Nothing to do.
+    }).catch((err) => {
+      if (err.state && err.state.name === 'newPasswordRequired') {
+        set(this, 'errorMessage', '');
+        set(this, 'state', err.state);
+      } else {
+        set(this, 'errorMessage', err.message || err);
+      }
+    });
   }
 });

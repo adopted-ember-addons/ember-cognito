@@ -1,3 +1,4 @@
+import { get } from '@ember/object';
 import {
   CognitoAccessToken,
   CognitoIdToken,
@@ -20,7 +21,7 @@ function getAwsUser() {
 
 test('username', function(assert) {
   let user = CognitoUser.create({ user: getAwsUser() });
-  assert.equal(user.get('username'), 'testuser');
+  assert.equal(get(user, 'username'), 'testuser');
 });
 
 test('getSession', function(assert) {

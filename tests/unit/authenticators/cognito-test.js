@@ -1,3 +1,4 @@
+import { set, get } from '@ember/object';
 import {
   CognitoAccessToken,
   CognitoIdToken,
@@ -44,8 +45,8 @@ function makeToken(payload) {
 
 test('config is set correctly', function(assert) {
   let service = this.subject();
-  assert.equal(service.get('poolId'), 'us-east-1_TEST');
-  assert.equal(service.get('clientId'), 'TEST');
+  assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
+  assert.equal(get(service, 'clientId'), 'TEST');
 });
 
 test('restore', function(assert) {
@@ -64,8 +65,8 @@ test('restore', function(assert) {
   };
   return service.restore(data).then((resolvedData) => {
     assert.deepEqual(resolvedData, data, 'The resolved data is correct.');
-    assert.ok(service.get('cognito.user'), 'The cognito service user is populated.');
-    assert.equal(service.get('cognito.user.username'), 'testuser', 'The username is set correctly.');
+    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
   });
 });
 
@@ -179,8 +180,8 @@ test('authenticateUser', function(assert) {
       poolId: 'us-east-1_TEST',
       'Cognito.StorageItem': 'test'
     });
-    assert.ok(service.get('cognito.user'), 'The cognito service user is populated.');
-    assert.equal(service.get('cognito.user.username'), 'testuser', 'The username is set correctly.');
+    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
   });
 });
 
@@ -226,8 +227,8 @@ test('authenticateUser, newPasswordRequired', function(assert) {
       poolId: 'us-east-1_TEST',
       'Cognito.StorageItem': 'test'
     });
-    assert.ok(service.get('cognito.user'), 'The cognito service user is populated.');
-    assert.equal(service.get('cognito.user.username'), 'testuser', 'The username is set correctly.');
+    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
   });
 });
 
@@ -268,11 +269,11 @@ test('invalidate', function(assert) {
     'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
   };
   let service = this.subject();
-  service.set('cognito.user', 'user');
+  set(service, 'cognito.user', 'user');
 
   return service.invalidate(data).then((resolvedData) => {
     assert.deepEqual(data, resolvedData);
     // Cognito user no longer exists on service
-    assert.equal(service.get('cognito.user'), undefined);
+    assert.equal(get(service, 'cognito.user'), undefined);
   });
 });

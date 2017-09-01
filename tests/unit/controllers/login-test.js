@@ -1,9 +1,8 @@
-import Ember from 'ember';
+import RSVP from 'rsvp';
+import { setProperties, get } from '@ember/object';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import wait from 'ember-test-helpers/wait';
-
-const { RSVP } = Ember;
 
 //
 // This is an example of writing a unit test that uses sinon
@@ -32,8 +31,8 @@ function rejects(value) {
 
 test('login success', function(assert) {
   let controller = this.subject();
-  let stub = this.stub(controller.get('session'), 'authenticate').callsFake(resolves({}));
-  controller.setProperties({ username: 'testuser', password: 'pw' });
+  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(resolves({}));
+  setProperties(controller, { username: 'testuser', password: 'pw' });
   controller.send('login', new Event('click'));
   assert.deepEqual(stub.args, [[
     'authenticator:cognito',
@@ -44,8 +43,8 @@ test('login success', function(assert) {
 
 test('login fail', function(assert) {
   let controller = this.subject();
-  let stub = this.stub(controller.get('session'), 'authenticate').callsFake(rejects(new Error('invalid password')));
-  controller.setProperties({ username: 'testuser', password: 'pw' });
+  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(rejects(new Error('invalid password')));
+  setProperties(controller, { username: 'testuser', password: 'pw' });
   controller.send('login', new Event('click'));
 
   assert.deepEqual(stub.args, [[
@@ -53,15 +52,15 @@ test('login fail', function(assert) {
     { username: 'testuser', password: 'pw' }
   ]]);
   return wait().then(() => {
-    assert.equal(controller.get('errorMessage'), 'invalid password');
+    assert.equal(get(controller, 'errorMessage'), 'invalid password');
   });
 });
 
 test('login newPasswordRequired', function(assert) {
   let controller = this.subject();
   let err = { state: { name: 'newPasswordRequired' } };
-  let stub = this.stub(controller.get('session'), 'authenticate').callsFake(rejects(err));
-  controller.setProperties({ username: 'testuser', password: 'pw' });
+  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(rejects(err));
+  setProperties(controller, { username: 'testuser', password: 'pw' });
   controller.send('login', new Event('click'));
 
   assert.deepEqual(stub.args, [[
@@ -69,16 +68,16 @@ test('login newPasswordRequired', function(assert) {
     { username: 'testuser', password: 'pw' }
   ]]);
   return wait().then(() => {
-    assert.equal(controller.get('errorMessage'), '');
-    assert.equal(controller.get('state'), err.state);
+    assert.equal(get(controller, 'errorMessage'), '');
+    assert.equal(get(controller, 'state'), err.state);
   });
 });
 
 test('newPasswordRequired success', function(assert) {
   let controller = this.subject();
-  let stub = this.stub(controller.get('session'), 'authenticate').callsFake(resolves({}));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(resolves({}));
   let state = { name: 'newPasswordRequired', arg: 'foo' };
-  controller.setProperties({ newPassword: 'pw', state });
+  setProperties(controller, { newPassword: 'pw', state });
   controller.send('newPassword', new Event('click'));
   assert.deepEqual(stub.args, [[
     'authenticator:cognito',
@@ -89,16 +88,16 @@ test('newPasswordRequired success', function(assert) {
 
 test('newPasswordRequired fail', function(assert) {
   let controller = this.subject();
-  let stub = this.stub(controller.get('session'), 'authenticate').callsFake(rejects(new Error('something went wrong')));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(rejects(new Error('something went wrong')));
   let state = { name: 'newPasswordRequired', arg: 'foo' };
-  controller.setProperties({ newPassword: 'pw', state });
+  setProperties(controller, { newPassword: 'pw', state });
   controller.send('newPassword', new Event('click'));
   assert.deepEqual(stub.args, [[
     'authenticator:cognito',
     { password: 'pw', state }
   ]]);
   return wait().then(() => {
-    assert.equal(controller.get('errorMessage'), 'something went wrong');
-    assert.equal(controller.get('state'), state);
+    assert.equal(get(controller, 'errorMessage'), 'something went wrong');
+    assert.equal(get(controller, 'state'), state);
   });
 });
