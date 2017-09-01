@@ -10,6 +10,9 @@ import CognitoStorage from 'dummy/utils/cognito-storage';
 import CognitoUser from 'dummy/utils/cognito-user';
 import { module } from 'qunit';
 import test from 'ember-sinon-qunit/test-support/test';
+import Ember from 'ember';
+
+const { get } = Ember;
 
 module('Unit | Utility | cognito user');
 
@@ -20,7 +23,7 @@ function getAwsUser() {
 
 test('username', function(assert) {
   let user = CognitoUser.create({ user: getAwsUser() });
-  assert.equal(user.get('username'), 'testuser');
+  assert.equal(get(user, 'username'), 'testuser');
 });
 
 test('getSession', function(assert) {

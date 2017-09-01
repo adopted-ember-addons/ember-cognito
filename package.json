@@ -21,7 +21,8 @@
   "dependencies": {
     "amazon-cognito-identity-js": "^1.17.0",
     "ember-cli-babel": "^6.8.0",
-    "ember-cli-node-assets": "^0.2.2"
+    "ember-cli-node-assets": "^0.2.2",
+    "eslint-plugin-ember": "^4.3.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",

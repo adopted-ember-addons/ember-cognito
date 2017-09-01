@@ -3,7 +3,8 @@ import Ember from 'ember';
 const {
   computed,
   Object: EmberObject,
-  RSVP
+  RSVP,
+  get
 } = Ember;
 
 //
@@ -11,12 +12,12 @@ const {
 //
 export default EmberObject.extend({
   username: computed('user', function() {
-    return this.get('user').getUsername();
+    return get(this, 'user').getUsername();
   }),
 
   _callback(method) {
     return new RSVP.Promise((resolve, reject) => {
-      this.get('user')[method]((err, result) => {
+      get(this, 'user')[method]((err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -35,10 +36,10 @@ export default EmberObject.extend({
   },
 
   signOut() {
-    return this.get('user').signOut();
+    return get(this, 'user').signOut();
   },
 
   getStorageData() {
-    return this.get('user').storage.getData();
+    return get(this, 'user').storage.getData();
   }
 });

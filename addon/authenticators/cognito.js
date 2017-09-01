@@ -9,7 +9,9 @@ const {
   computed: { readOnly },
   inject: { service },
   merge,
-  RSVP
+  RSVP,
+  set,
+  getProperties
 } = Ember;
 
 export default Base.extend({
@@ -40,7 +42,7 @@ export default Base.extend({
       return user.getSession().then((session) => {
         if (session.isValid()) {
           /* eslint-disable camelcase */
-          this.set('cognito.user', user);
+          set(this, 'cognito.user', user);
           // Resolve with the new data the user set, in case
           // the session needed to be refreshed.
           let newData = user.getStorageData();
@@ -65,7 +67,7 @@ export default Base.extend({
       clientId: pool.getClientId()
     }, pool.storage.getData());
 
-    this.set('cognito.user', CognitoUser.create({ user }));
+    set(this, 'cognito.user', CognitoUser.create({ user }));
     resolve(data);
   },
 
@@ -87,7 +89,7 @@ export default Base.extend({
       return new RSVP.Promise((resolve, reject) => {
         let that = this;
 
-        let { poolId, clientId } = this.getProperties('poolId', 'clientId');
+        let { poolId, clientId } = getProperties(this, 'poolId', 'clientId');
         let pool = new CognitoUserPool({
           UserPoolId: poolId,
           ClientId: clientId,
@@ -127,7 +129,7 @@ export default Base.extend({
   invalidate(data) {
     let user = this._getCurrentUser(data);
     user.signOut();
-    this.set('cognito.user', undefined);
+    set(this, 'cognito.user', undefined);
     return RSVP.resolve(data);
   }
 });
