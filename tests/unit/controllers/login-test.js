@@ -1,8 +1,13 @@
-import RSVP from 'rsvp';
-import { setProperties, get } from '@ember/object';
+import Ember from 'ember';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import wait from 'ember-test-helpers/wait';
+
+const {
+  RSVP,
+  get,
+  setProperties
+} = Ember;
 
 //
 // This is an example of writing a unit test that uses sinon
