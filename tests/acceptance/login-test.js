@@ -1,9 +1,10 @@
-import { get } from '@ember/object';
-import RSVP from 'rsvp';
 import { currentSession } from '../../tests/helpers/ember-simple-auth';
+import Ember from 'ember';
 import { mockCognitoUser, getAuthenticator } from '../../tests/helpers/ember-cognito';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import test from 'ember-sinon-qunit/test-support/test';
+
+const { get, RSVP } = Ember;
 
 //
 // This is an example of testing authentication by stubbing the authenticator.

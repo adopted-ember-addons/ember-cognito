@@ -1,4 +1,6 @@
-import Service from '@ember/service';
+import Ember from 'ember';
+
+const { Service } = Ember;
 
 /**
  * @public

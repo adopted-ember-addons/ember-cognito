@@ -1,4 +1,3 @@
-import { get } from '@ember/object';
 import {
   CognitoAccessToken,
   CognitoIdToken,
@@ -11,6 +10,9 @@ import CognitoStorage from 'dummy/utils/cognito-storage';
 import CognitoUser from 'dummy/utils/cognito-user';
 import { module } from 'qunit';
 import test from 'ember-sinon-qunit/test-support/test';
+import Ember from 'ember';
+
+const { get } = Ember;
 
 module('Unit | Utility | cognito user');
 

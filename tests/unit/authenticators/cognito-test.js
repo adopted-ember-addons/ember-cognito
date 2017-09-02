@@ -1,4 +1,3 @@
-import { set, get } from '@ember/object';
 import {
   CognitoAccessToken,
   CognitoIdToken,
@@ -7,6 +6,12 @@ import {
 } from 'amazon-cognito-identity-js';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
+import Ember from 'ember';
+
+const {
+  get,
+  set
+} = Ember;
 
 moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
   needs: ['service:cognito'],
