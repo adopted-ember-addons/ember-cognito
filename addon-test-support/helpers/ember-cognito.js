@@ -1,8 +1,6 @@
 /* global wait */
 import { MockUser } from '../utils/ember-cognito';
-import Ember from 'ember';
-
-const { set } = Ember;
+import { set } from '@ember/object';
 
 export function mockCognitoUser(app, userAttributes) {
   const { __container__: container } = app;
