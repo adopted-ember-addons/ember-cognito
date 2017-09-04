@@ -1,7 +1,5 @@
+import { get } from '@ember/object';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
-
-const { get } = Ember;
 
 moduleFor('service:cognito', 'Unit | Service | cognito', {
 });

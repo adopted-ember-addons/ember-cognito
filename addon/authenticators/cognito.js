@@ -1,18 +1,16 @@
+import { readOnly } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { merge } from '@ember/polyfills';
+import RSVP from 'rsvp';
+import { getProperties, set } from '@ember/object';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
-import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+  CognitoUser as AWSCognitoUser,
+  CognitoUserPool
+} from 'amazon-cognito-identity-js';
 import Base from 'ember-simple-auth/authenticators/base';
 import CognitoStorage from '../utils/cognito-storage';
 import CognitoUser from '../utils/cognito-user';
-import Ember from 'ember';
-
-const {
-  computed: { readOnly },
-  inject: { service },
-  merge,
-  RSVP,
-  set,
-  getProperties
-} = Ember;
 
 export default Base.extend({
   cognito: service(),

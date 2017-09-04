@@ -1,11 +1,5 @@
-import Ember from 'ember';
-
-const {
-  computed,
-  Object: EmberObject,
-  RSVP,
-  get
-} = Ember;
+import RSVP from 'rsvp';
+import EmberObject, { get, computed } from '@ember/object';
 
 //
 // Wraps an AWS CognitoUser and provides promisified versions of many functions.
