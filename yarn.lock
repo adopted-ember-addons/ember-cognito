@@ -2501,13 +2501,15 @@ ember-cli-uglify@^1.2.0:
   dependencies:
     broccoli-uglify-sourcemap "^1.0.0"
 
-ember-cli-update@^0.6.4:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.6.4.tgz#da2d38256af231a59b88c80db18b9ed4564b9ecd"
+ember-cli-update@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.7.0.tgz#acde1106ee6f6076478996f7b22fcd05a314503d"
   dependencies:
     debug "^3.0.0"
-    git-diff-apply "^0.3.1"
+    git-diff-apply "^0.4.0"
+    rfc6902-ordered "^1.0.0"
     semver "^5.4.1"
+    three-way-merger "^0.3.0"
     yargs "^8.0.2"
 
 ember-cli-valid-component-name@^1.0.0:
@@ -3259,6 +3261,13 @@ fireworm@^0.7.0:
     lodash.flatten "^3.0.2"
     minimatch "^3.0.2"
 
+fixturify@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/fixturify/-/fixturify-0.3.4.tgz#c676de404a7f8ee8e64d0b76118e62ec95ab7b25"
+  dependencies:
+    fs-extra "^0.30.0"
+    matcher-collection "^1.0.4"
+
 flat-cache@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-1.2.2.tgz#fa86714e72c21db88601761ecf2f555d1abc6b96"
@@ -3484,12 +3493,13 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-git-diff-apply@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/git-diff-apply/-/git-diff-apply-0.3.1.tgz#511538fd074a6f4b817cac2306fbf56bb492ee29"
+git-diff-apply@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/git-diff-apply/-/git-diff-apply-0.4.0.tgz#55192f03c946b4cb95d364cc597c419f9b5e44dd"
   dependencies:
     debug "^3.0.0"
     denodeify "^1.2.1"
+    fixturify "^0.3.4"
     ncp "^2.0.0"
     tmp "0.0.33"
     uuid "^3.1.0"
@@ -4692,6 +4702,12 @@ markdown-it@^8.3.1:
 matcher-collection@^1.0.0, matcher-collection@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/matcher-collection/-/matcher-collection-1.0.4.tgz#2f66ae0869996f29e43d0b62c83dd1d43e581755"
+  dependencies:
+    minimatch "^3.0.2"
+
+matcher-collection@^1.0.4:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/matcher-collection/-/matcher-collection-1.0.5.tgz#2ee095438372cb8884f058234138c05c644ec339"
   dependencies:
     minimatch "^3.0.2"
 
@@ -5953,6 +5969,16 @@ retry@^0.8.0, retry@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.8.0.tgz#2367628dc0edb247b1eab649dc53ac8628ac2d5f"
 
+rfc6902-ordered@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/rfc6902-ordered/-/rfc6902-ordered-1.0.2.tgz#f839706c0e6530162621fa311ace98f8e7af1682"
+  dependencies:
+    rfc6902 "^1.3.0"
+
+rfc6902@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/rfc6902/-/rfc6902-1.3.0.tgz#85b2c69c42dcf116082437b9829a962446b4c4a5"
+
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
@@ -6547,6 +6573,12 @@ text-table@~0.2.0:
 "textextensions@1 || 2":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-2.1.0.tgz#1be0dc2a0dc244d44be8a09af6a85afb93c4dbc3"
+
+three-way-merger@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/three-way-merger/-/three-way-merger-0.3.0.tgz#650f4c9b26549e0eb2da54d7897c7b0f912b8739"
+  dependencies:
+    semver "^5.4.1"
 
 through@^2.3.6, through@^2.3.8, through@~2.3.8:
   version "2.3.8"
