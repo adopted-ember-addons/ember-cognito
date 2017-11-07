@@ -2805,16 +2805,16 @@ ember-cli-uglify@^1.2.0:
   dependencies:
     broccoli-uglify-sourcemap "^1.0.0"
 
-ember-cli-update@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.9.0.tgz#0520840845b14f7a384f5abcbab2643071b0eed7"
+ember-cli-update@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.10.0.tgz#8cca30fa875eefbec88f8d31f5a96c0a5fd7a80a"
   dependencies:
     debug "^3.0.0"
     ember-modules-codemod "^0.2.9"
-    git-diff-apply "^0.6.0"
-    rfc6902-ordered "^2.0.0"
+    execa "^0.8.0"
+    git-diff-apply "^0.6.1"
+    merge-package.json "^1.0.1"
     semver "^5.4.1"
-    three-way-merger "^0.3.0"
     yargs "^10.0.3"
 
 ember-cli-valid-component-name@^1.0.0:
@@ -3363,7 +3363,7 @@ execa@^0.7.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
-execa@~0.8.0:
+execa@^0.8.0, execa@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/execa/-/execa-0.8.0.tgz#d8d76bbc1b55217ed190fd6dd49d3c774ecfc8da"
   dependencies:
@@ -3834,9 +3834,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-git-diff-apply@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/git-diff-apply/-/git-diff-apply-0.6.0.tgz#a5c7b5b953950cb66e4615fd993c0e03350097fd"
+git-diff-apply@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/git-diff-apply/-/git-diff-apply-0.6.1.tgz#ee2fb5dac5adaf0672a406e1c2b7c00a8058a060"
   dependencies:
     debug "^3.0.0"
     denodeify "^1.2.1"
@@ -5105,6 +5105,13 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
+merge-package.json@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/merge-package.json/-/merge-package.json-1.0.1.tgz#160b247e95cdf3105d7b4edad9970aae6223a1bd"
+  dependencies:
+    rfc6902-ordered "^2.1.0"
+    three-way-merger "^0.3.0"
+
 merge-trees@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-trees/-/merge-trees-1.0.1.tgz#ccbe674569787f9def17fd46e6525f5700bbd23e"
@@ -6330,7 +6337,7 @@ retry@^0.8.0, retry@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.8.0.tgz#2367628dc0edb247b1eab649dc53ac8628ac2d5f"
 
-rfc6902-ordered@^2.0.0:
+rfc6902-ordered@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/rfc6902-ordered/-/rfc6902-ordered-2.1.0.tgz#19de9061d316149b0994e0f734ff34e09264e9f9"
   dependencies:
