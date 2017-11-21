@@ -7,6 +7,7 @@ import {
 } from 'amazon-cognito-identity-js';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
+import { skip } from 'qunit';
 
 moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
   needs: ['service:cognito'],
@@ -70,7 +71,7 @@ test('restore', function(assert) {
   });
 });
 
-test('restore, refresh session', function(assert) {
+skip('restore, refresh session', function(assert) {
   /* eslint-disable camelcase */
   //
   // This digs deeper into the Cognito SDK to test that we reset our own access_token property
