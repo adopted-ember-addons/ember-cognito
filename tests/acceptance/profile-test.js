@@ -1,8 +1,8 @@
-import $ from 'jquery';
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import { authenticateSession } from '../../tests/helpers/ember-simple-auth';
 import { mockCognitoUser } from '../../tests/helpers/ember-cognito';
+import { findAll } from 'ember-native-dom-helpers';
 
 moduleForAcceptance('Acceptance | profile');
 
@@ -33,9 +33,9 @@ test('visiting /profile', function(assert) {
   andThen(function() {
     assert.equal(currentURL(), '/profile');
     // Map each element to get the text from it
-    let text = find('tbody td').map(function() {
-      return $(this).text().trim();
-    }).toArray();
+    let text = findAll('tbody td').map(function(elem) {
+      return elem.textContent.trim();
+    });
 
     assert.deepEqual(text, [
       'sub', 'aaaabbbb-cccc-dddd-eeee-ffffgggghhhh',
