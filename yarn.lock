@@ -2647,12 +2647,12 @@ ember-cli-uglify@^2.0.0:
     broccoli-uglify-sourcemap "^2.0.0"
     lodash.defaultsdeep "^4.6.0"
 
-ember-cli-update@^0.10.0:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.10.1.tgz#5a89961602cd97d4f1a278a9b37fbafd964e6dd6"
+ember-cli-update@0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.11.0.tgz#39b571ab383f976f10b354e850181ceb03181821"
   dependencies:
     debug "^3.0.0"
-    ember-modules-codemod "^0.2.9"
+    ember-modules-codemod "^0.2.11"
     execa "^0.8.0"
     git-diff-apply "^0.6.1"
     merge-package.json "^1.0.1"
@@ -2815,9 +2815,9 @@ ember-load-initializers@^1.0.0:
   dependencies:
     ember-cli-babel "^6.0.0-beta.7"
 
-ember-modules-codemod@^0.2.9:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/ember-modules-codemod/-/ember-modules-codemod-0.2.10.tgz#c72c18eca597cf6b7427baa842e5a6e17328fa22"
+ember-modules-codemod@^0.2.11:
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/ember-modules-codemod/-/ember-modules-codemod-0.2.11.tgz#e527867e264c87db3f7491fd3bdc60bbd6068890"
   dependencies:
     chalk "^1.1.3"
     ember-rfc176-data "^0.3.0"
@@ -2901,7 +2901,7 @@ ember-sinon@^1.0.0, ember-sinon@~1.0.0:
     ember-cli-babel "^6.3.0"
     sinon "^3.2.1"
 
-ember-source@2.17.0:
+ember-source@~2.17.0:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-2.17.0.tgz#b78871dd49bd8d642b80176df4faf7fd7d059dac"
   dependencies:
