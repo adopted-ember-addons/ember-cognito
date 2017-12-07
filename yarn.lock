@@ -2647,7 +2647,7 @@ ember-cli-uglify@^2.0.0:
     broccoli-uglify-sourcemap "^2.0.0"
     lodash.defaultsdeep "^4.6.0"
 
-ember-cli-update@0.11.0:
+ember-cli-update@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.11.0.tgz#39b571ab383f976f10b354e850181ceb03181821"
   dependencies:
@@ -2825,9 +2825,9 @@ ember-modules-codemod@^0.2.11:
     glob "^7.1.1"
     jscodeshift "^0.3.29"
 
-ember-native-dom-helpers@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/ember-native-dom-helpers/-/ember-native-dom-helpers-0.5.5.tgz#979764773a1608a42c3e1ec7e98144e416e35898"
+ember-native-dom-helpers@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/ember-native-dom-helpers/-/ember-native-dom-helpers-0.6.0.tgz#9da37e93443ea4a7bdec3fb52b42d38073aec8fe"
   dependencies:
     broccoli-funnel "^1.1.0"
     ember-cli-babel "^6.6.0"
