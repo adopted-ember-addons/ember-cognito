@@ -2647,14 +2647,14 @@ ember-cli-uglify@^2.0.0:
     broccoli-uglify-sourcemap "^2.0.0"
     lodash.defaultsdeep "^4.6.0"
 
-ember-cli-update@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.11.0.tgz#39b571ab383f976f10b354e850181ceb03181821"
+ember-cli-update@0.13.2:
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.13.2.tgz#980ce5bded9a9ddd47a50c64aeb5f79c31a60433"
   dependencies:
     debug "^3.0.0"
     ember-modules-codemod "^0.2.11"
     execa "^0.8.0"
-    git-diff-apply "^0.6.1"
+    git-diff-apply "^0.8.2"
     merge-package.json "^1.0.1"
     semver "^5.4.1"
     yargs "^10.0.3"
@@ -2825,9 +2825,9 @@ ember-modules-codemod@^0.2.11:
     glob "^7.1.1"
     jscodeshift "^0.3.29"
 
-ember-native-dom-helpers@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/ember-native-dom-helpers/-/ember-native-dom-helpers-0.6.0.tgz#9da37e93443ea4a7bdec3fb52b42d38073aec8fe"
+ember-native-dom-helpers@^0.6.0:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/ember-native-dom-helpers/-/ember-native-dom-helpers-0.6.1.tgz#ca54b1adb9aff2e0ae10f068583bc8b92633324d"
   dependencies:
     broccoli-funnel "^1.1.0"
     ember-cli-babel "^6.6.0"
@@ -3697,9 +3697,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-git-diff-apply@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/git-diff-apply/-/git-diff-apply-0.6.1.tgz#ee2fb5dac5adaf0672a406e1c2b7c00a8058a060"
+git-diff-apply@^0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/git-diff-apply/-/git-diff-apply-0.8.2.tgz#dc1222d297573544b05bee01b433671b7ab1e2cd"
   dependencies:
     debug "^3.0.0"
     denodeify "^1.2.1"
