@@ -19,6 +19,12 @@ function getAwsUser() {
   return new AWSCognitoUser({ Username: 'testuser', Pool: pool });
 }
 
+function makeJwt(payload) {
+  // For now, don't care about the first or third parts of the token.
+  let encoded = btoa(JSON.stringify(payload));
+  return `xxxx.${encoded}.yyyy`;
+}
+
 test('username', function(assert) {
   let user = CognitoUser.create({ user: getAwsUser() });
   assert.equal(get(user, 'username'), 'testuser');
@@ -77,6 +83,38 @@ test('getUserAttributes error', function(assert) {
     assert.ok(false);
   }).catch((err) => {
     assert.equal(err, 'error');
+  });
+});
+
+test('getGroups', function(assert) {
+  let awsUser = getAwsUser();
+  let token = makeJwt({ "cognito:groups": ["Group 1","Group 2"] });
+  this.stub(awsUser, 'getSession').callsFake((callback) => {
+    // This should return an instance of a CognitoUserSession.
+    callback(null, new CognitoUserSession({
+      IdToken: new CognitoIdToken({ IdToken: token }),
+      AccessToken: new CognitoAccessToken({ AccessToken: token })
+    }));
+  });
+  let user = CognitoUser.create({ user: awsUser });
+  return user.getGroups().then((groups) => {
+    assert.deepEqual(groups, ['Group 1', 'Group 2']);
+  });
+});
+
+test('getGroups no groups', function(assert) {
+  let awsUser = getAwsUser();
+  let token = makeJwt({});
+  this.stub(awsUser, 'getSession').callsFake((callback) => {
+    // This should return an instance of a CognitoUserSession.
+    callback(null, new CognitoUserSession({
+      IdToken: new CognitoIdToken({ IdToken: token }),
+      AccessToken: new CognitoAccessToken({ AccessToken: token })
+    }));
+  });
+  let user = CognitoUser.create({ user: awsUser });
+  return user.getGroups().then((groups) => {
+    assert.deepEqual(groups, []);
   });
 });
 
