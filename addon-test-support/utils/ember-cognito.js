@@ -1,9 +1,11 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import EmberObject, { get, set } from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 import RSVP from 'rsvp';
 
 const MockUser = EmberObject.extend({
-  userAttributes: [],
+  init() {
+    this.userAttributes = this.userAttributes || [];
+  },
 
   getGroups() {
     return RSVP.resolve(get(this, 'groups'));
