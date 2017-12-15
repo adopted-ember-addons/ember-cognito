@@ -29,6 +29,14 @@ export default EmberObject.extend({
     return this._callback('getUserAttributes');
   },
 
+  getGroups() {
+    return this.getSession().then((session) => {
+      let payload = session.getIdToken().getJwtToken().split('.')[1];
+      let obj = JSON.parse(atob(payload));
+      return obj['cognito:groups'] || [];
+    });
+  },
+
   signOut() {
     return get(this, 'user').signOut();
   },
