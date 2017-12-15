@@ -221,4 +221,4 @@ for an example of this type of test.
 
 ## Support
 
-ember-cognito is tested on Ember versions 2.8, 2.12 and 2.15+.
+ember-cognito is tested on Ember versions 2.12, 2.16 and 2.17+.
