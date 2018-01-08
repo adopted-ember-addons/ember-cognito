@@ -7,14 +7,15 @@ export default Route.extend({
   cognitoUser: readOnly('cognito.user'),
   session: service(),
 
-  async model() {
+  model() {
     if (this.get('session.isAuthenticated')) {
-      let cognitoAttrs = await this.get('cognitoUser').getUserAttributes();
-      let attributes = [];
-      cognitoAttrs.forEach((attr) => {
-        attributes.push({ name: attr.getName(), value: attr.getValue() });
+      return this.get('cognitoUser').getUserAttributes().then((cognitoAttrs) => {
+        let attributes = [];
+        cognitoAttrs.forEach((attr) => {
+          attributes.push({ name: attr.getName(), value: attr.getValue() });
+        });
+        return { attributes };
       });
-      return { attributes };
     }
   }
 });

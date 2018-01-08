@@ -23,4 +23,34 @@
       </tbody>
     </table>
   </div>
+  <div class="col-6">
+    <h2>Cognito Service</h2>
+    <dl>
+      <dt>Task Duration</dt>
+      <dd>{{cognito._taskDuration}}</dd>
+    </dl>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h2>ID Token</h2>
+    <dl>
+      <dt>Expiration</dt>
+      <dd>{{idToken.expiration}}</dd>
+    </dl>
+    <pre><code>{{idToken.formatted}}</code></pre>
+
+    <h2>Access Token</h2>
+    <dl>
+      <dt>Expiration</dt>
+      <dd>{{accessToken.expiration}}</dd>
+    </dl>
+    <pre><code>{{accessToken.formatted}}</code></pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h2>Authenticated Data</h2>
+    <pre><code>{{authenticatedData}}</code></pre>
+  </div>
 </div>
