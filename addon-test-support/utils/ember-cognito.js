@@ -5,6 +5,7 @@ import { resolve } from 'rsvp';
 const MockUser = EmberObject.extend({
   init() {
     this.userAttributes = this.userAttributes || [];
+    this.storageData = this.storageData || {};
   },
 
   changePassword(/* oldPassword, newPassword */) {

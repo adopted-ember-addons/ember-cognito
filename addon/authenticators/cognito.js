@@ -1,8 +1,8 @@
 import { readOnly } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import { merge } from '@ember/polyfills';
-import RSVP from 'rsvp';
-import { getProperties, set } from '@ember/object';
+import { resolve, reject, Promise } from 'rsvp';
+import { getProperties, get, set } from '@ember/object';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
 import {
   CognitoUser as AWSCognitoUser,
@@ -47,11 +47,11 @@ export default Base.extend({
           newData.access_token = session.getIdToken().getJwtToken();
           return newData;
         } else {
-          return RSVP.reject('session is invalid');
+          return reject('session is invalid');
         }
       });
     }
-    return RSVP.reject('no current user');
+    return reject('no current user');
   },
 
   _resolveAuth(resolve, result, { pool, user }) {
@@ -70,21 +70,37 @@ export default Base.extend({
   },
 
   authenticate({ username, password, state }) {
-    if (state && state.name === 'newPasswordRequired') {
-      return new RSVP.Promise((resolve, reject) => {
-        let that = this;
-        state.user.completeNewPasswordChallenge(password, state.userAttributes, {
-          onSuccess(result) {
-            that._resolveAuth(resolve, result, state);
-          },
-          onFailure(err) {
-            reject(err);
+    if (state) {
+      if (state.name === 'refresh') {
+        let user = get(this, 'cognito.user');
+        // Get the session, which will refresh it if necessary
+        return user.getSession().then((session) => {
+          if (session.isValid()) {
+            let newData = user.getStorageData();
+            newData.access_token = session.getIdToken().getJwtToken();
+            // newData.refreshed = new Date().toISOString();
+            return newData;
+          } else {
+            return reject('session is invalid');
           }
         });
-      }, 'cognito:newPasswordRequired');
-
+      } else if (state.name === 'newPasswordRequired') {
+        return new Promise((resolve, reject) => {
+          let that = this;
+          state.user.completeNewPasswordChallenge(password, state.userAttributes, {
+            onSuccess(result) {
+              that._resolveAuth(resolve, result, state);
+            },
+            onFailure(err) {
+              reject(err);
+            }
+          });
+        }, 'cognito:newPasswordRequired');
+      } else {
+        throw new Error('invalid state');
+      }
     } else {
-      return new RSVP.Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         let that = this;
 
         let { poolId, clientId } = getProperties(this, 'poolId', 'clientId');
@@ -128,6 +144,6 @@ export default Base.extend({
     let user = this._getCurrentUser(data);
     user.signOut();
     set(this, 'cognito.user', undefined);
-    return RSVP.resolve(data);
+    return resolve(data);
   }
 });

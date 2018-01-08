@@ -8,6 +8,7 @@ import {
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import { skip } from 'qunit';
+import { MockUser } from '../../utils/ember-cognito';
 
 moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
   needs: ['service:cognito'],
@@ -264,6 +265,31 @@ test('authenticateUser, newPasswordRequired failure', async function(assert) {
   } catch (err) {
     assert.equal(err.message, 'Invalid password.');
   }
+});
+
+test('authenticateUser, refresh state', async function(assert) {
+  let service = this.subject();
+  let session = newSession();
+  this.stub(session, 'isValid').returns(true);
+
+  set(service, 'cognito.user', MockUser.create({
+    session,
+    storageData: {
+      access_token: 'oldtoken',
+      clientId: 'TEST',
+      poolId: 'us-east-1_TEST',
+      'Cognito.StorageItem': 'test'
+    }
+  }));
+
+  let data = await service.authenticate({ state: { name: 'refresh' } });
+  assert.deepEqual(data,  {
+    access_token: 'xxxx',
+    clientId: 'TEST',
+    poolId: 'us-east-1_TEST',
+    'Cognito.StorageItem': 'test'
+  });
+  assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
 });
 
 test('invalidate', async function(assert) {
