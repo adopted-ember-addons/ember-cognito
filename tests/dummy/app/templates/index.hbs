@@ -3,4 +3,9 @@
     <h1>ember-cognito</h1>
     <h2>Amazon Cognito and ember-simple-auth integration</h2>
   </div>
+  {{#if session.isAuthenticated}}
+    {{index-auth model=model}}
+  {{else}}
+    {{index-unauth model=model}}
+  {{/if}}
 </div>

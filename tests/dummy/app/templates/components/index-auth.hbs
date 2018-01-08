@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-6">
+    <h2>Username</h2>
+    <div class="mb-4">
+      {{currentUser.username}}
+    </div>
+
+    <h2>User Attributes</h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Value</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each model.attributes as |attr|}}
+        <tr>
+          <td>{{attr.name}}</td>
+          <td>{{attr.value}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

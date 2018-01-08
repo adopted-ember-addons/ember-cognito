@@ -220,7 +220,7 @@ test('authenticated route', function(assert) {
 });
 ```
 
-See [the dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/acceptance/profile-test.js)
+See [the dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/acceptance/index-test.js)
 for an example of this type of test.
 
 ## Support
