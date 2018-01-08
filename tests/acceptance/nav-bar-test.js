@@ -15,7 +15,7 @@ test('logout', async function(assert) {
 
   assert.equal(currentURL(), '/');
   assert.ok(find('.login-link'));
-  assert.notOk(find('.profile-link'));
+  assert.notOk(find('.logout-link'));
 });
 
 test('login', async function(assert) {
@@ -27,6 +27,5 @@ test('login', async function(assert) {
 
   assert.equal(currentURL(), '/');
   assert.notOk(find('.login-link'));
-  assert.ok(find('.profile-link'));
-  assert.equal(find('.profile-link').textContent.trim(), 'testuser');
+  assert.ok(find('.logout-link'));
 });

@@ -25,7 +25,7 @@ test('login', async function(assert) {
   await visit('/login');
   await fillIn('#username', 'testuser');
   await fillIn('#password', 'password');
-  await click('[type=submit]');
+  await click('.login-form [type=submit]');
 
   let session = currentSession(this.application);
   assert.equal(get(session, 'isAuthenticated'), true);
