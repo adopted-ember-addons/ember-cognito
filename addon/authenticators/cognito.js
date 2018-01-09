@@ -41,6 +41,7 @@ export default Base.extend({
         if (session.isValid()) {
           /* eslint-disable camelcase */
           set(this, 'cognito.user', user);
+          get(this, 'cognito').startRefreshTask(session);
           // Resolve with the new data the user set, in case
           // the session needed to be refreshed.
           let newData = user.getStorageData();
@@ -66,6 +67,7 @@ export default Base.extend({
     }, pool.storage.getData());
 
     set(this, 'cognito.user', CognitoUser.create({ user }));
+    get(this, 'cognito').startRefreshTask(result);
     resolve(data);
   },
 
@@ -76,6 +78,7 @@ export default Base.extend({
         // Get the session, which will refresh it if necessary
         return user.getSession().then((session) => {
           if (session.isValid()) {
+            get(this, 'cognito').startRefreshTask(session);
             let newData = user.getStorageData();
             newData.access_token = session.getIdToken().getJwtToken();
             // newData.refreshed = new Date().toISOString();

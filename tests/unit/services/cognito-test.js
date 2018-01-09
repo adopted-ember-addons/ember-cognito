@@ -5,6 +5,10 @@ import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-i
 import CognitoUser from 'dummy/utils/cognito-user';
 
 moduleFor('service:cognito', 'Unit | Service | cognito', {
+  needs: [
+    'service:session'
+  ],
+
   beforeEach() {
     this.stubPoolMethod = function(service, method, fn) {
       this.stub(service, '_stubPool').callsFake((pool) => {
@@ -24,6 +28,7 @@ test('config is set correctly', function(assert) {
   let service = this.subject();
   assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
   assert.equal(get(service, 'clientId'), 'TEST');
+  assert.strictEqual(get(service, 'autoRefreshSession'), true);
 });
 
 sinonTest('signup works', async function(assert) {

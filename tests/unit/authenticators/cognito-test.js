@@ -11,7 +11,10 @@ import { skip } from 'qunit';
 import { MockUser } from '../../utils/ember-cognito';
 
 moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
-  needs: ['service:cognito'],
+  needs: [
+    'service:cognito',
+    'service:session'
+  ],
 
   beforeEach() {
     this.stubUserMethod = function(service, method, fn) {
@@ -28,21 +31,32 @@ moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
         return user;
       });
     };
+  },
+
+  afterEach() {
+    this.container.lookup('service:cognito').stopRefreshTask();
   }
 });
 
-function newSession({ idToken, refreshToken, accessToken } = { idToken: 'xxxx', refreshToken: 'yyyy', accessToken: 'yyyy' }) {
-  return new CognitoUserSession({
-    IdToken: new CognitoIdToken({ IdToken: idToken }),
-    RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken }),
-    AccessToken: new CognitoAccessToken({ AccessToken: accessToken })
-  });
+// Makes a JWT token from a payload
+function makeToken(duration = 1000, header = 'header') {
+  const now = Math.floor(new Date() / 1000);
+  // To get a non-zero clock drift.
+  const iat = now - 123;
+  const payload = {
+    iat,
+    exp: iat + duration
+  };
+  return `${header}.${btoa(JSON.stringify(payload))}`;
 }
 
-// Makes a JWT token from a payload
-function makeToken(payload) {
-  // The only thing the SDK ever reads is the payload, not the header.
-  return `header.${btoa(JSON.stringify(payload))}`;
+function newSession({ idToken, refreshToken, accessToken } = {}) {
+  const token = makeToken();
+  return new CognitoUserSession({
+    IdToken: new CognitoIdToken({ IdToken: idToken || token }),
+    RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken || token }),
+    AccessToken: new CognitoAccessToken({ AccessToken: accessToken || token })
+  });
 }
 
 test('config is set correctly', function(assert) {
@@ -53,6 +67,7 @@ test('config is set correctly', function(assert) {
 
 test('restore', async function(assert) {
   let service = this.subject();
+  set(service, 'cognito.autoRefreshSession', false);
 
   this.stubUserMethod(service, 'getSession', (callback) => {
     let session = newSession();
@@ -69,6 +84,7 @@ test('restore', async function(assert) {
   assert.deepEqual(resolvedData, data, 'The resolved data is correct.');
   assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
   assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
+  assert.notOk(get(service, 'task'), 'No task was scheduled.');
 });
 
 skip('restore, refresh session', async function(assert) {
@@ -165,9 +181,31 @@ test('restore session invalid', async function(assert) {
   }
 });
 
+test('restore, schedule expire task', async function(assert) {
+  let service = this.subject();
+  set(service, 'cognito.autoRefreshSession', true);
+
+  this.stubUserMethod(service, 'getSession', (callback) => {
+    let session = newSession();
+    this.stub(session, 'isValid').returns(true);
+    callback(null, session);
+  });
+
+  let data = {
+    poolId: 'us-east-1_TEST',
+    clientId: 'TEST',
+    'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
+  };
+  await service.restore(data);
+  assert.ok(get(service, 'cognito.task'), 'Refresh timer was scheduled.');
+  let taskDuration = get(service, 'cognito._taskDuration');
+  assert.ok(taskDuration > (1000 * 1000));
+});
+
 test('authenticateUser', async function(assert) {
   /* eslint-disable camelcase */
   let service = this.subject();
+  set(service, 'cognito.autoRefreshSession', false);
 
   this.stubUserMethod(service, 'authenticateUser', (authDetails, callbacks) => {
     // Set something in the pools's storage just so it makes its way into the data
@@ -176,14 +214,13 @@ test('authenticateUser', async function(assert) {
   });
 
   let data = await service.authenticate({ username: 'testuser', password: 'password' });
-  assert.deepEqual(data,  {
-    access_token: 'xxxx',
-    clientId: 'TEST',
-    poolId: 'us-east-1_TEST',
-    'Cognito.StorageItem': 'test'
-  });
+  assert.equal(data.poolId, 'us-east-1_TEST');
+  assert.equal(data.clientId, 'TEST');
+  assert.equal(data['Cognito.StorageItem'], 'test');
+  assert.ok(data.access_token.startsWith('header.'));
   assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
   assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
+  assert.notOk(get(service, 'cognito.task'), 'Refresh session task not set.');
 });
 
 test('authenticateUser, failure', async function(assert) {
@@ -226,12 +263,10 @@ test('authenticateUser, newPasswordRequired', async function(assert) {
 
   // Call authenticate again with the state and the new password.
   let data = await service.authenticate({ password: 'newPassword', state });
-  assert.deepEqual(data,  {
-    access_token: 'xxxx',
-    clientId: 'TEST',
-    poolId: 'us-east-1_TEST',
-    'Cognito.StorageItem': 'test'
-  });
+  assert.equal(data.poolId, 'us-east-1_TEST');
+  assert.equal(data.clientId, 'TEST');
+  assert.equal(data['Cognito.StorageItem'], 'test');
+  assert.ok(data.access_token.startsWith('header.'));
   assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
   assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
 });
@@ -267,8 +302,25 @@ test('authenticateUser, newPasswordRequired failure', async function(assert) {
   }
 });
 
+test('authenticateUser, schedule auto refresh', async function(assert) {
+  /* eslint-disable camelcase */
+  let service = this.subject();
+  set(service, 'cognito.autoRefreshSession', true);
+
+  this.stubUserMethod(service, 'authenticateUser', (authDetails, callbacks) => {
+    // Set something in the pools's storage just so it makes its way into the data
+    callbacks.onSuccess(newSession());
+  });
+
+  await service.authenticate({ username: 'testuser', password: 'password' });
+  assert.ok(get(service, 'cognito.task'), 'Refresh session task is set.');
+  let taskDuration = get(service, 'cognito._taskDuration');
+  assert.ok(taskDuration > (1000 * 1000));
+});
+
 test('authenticateUser, refresh state', async function(assert) {
   let service = this.subject();
+  set(service, 'cognito.autoRefreshSession', true);
   let session = newSession();
   this.stub(session, 'isValid').returns(true);
 
@@ -283,13 +335,14 @@ test('authenticateUser, refresh state', async function(assert) {
   }));
 
   let data = await service.authenticate({ state: { name: 'refresh' } });
-  assert.deepEqual(data,  {
-    access_token: 'xxxx',
-    clientId: 'TEST',
-    poolId: 'us-east-1_TEST',
-    'Cognito.StorageItem': 'test'
-  });
+  assert.equal(data.poolId, 'us-east-1_TEST');
+  assert.equal(data.clientId, 'TEST');
+  assert.equal(data['Cognito.StorageItem'], 'test');
+  assert.ok(data.access_token.startsWith('header.'));
   assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+  assert.ok(get(service, 'cognito.task'), 'Refresh session task is set.');
+  let taskDuration = get(service, 'cognito._taskDuration');
+  assert.ok(taskDuration > (1000 * 1000));
 });
 
 test('invalidate', async function(assert) {

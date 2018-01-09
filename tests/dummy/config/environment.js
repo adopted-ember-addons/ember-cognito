@@ -23,7 +23,8 @@ module.exports = function(environment) {
     },
     cognito: {
       poolId: 'us-east-1_TEST',
-      clientId: 'TEST'
+      clientId: 'TEST',
+      autoRefreshSession: true
     }
   };
 
