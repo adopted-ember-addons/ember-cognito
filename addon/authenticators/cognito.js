@@ -71,76 +71,89 @@ export default Base.extend({
     resolve(data);
   },
 
-  authenticate({ username, password, state }) {
+  _handleRefresh(/* params */) {
+    let user = get(this, 'cognito.user');
+    // Get the session, which will refresh it if necessary
+    return user.getSession().then((session) => {
+      if (session.isValid()) {
+        get(this, 'cognito').startRefreshTask(session);
+        let newData = user.getStorageData();
+        newData.access_token = session.getIdToken().getJwtToken();
+        // newData.refreshed = new Date().toISOString();
+        return newData;
+      } else {
+        return reject('session is invalid');
+      }
+    });
+  },
+
+  _handleNewPasswordRequired({ state, password }) {
+    return new Promise((resolve, reject) => {
+      let that = this;
+      state.user.completeNewPasswordChallenge(password, state.userAttributes, {
+        onSuccess(result) {
+          that._resolveAuth(resolve, result, state);
+        },
+        onFailure(err) {
+          reject(err);
+        }
+      });
+    }, 'cognito:newPasswordRequired');
+  },
+
+  _handleState(name, params) {
+    if (name === 'refresh') {
+      return this._handleRefresh(params);
+    } else if (name === 'newPasswordRequired') {
+      return this._handleNewPasswordRequired(params);
+    } else {
+      throw new Error('invalid state');
+    }
+  },
+
+  authenticate(params) {
+    let { username, password, state } = params;
     if (state) {
-      if (state.name === 'refresh') {
-        let user = get(this, 'cognito.user');
-        // Get the session, which will refresh it if necessary
-        return user.getSession().then((session) => {
-          if (session.isValid()) {
-            get(this, 'cognito').startRefreshTask(session);
-            let newData = user.getStorageData();
-            newData.access_token = session.getIdToken().getJwtToken();
-            // newData.refreshed = new Date().toISOString();
-            return newData;
-          } else {
-            return reject('session is invalid');
-          }
-        });
-      } else if (state.name === 'newPasswordRequired') {
-        return new Promise((resolve, reject) => {
-          let that = this;
-          state.user.completeNewPasswordChallenge(password, state.userAttributes, {
-            onSuccess(result) {
-              that._resolveAuth(resolve, result, state);
-            },
-            onFailure(err) {
-              reject(err);
+      return this._handleState(state.name, params);
+    }
+
+    return new Promise((resolve, reject) => {
+      let that = this;
+
+      let { poolId, clientId } = getProperties(this, 'poolId', 'clientId');
+      let pool = new CognitoUserPool({
+        UserPoolId: poolId,
+        ClientId: clientId,
+        Storage: new CognitoStorage({})
+      });
+      let user = this._stubUser(new AWSCognitoUser({ Username: username, Pool: pool, Storage: pool.storage }));
+      let authDetails = new AuthenticationDetails({ Username: username, Password: password });
+
+      user.authenticateUser(authDetails, {
+        onSuccess(result) {
+          that._resolveAuth(resolve, result, { pool, user });
+        },
+        onFailure(err) {
+          reject(err);
+        },
+        newPasswordRequired(userAttributes /* , requiredAttributes */) {
+          // ember-simple-auth doesn't allow a "half" state like this --
+          // the promise either resolves, or rejects.
+          // In this case, we have to reject, because we can't let
+          // ember-simple-auth think that the user is successfully
+          // authenticated.
+          delete userAttributes.email_verified;
+          reject({
+            state: {
+              name: 'newPasswordRequired',
+              user,
+              userAttributes,
+              pool
             }
           });
-        }, 'cognito:newPasswordRequired');
-      } else {
-        throw new Error('invalid state');
-      }
-    } else {
-      return new Promise((resolve, reject) => {
-        let that = this;
-
-        let { poolId, clientId } = getProperties(this, 'poolId', 'clientId');
-        let pool = new CognitoUserPool({
-          UserPoolId: poolId,
-          ClientId: clientId,
-          Storage: new CognitoStorage({})
-        });
-        let user = this._stubUser(new AWSCognitoUser({ Username: username, Pool: pool, Storage: pool.storage }));
-        let authDetails = new AuthenticationDetails({ Username: username, Password: password });
-
-        user.authenticateUser(authDetails, {
-          onSuccess(result) {
-            that._resolveAuth(resolve, result, { pool, user });
-          },
-          onFailure(err) {
-            reject(err);
-          },
-          newPasswordRequired(userAttributes /* , requiredAttributes */) {
-            // ember-simple-auth doesn't allow a "half" state like this --
-            // the promise either resolves, or rejects.
-            // In this case, we have to reject, because we can't let
-            // ember-simple-auth think that the user is successfully
-            // authenticated.
-            delete userAttributes.email_verified;
-            reject({
-              state: {
-                name: 'newPasswordRequired',
-                user,
-                userAttributes,
-                pool
-              }
-            });
-          }
-        });
-      }, 'cognito:authenticate');
-    }
+        }
+      });
+    }, 'cognito:authenticate');
   },
 
   invalidate(data) {
