@@ -1,5 +1,4 @@
 /* eslint-env node */
-/* eslint-disable object-shorthand */
 'use strict';
 
 module.exports = {
