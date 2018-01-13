@@ -1,24 +1,84 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import EmberObject, { get } from '@ember/object';
-import RSVP from 'rsvp';
+import EmberObject, { get, set } from '@ember/object';
+import { resolve } from 'rsvp';
 
 const MockUser = EmberObject.extend({
   init() {
     this.userAttributes = this.userAttributes || [];
   },
 
-  getGroups() {
-    return RSVP.resolve(get(this, 'groups'));
+  changePassword(/* oldPassword, newPassword */) {
+    return resolve({});
+  },
+
+  confirmRegistration(/* confirmationCode, forceAliasCreation */) {
+    return resolve({});
+  },
+
+  confirmPassword(/* verificationCode, newPassword */) {
+    return resolve({});
+  },
+
+  deleteAttributes(/* attributeList */) {
+    return resolve({});
+  },
+
+  forgotPassword() {
+    return resolve({});
+  },
+
+  getAttributeVerificationCode(/* attributeName */) {
+    return resolve({});
   },
 
   getSession() {
-    return RSVP.resolve(get(this, 'session'));
+    return resolve(get(this, 'session'));
   },
 
   getUserAttributes() {
-    return RSVP.resolve(get(this, 'userAttributes').map(({ name, value }) => {
+    return resolve(get(this, 'userAttributes').map(({ name, value }) => {
       return new CognitoUserAttribute({ Name: name, Value: value });
     }));
+  },
+
+  resendConfirmationCode() {
+    return resolve({});
+  },
+
+  signOut() {
+    return resolve({});
+  },
+
+  updateAttributes(attributeList) {
+    let attrs = get(this, 'userAttributes');
+    attributeList.forEach((updated) => {
+      let found = false;
+      attrs.forEach((existing) => {
+        if (existing.name === updated.getName()) {
+          existing.value = updated.getValue();
+          found = true;
+        }
+      });
+      if (!found) {
+        attrs.push({ name: updated.getName(), value: updated.getValue() });
+      }
+    });
+    set(this, 'userAttributes', attrs);
+    return resolve({});
+  },
+
+  verifyAttribute(/* attributeName, confirmationCode */) {
+    return resolve({});
+  },
+
+  // Non-AWS method
+  getGroups() {
+    return resolve(get(this, 'groups'));
+  },
+
+  // Non-AWS method
+  getStorageData() {
+    return get(this, 'storageData');
   }
 });
 
