@@ -50,7 +50,7 @@ test('config is set correctly', function(assert) {
   assert.equal(get(service, 'clientId'), 'TEST');
 });
 
-test('restore', function(assert) {
+test('restore', async function(assert) {
   let service = this.subject();
 
   this.stubUserMethod(service, 'getSession', (callback) => {
@@ -64,14 +64,13 @@ test('restore', function(assert) {
     clientId: 'TEST',
     'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
   };
-  return service.restore(data).then((resolvedData) => {
-    assert.deepEqual(resolvedData, data, 'The resolved data is correct.');
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
-  });
+  let resolvedData = await service.restore(data);
+  assert.deepEqual(resolvedData, data, 'The resolved data is correct.');
+  assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+  assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
 });
 
-skip('restore, refresh session', function(assert) {
+skip('restore, refresh session', async function(assert) {
   /* eslint-disable camelcase */
   //
   // This digs deeper into the Cognito SDK to test that we reset our own access_token property
@@ -120,30 +119,30 @@ skip('restore, refresh session', function(assert) {
     'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
   };
 
-  return service.restore(data).then((resolvedData) => {
-    assert.deepEqual(resolvedData, {
-      authenticator: 'authenticator:cognito',
-      access_token: newAccessToken,
-      poolId: 'us-east-1_TEST',
-      clientId: 'TEST',
-      'CognitoIdentityServiceProvider.TEST.testuser.idToken': newIdToken,
-      'CognitoIdentityServiceProvider.TEST.testuser.accessToken': newAccessToken,
-      'CognitoIdentityServiceProvider.TEST.testuser.refreshToken': refreshToken,
-      'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
-    });
+  let resolvedData = await service.restore(data);
+  assert.deepEqual(resolvedData, {
+    authenticator: 'authenticator:cognito',
+    access_token: newAccessToken,
+    poolId: 'us-east-1_TEST',
+    clientId: 'TEST',
+    'CognitoIdentityServiceProvider.TEST.testuser.idToken': newIdToken,
+    'CognitoIdentityServiceProvider.TEST.testuser.accessToken': newAccessToken,
+    'CognitoIdentityServiceProvider.TEST.testuser.refreshToken': refreshToken,
+    'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
   });
 });
 
-test('restore no current user', function(assert) {
+test('restore no current user', async function(assert) {
   let service = this.subject();
-  return service.restore({ poolId: 'us-east-1_TEST', clientId: 'TEST' }).then(() => {
+  try {
+    await service.restore({ poolId: 'us-east-1_TEST', clientId: 'TEST' });
     assert.ok(false, 'Should not resolve.');
-  }).catch((err) => {
+  } catch (err) {
     assert.deepEqual(err, 'no current user', 'Restore rejects');
-  });
+  }
 });
 
-test('restore session invalid', function(assert) {
+test('restore session invalid', async function(assert) {
   let service = this.subject();
 
   this.stubUserMethod(service, 'getSession', (callback) => {
@@ -157,14 +156,15 @@ test('restore session invalid', function(assert) {
     clientId: 'TEST',
     'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
   };
-  return service.restore(data).then(() => {
+  try {
+    await service.restore(data);
     assert.ok(false, 'Should not resolve.');
-  }).catch((err) => {
+  } catch (err) {
     assert.deepEqual(err, 'session is invalid', 'Restore rejects');
-  });
+  }
 });
 
-test('authenticateUser', function(assert) {
+test('authenticateUser', async function(assert) {
   /* eslint-disable camelcase */
   let service = this.subject();
 
@@ -174,33 +174,33 @@ test('authenticateUser', function(assert) {
     callbacks.onSuccess(newSession());
   });
 
-  return service.authenticate({ username: 'testuser', password: 'password' }).then((data) => {
-    assert.deepEqual(data,  {
-      access_token: 'xxxx',
-      clientId: 'TEST',
-      poolId: 'us-east-1_TEST',
-      'Cognito.StorageItem': 'test'
-    });
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
+  let data = await service.authenticate({ username: 'testuser', password: 'password' });
+  assert.deepEqual(data,  {
+    access_token: 'xxxx',
+    clientId: 'TEST',
+    poolId: 'us-east-1_TEST',
+    'Cognito.StorageItem': 'test'
   });
+  assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+  assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
 });
 
-test('authenticateUser, failure', function(assert) {
+test('authenticateUser, failure', async function(assert) {
   let service = this.subject();
 
   this.stubUserMethod(service, 'authenticateUser', (authDetails, callbacks) => {
     callbacks.onFailure({ message: 'Username or password incorrect.' });
   });
 
-  return service.authenticate({ username: 'testuser', password: 'password' }).then(() => {
+  try {
+    await service.authenticate({ username: 'testuser', password: 'password' });
     assert.ok(false, 'Should not resolve');
-  }).catch((err) => {
+  } catch (err) {
     assert.equal(err.message, 'Username or password incorrect.');
-  });
+  }
 });
 
-test('authenticateUser, newPasswordRequired', function(assert) {
+test('authenticateUser, newPasswordRequired', async function(assert) {
   let service = this.subject();
 
   this.stubUserMethods(service, (user) => {
@@ -213,27 +213,29 @@ test('authenticateUser, newPasswordRequired', function(assert) {
     });
   });
 
-  return service.authenticate({ username: 'testuser', password: 'password' }).then(() => {
+  let state;
+  try {
+    await service.authenticate({ username: 'testuser', password: 'password' });
     assert.ok(false, 'Should not resolve');
-  }).catch((err) => {
+  } catch (err) {
+    state = err.state;
     assert.equal(err.state.name, 'newPasswordRequired');
     assert.deepEqual(err.state.userAttributes, { sub: 'xxxx' });
+  }
 
-    // Call authenticate again with the state and the new password.
-    return service.authenticate({ password: 'newPassword', state: err.state });
-  }).then((data) => {
-    assert.deepEqual(data,  {
-      access_token: 'xxxx',
-      clientId: 'TEST',
-      poolId: 'us-east-1_TEST',
-      'Cognito.StorageItem': 'test'
-    });
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
+  // Call authenticate again with the state and the new password.
+  let data = await service.authenticate({ password: 'newPassword', state });
+  assert.deepEqual(data,  {
+    access_token: 'xxxx',
+    clientId: 'TEST',
+    poolId: 'us-east-1_TEST',
+    'Cognito.StorageItem': 'test'
   });
+  assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+  assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
 });
 
-test('authenticateUser, newPasswordRequired failure', function(assert) {
+test('authenticateUser, newPasswordRequired failure', async function(assert) {
   let service = this.subject();
 
   this.stubUserMethods(service, (user) => {
@@ -245,22 +247,26 @@ test('authenticateUser, newPasswordRequired failure', function(assert) {
     });
   });
 
-  return service.authenticate({ username: 'testuser', password: 'password' }).then(() => {
+  let state;
+  try {
+    await service.authenticate({ username: 'testuser', password: 'password' });
     assert.ok(false, 'Should not resolve');
-  }).catch((err) => {
+  } catch (err) {
+    state = err.state;
     assert.equal(err.state.name, 'newPasswordRequired');
     assert.deepEqual(err.state.userAttributes, { sub: 'xxxx' });
+  }
 
+  try {
     // Call authenticate again with the state and the new password.
-    return service.authenticate({ password: 'newPassword', state: err.state });
-  }).then(() => {
+    await service.authenticate({ password: 'newPassword', state });
     assert.ok(false, 'Should not resolve');
-  }).catch((err) => {
+  } catch (err) {
     assert.equal(err.message, 'Invalid password.');
-  });
+  }
 });
 
-test('invalidate', function(assert) {
+test('invalidate', async function(assert) {
   let data = {
     poolId: 'us-east-1_TEST',
     clientId: 'TEST',
@@ -272,9 +278,8 @@ test('invalidate', function(assert) {
   let service = this.subject();
   set(service, 'cognito.user', 'user');
 
-  return service.invalidate(data).then((resolvedData) => {
-    assert.deepEqual(data, resolvedData);
-    // Cognito user no longer exists on service
-    assert.equal(get(service, 'cognito.user'), undefined);
-  });
+  let resolvedData = await service.invalidate(data);
+  assert.deepEqual(data, resolvedData);
+  // Cognito user no longer exists on service
+  assert.equal(get(service, 'cognito.user'), undefined);
 });

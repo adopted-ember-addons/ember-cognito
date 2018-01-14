@@ -30,7 +30,7 @@ test('username', function(assert) {
   assert.equal(get(user, 'username'), 'testuser');
 });
 
-test('getSession', function(assert) {
+test('getSession', async function(assert) {
   let awsUser = getAwsUser();
   this.stub(awsUser, 'getSession').callsFake((callback) => {
     // This should return an instance of a CognitoUserSession.
@@ -40,26 +40,26 @@ test('getSession', function(assert) {
     }));
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getSession().then((session) => {
-    assert.equal(session.getIdToken().getJwtToken(), 'xxxx');
-  });
+  let session = await user.getSession();
+  assert.equal(session.getIdToken().getJwtToken(), 'xxxx');
 });
 
-test('getSession error', function(assert) {
+test('getSession error', async function(assert) {
   let awsUser = getAwsUser();
   this.stub(awsUser, 'getSession').callsFake((callback) => {
     callback('error', null);
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getSession().then(() => {
+  try {
+    await user.getSession();
     assert.ok(false);
-  }).catch((err) => {
+  } catch (err) {
     assert.equal(err, 'error');
-  });
+  }
 });
 
-test('changePassword', function(assert) {
-  assert.expect(3);
+test('changePassword', async function(assert) {
+  assert.expect(2);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'changePassword').callsFake((oldPass, newPass, callback) => {
@@ -68,13 +68,11 @@ test('changePassword', function(assert) {
     callback(null, 'SUCCESS');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.changePassword('oldpass', 'newpass').then(() => {
-    assert.ok(true);
-  });
+  await user.changePassword('oldpass', 'newpass');
 });
 
-test('confirmPassword', function(assert) {
-  assert.expect(3);
+test('confirmPassword', async function(assert) {
+  assert.expect(2);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'confirmPassword').callsFake((code, password, callback) => {
@@ -83,12 +81,10 @@ test('confirmPassword', function(assert) {
     callback.onSuccess();
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.confirmPassword('1234', 'newpass').then(() => {
-    assert.ok(true);
-  });
+  await user.confirmPassword('1234', 'newpass');
 });
 
-test('confirmRegistration', function(assert) {
+test('confirmRegistration', async function(assert) {
   assert.expect(3);
 
   let awsUser = getAwsUser();
@@ -98,13 +94,12 @@ test('confirmRegistration', function(assert) {
     callback(null, 'SUCCESS');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.confirmRegistration('1234', true).then((text) => {
-    assert.equal(text, 'SUCCESS');
-  });
+  let text = await user.confirmRegistration('1234', true);
+  assert.equal(text, 'SUCCESS');
 });
 
-test('deleteAttributes', function(assert) {
-  assert.expect(2);
+test('deleteAttributes', async function(assert) {
+  assert.expect(1);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'deleteAttributes').callsFake((attributeList, callback) => {
@@ -112,13 +107,11 @@ test('deleteAttributes', function(assert) {
     callback(null, 'SUCCESS');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.deleteAttributes(['first_name', 'last_name']).then(() => {
-    assert.ok(true);
-  });
+  await user.deleteAttributes(['first_name', 'last_name']);
 });
 
-test('forgotPassword', function(assert) {
-  assert.expect(3);
+test('forgotPassword', async function(assert) {
+  assert.expect(2);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'forgotPassword').callsFake((callback) => {
@@ -127,13 +120,11 @@ test('forgotPassword', function(assert) {
     callback.onSuccess();
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.forgotPassword().then(() => {
-    assert.ok(true);
-  });
+  await user.forgotPassword();
 });
 
-test('getAttributeVerificationCode', function(assert) {
-  assert.expect(4);
+test('getAttributeVerificationCode', async function(assert) {
+  assert.expect(3);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'getAttributeVerificationCode').callsFake((attrName, callback) => {
@@ -143,12 +134,10 @@ test('getAttributeVerificationCode', function(assert) {
     callback.onSuccess();
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getAttributeVerificationCode('email').then(() => {
-    assert.ok(true);
-  });
+  await user.getAttributeVerificationCode('email');
 });
 
-test('getAttributeVerificationCode error', function(assert) {
+test('getAttributeVerificationCode error', async function(assert) {
   assert.expect(4);
 
   let awsUser = getAwsUser();
@@ -159,12 +148,14 @@ test('getAttributeVerificationCode error', function(assert) {
     callback.onFailure('some error');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getAttributeVerificationCode('email').catch((err) => {
+  try {
+    await user.getAttributeVerificationCode('email');
+  } catch (err) {
     assert.equal(err, 'some error');
-  });
+  }
 });
 
-test('getUserAttributes', function(assert) {
+test('getUserAttributes', async function(assert) {
   let awsUser = getAwsUser();
   this.stub(awsUser, 'getUserAttributes').callsFake((callback) => {
     // This should return an instance of a CognitoUserSession.
@@ -174,37 +165,36 @@ test('getUserAttributes', function(assert) {
     ]);
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getUserAttributes().then((attrs) => {
-    assert.equal(attrs.length, 2);
-  });
+  let attrs = await user.getUserAttributes();
+  assert.equal(attrs.length, 2);
 });
 
-test('getUserAttributes error', function(assert) {
+test('getUserAttributes error', async function(assert) {
   let awsUser = getAwsUser();
   this.stub(awsUser, 'getUserAttributes').callsFake((callback) => {
     callback('error', null);
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getUserAttributes().then(() => {
+  try {
+    await user.getUserAttributes();
     assert.ok(false);
-  }).catch((err) => {
+  } catch (err) {
     assert.equal(err, 'error');
-  });
+  }
 });
 
-test('resendConformationCode', function(assert) {
+test('resendConformationCode', async function(assert) {
   let awsUser = getAwsUser();
   this.stub(awsUser, 'resendConfirmationCode').callsFake((callback) => {
     callback(null, 'SUCCESS');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.resendConfirmationCode().then((text) => {
-    assert.equal(text, 'SUCCESS');
-  });
+  let text = await user.resendConfirmationCode();
+  assert.equal(text, 'SUCCESS');
 });
 
-test('updateAttributes', function(assert) {
-  assert.expect(2);
+test('updateAttributes', async function(assert) {
+  assert.expect(1);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'updateAttributes').callsFake((attributeList, callback) => {
@@ -212,13 +202,11 @@ test('updateAttributes', function(assert) {
     callback(null, 'SUCCESS');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.updateAttributes([]).then(() => {
-    assert.ok(true);
-  });
+  await user.updateAttributes([]);
 });
 
-test('verifyAttribute', function(assert) {
-  assert.expect(3);
+test('verifyAttribute', async function(assert) {
+  assert.expect(2);
 
   let awsUser = getAwsUser();
   this.stub(awsUser, 'verifyAttribute').callsFake((attrName, code, callback) => {
@@ -227,12 +215,10 @@ test('verifyAttribute', function(assert) {
     callback(null, 'SUCCESS');
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.verifyAttribute('email', '1234').then(() => {
-    assert.ok(true);
-  });
+  await user.verifyAttribute('email', '1234');
 });
 
-test('getGroups', function(assert) {
+test('getGroups', async function(assert) {
   let awsUser = getAwsUser();
   let token = makeJwt({ "cognito:groups": ["Group 1","Group 2"] });
   this.stub(awsUser, 'getSession').callsFake((callback) => {
@@ -243,12 +229,11 @@ test('getGroups', function(assert) {
     }));
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getGroups().then((groups) => {
-    assert.deepEqual(groups, ['Group 1', 'Group 2']);
-  });
+  let groups = await user.getGroups();
+  assert.deepEqual(groups, ['Group 1', 'Group 2']);
 });
 
-test('getGroups no groups', function(assert) {
+test('getGroups no groups', async function(assert) {
   let awsUser = getAwsUser();
   let token = makeJwt({});
   this.stub(awsUser, 'getSession').callsFake((callback) => {
@@ -259,9 +244,8 @@ test('getGroups no groups', function(assert) {
     }));
   });
   let user = CognitoUser.create({ user: awsUser });
-  return user.getGroups().then((groups) => {
-    assert.deepEqual(groups, []);
-  });
+  let groups = await user.getGroups();
+  assert.deepEqual(groups, []);
 });
 
 test('signOut and getStorageData()', function(assert) {

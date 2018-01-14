@@ -1,9 +1,10 @@
 import { get } from '@ember/object';
-import RSVP from 'rsvp';
+import { resolve } from 'rsvp';
 import { currentSession } from '../../tests/helpers/ember-simple-auth';
 import { mockCognitoUser, getAuthenticator } from '../../tests/helpers/ember-cognito';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import test from 'ember-sinon-qunit/test-support/test';
+import { visit, fillIn, click, currentURL } from 'ember-native-dom-helpers';
 
 //
 // This is an example of testing authentication by stubbing the authenticator.
@@ -14,21 +15,19 @@ import test from 'ember-sinon-qunit/test-support/test';
 
 moduleForAcceptance('Acceptance | login');
 
-test('login', function(assert) {
+test('login', async function(assert) {
   let authenticator = getAuthenticator(this.application);
   this.stub(authenticator, 'authenticate').callsFake(({ username }) => {
     mockCognitoUser(this.application, { username });
-    return RSVP.resolve();
+    return resolve();
   });
 
-  visit('/login');
-  fillIn('#username', 'testuser');
-  fillIn('#password', 'password');
-  click('[type=submit]');
+  await visit('/login');
+  await fillIn('#username', 'testuser');
+  await fillIn('#password', 'password');
+  await click('[type=submit]');
 
-  andThen(() => {
-    let session = currentSession(this.application);
-    assert.equal(get(session, 'isAuthenticated'), true);
-    assert.equal(currentURL(), '/');
-  });
+  let session = currentSession(this.application);
+  assert.equal(get(session, 'isAuthenticated'), true);
+  assert.equal(currentURL(), '/');
 });

@@ -26,7 +26,7 @@ test('config is set correctly', function(assert) {
   assert.equal(get(service, 'clientId'), 'TEST');
 });
 
-sinonTest('signup works', function(assert) {
+sinonTest('signup works', async function(assert) {
   let service = this.subject();
   this.stubPoolMethod(service, 'signUp', (username, password, attributeList, validationData, callback) => {
     // Return data is:
@@ -40,15 +40,14 @@ sinonTest('signup works', function(assert) {
     });
   });
 
-  return service.signUp('testuser', 'password', [], null).then((result) => {
-    // The user should be upgraded to one of our users
-    assert.ok(result.user instanceof CognitoUser);
-    assert.equal(result.userConfirmed, true);
-    assert.equal(result.userSub, 'xxxx');
-  });
+  let result = await service.signUp('testuser', 'password', [], null);
+  // The user should be upgraded to one of our users
+  assert.ok(result.user instanceof CognitoUser);
+  assert.equal(result.userConfirmed, true);
+  assert.equal(result.userSub, 'xxxx');
 });
 
-sinonTest('signup error', function(assert) {
+sinonTest('signup error', async function(assert) {
   assert.expect(1);
 
   let service = this.subject();
@@ -60,9 +59,10 @@ sinonTest('signup error', function(assert) {
     callback('error', null);
   });
 
-  return service.signUp('testuser', 'password', [], null).then(() => {
+  try {
+    await service.signUp('testuser', 'password', [], null);
     assert.ok(false); // shouldn't get here.
-  }).catch((err) => {
+  } catch (err) {
     assert.equal(err, 'error');
-  });
+  }
 });
