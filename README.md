@@ -51,10 +51,11 @@ data in ember-simple-auth's session-store. This makes it easier to integrate Cog
 You will call the authenticator just as you would a normal authenticator:
 
 ```js
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 
-export default Ember.Controller.extend({
-  session: Ember.inject.service('session'),
+export default Controller.extend({
+  session: service('session'),
 
   actions: {
     authenticate() {
@@ -130,13 +131,16 @@ For instance, if you use a `current-user` service using the
 you can use the Cognito Service to fetch user attributes:
 
 ```js
-import Ember from 'ember';
+import Service from '@ember/service';
+import { inject as service } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
+import { resolve } from 'rsvp';
 
-export default Ember.Service.extend({
-  session: Ember.inject.service(),
-  cognito: Ember.inject.service(),
-  cognitoUser: Ember.computed.readOnly('cognito.user'),
-  username: Ember.computed.readOnly('cognitoUser.username'),
+export default Service.extend({
+  session: service(),
+  cognito: service(),
+  cognitoUser: readOnly('cognito.user'),
+  username: readOnly('cognitoUser.username'),
 
   load() {
     if (this.get('session.isAuthenticated')) {
@@ -146,7 +150,7 @@ export default Ember.Service.extend({
         });
       });
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   }
 });
