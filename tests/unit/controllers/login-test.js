@@ -1,8 +1,7 @@
-import RSVP from 'rsvp';
 import { setProperties, get } from '@ember/object';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
-import wait from 'ember-test-helpers/wait';
+import { settled } from '@ember/test-helpers';
 
 //
 // This is an example of writing a unit test that uses sinon
@@ -12,38 +11,26 @@ import wait from 'ember-test-helpers/wait';
 // get the current session from the app using ember-simple-auth's
 // currentSession() helper and use sinon to mock the service that way.
 //
-// NOTE: these tests use sinon.stub.callsFake() rather than sinon.stub.resolves/rejects
-// because PhantomJS doesn't support native promises. If you polyfill Promise
-// or don't care about PhantomJS, you can switch to using stub.resolves/rejects.
-//
 
 moduleFor('controller:login', 'Unit | Controller | login', {
   needs: ['service:session']
 });
 
-function resolves(value) {
-  return () => RSVP.resolve(value);
-}
-
-function rejects(value) {
-  return () => RSVP.reject(value);
-}
-
-test('login success', function(assert) {
+test('login success', async function(assert) {
   let controller = this.subject();
-  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(resolves({}));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').resolves({});
   setProperties(controller, { username: 'testuser', password: 'pw' });
   controller.send('login', new Event('click'));
   assert.deepEqual(stub.args, [[
     'authenticator:cognito',
     { username: 'testuser', password: 'pw' }
   ]]);
-  return wait();
+  await settled();
 });
 
-test('login fail', function(assert) {
+test('login fail', async function(assert) {
   let controller = this.subject();
-  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(rejects(new Error('invalid password')));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').rejects(new Error('invalid password'));
   setProperties(controller, { username: 'testuser', password: 'pw' });
   controller.send('login', new Event('click'));
 
@@ -51,15 +38,14 @@ test('login fail', function(assert) {
     'authenticator:cognito',
     { username: 'testuser', password: 'pw' }
   ]]);
-  return wait().then(() => {
-    assert.equal(get(controller, 'errorMessage'), 'invalid password');
-  });
+  await settled();
+  assert.equal(get(controller, 'errorMessage'), 'invalid password');
 });
 
-test('login newPasswordRequired', function(assert) {
+test('login newPasswordRequired', async function(assert) {
   let controller = this.subject();
   let err = { state: { name: 'newPasswordRequired' } };
-  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(rejects(err));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').rejects(err);
   setProperties(controller, { username: 'testuser', password: 'pw' });
   controller.send('login', new Event('click'));
 
@@ -67,15 +53,14 @@ test('login newPasswordRequired', function(assert) {
     'authenticator:cognito',
     { username: 'testuser', password: 'pw' }
   ]]);
-  return wait().then(() => {
-    assert.equal(get(controller, 'errorMessage'), '');
-    assert.equal(get(controller, 'state'), err.state);
-  });
+  await settled();
+  assert.equal(get(controller, 'errorMessage'), '');
+  assert.equal(get(controller, 'state'), err.state);
 });
 
-test('newPasswordRequired success', function(assert) {
+test('newPasswordRequired success', async function(assert) {
   let controller = this.subject();
-  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(resolves({}));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').resolves({});
   let state = { name: 'newPasswordRequired', arg: 'foo' };
   setProperties(controller, { newPassword: 'pw', state });
   controller.send('newPassword', new Event('click'));
@@ -83,12 +68,12 @@ test('newPasswordRequired success', function(assert) {
     'authenticator:cognito',
     { password: 'pw', state }
   ]]);
-  return wait();
+  await settled();
 });
 
-test('newPasswordRequired fail', function(assert) {
+test('newPasswordRequired fail', async function(assert) {
   let controller = this.subject();
-  let stub = this.stub(get(controller, 'session'), 'authenticate').callsFake(rejects(new Error('something went wrong')));
+  let stub = this.stub(get(controller, 'session'), 'authenticate').rejects(new Error('something went wrong'));
   let state = { name: 'newPasswordRequired', arg: 'foo' };
   setProperties(controller, { newPassword: 'pw', state });
   controller.send('newPassword', new Event('click'));
@@ -96,8 +81,7 @@ test('newPasswordRequired fail', function(assert) {
     'authenticator:cognito',
     { password: 'pw', state }
   ]]);
-  return wait().then(() => {
-    assert.equal(get(controller, 'errorMessage'), 'something went wrong');
-    assert.equal(get(controller, 'state'), state);
-  });
+  await settled();
+  assert.equal(get(controller, 'errorMessage'), 'something went wrong');
+  assert.equal(get(controller, 'state'), state);
 });

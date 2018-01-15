@@ -5,21 +5,20 @@ import { get } from '@ember/object';
 
 module('Unit | Utility | mock user');
 
-test('updateAttributes adds new', function(assert) {
+test('updateAttributes adds new', async function(assert) {
   let user = MockUser.create({});
   let newAttr = new CognitoUserAttribute({
     Name: 'family_name',
     Value: 'Coltrane'
   });
 
-  return user.updateAttributes([newAttr]).then(() => {
-    assert.deepEqual(get(user, 'userAttributes'), [
-      { name: 'family_name', value: 'Coltrane' }
-    ]);
-  });
+  await user.updateAttributes([newAttr]);
+  assert.deepEqual(get(user, 'userAttributes'), [
+    { name: 'family_name', value: 'Coltrane' }
+  ]);
 });
 
-test('updateAttributes updates existing', function(assert) {
+test('updateAttributes updates existing', async function(assert) {
   let user = MockUser.create({
     userAttributes: [
       { name: 'given_name', value: 'John' },
@@ -32,11 +31,10 @@ test('updateAttributes updates existing', function(assert) {
     Value: 'New Trane'
   });
 
-  return user.updateAttributes([newAttr]).then(() => {
-    assert.deepEqual(get(user, 'userAttributes'), [
-      { name: 'given_name', value: 'John' },
-      { name: 'family_name', value: 'New Trane' }
-    ]);
-  });
+  await user.updateAttributes([newAttr]);
+  assert.deepEqual(get(user, 'userAttributes'), [
+    { name: 'given_name', value: 'John' },
+    { name: 'family_name', value: 'New Trane' }
+  ]);
 });
 

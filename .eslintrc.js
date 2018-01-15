@@ -46,13 +46,25 @@ module.exports = {
         // add your custom rules and overrides for node files here
       })
     },
-
+    {
+      files: [
+        'addon/**/*.js',
+        'app/**/*.js'
+      ],
+      plugins: [
+        'disable-features',
+      ],
+      rules: {
+        'disable-features/disable-async-await': 'error',
+        'disable-features/disable-generator-functions': 'error',
+      }
+    },
     // test files
     {
       files: ['tests/**/*.js'],
       excludedFiles: ['tests/dummy/**/*.js'],
       env: {
-        embertest: true
+        // embertest: true
       }
     }
   ]

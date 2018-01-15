@@ -1,5 +1,5 @@
 import { readOnly } from '@ember/object/computed';
-import RSVP from 'rsvp';
+import { resolve } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 
 export default Service.extend({
@@ -16,7 +16,7 @@ export default Service.extend({
         });
       });
     } else {
-      return RSVP.resolve();
+      return resolve();
     }
   }
 });
