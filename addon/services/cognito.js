@@ -14,6 +14,15 @@ import { inject as service } from '@ember/service';
 export default Service.extend({
   session: service(),
 
+  willDestroy() {
+    this._super(...arguments);
+    let task = this.get('task');
+    if (task) {
+      cancel(task);
+    }
+  },
+
+
   // Primarily used so we can stub methods.
   _stubPool(pool) {
     return pool;
