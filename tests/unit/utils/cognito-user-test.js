@@ -212,7 +212,7 @@ test('verifyAttribute', async function(assert) {
   this.stub(awsUser, 'verifyAttribute').callsFake((attrName, code, callback) => {
     assert.equal(attrName, 'email');
     assert.equal(code, '1234');
-    callback(null, 'SUCCESS');
+    callback.onSuccess();
   });
   let user = CognitoUser.create({ user: awsUser });
   await user.verifyAttribute('email', '1234');
