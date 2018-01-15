@@ -82,9 +82,8 @@ export default EmberObject.extend({
   // Non-AWS method
   getGroups() {
     return this.getSession().then((session) => {
-      let payload = session.getIdToken().getJwtToken().split('.')[1];
-      let obj = JSON.parse(atob(payload));
-      return obj['cognito:groups'] || [];
+      let payload = session.getIdToken().payload || {};
+      return payload['cognito:groups'] || [];
     });
   },
 

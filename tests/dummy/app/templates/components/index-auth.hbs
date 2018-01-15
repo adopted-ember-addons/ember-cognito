@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-6">
+    <h2>Username</h2>
+    <div class="mb-4">
+      {{currentUser.username}}
+    </div>
+
+    <h2>User Attributes</h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Value</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each model.attributes as |attr|}}
+        <tr>
+          <td>{{attr.name}}</td>
+          <td>{{attr.value}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-6">
+    <h2>Cognito Service</h2>
+    <dl>
+      <dt>Task Duration</dt>
+      <dd>{{cognito._taskDuration}}</dd>
+    </dl>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h2>ID Token</h2>
+    <dl>
+      <dt>Expiration</dt>
+      <dd>{{idToken.expiration}}</dd>
+    </dl>
+    <pre><code>{{idToken.formatted}}</code></pre>
+
+    <h2>Access Token</h2>
+    <dl>
+      <dt>Expiration</dt>
+      <dd>{{accessToken.expiration}}</dd>
+    </dl>
+    <pre><code>{{accessToken.formatted}}</code></pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h2>Authenticated Data</h2>
+    <pre><code>{{authenticatedData}}</code></pre>
+  </div>
+</div>

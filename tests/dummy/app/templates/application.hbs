@@ -1,17 +1,24 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      {{#link-to 'index' class='navbar-brand'}}ember-cognito{{/link-to}}
-    </div>
+<nav class="navbar navbar-light bg-light">
+  {{#link-to 'index' class='navbar-brand'}}ember-cognito{{/link-to}}
 
-    <ul class="nav navbar-nav navbar-right">
-      {{#if session.isAuthenticated}}
-        <li>{{#link-to 'profile' class='profile-link'}}{{currentUser.username}}{{/link-to}}</li>
-        <li><a href="#" onclick={{action 'logout'}}>Logout</a></li>
-      {{else}}
-        <li>{{#link-to 'login' class='login-link'}}Login{{/link-to}}</li>
-      {{/if}}
-    </ul>
-  </div>
+  <form class="ml-auto form-inline" onsubmit={{action 'saveIds'}}>
+    <label for="pool_id" class="sr-only">Cognito Pool ID</label>
+    <input id="pool_id" class="form-control mr-sm-2" placeholder="Cognito Pool ID" aria-label="Cognito Pool ID"
+           value={{poolId}}
+           oninput={{action (mut poolId) value='target.value'}}>
+    <label for="client_id" class="sr-only">Cognito Client ID</label>
+    <input id="client_id" class="form-control mr-sm-2" placeholder="Cognito Client ID" aria-label="Cognito Client ID"
+           value={{clientId}}
+           oninput={{action (mut clientId) value='target.value'}}>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Save</button>
+  </form>
+  <ul class="navbar-nav navbar-right ml-4">
+    {{#if session.isAuthenticated}}
+      {{!-- <li>{{#link-to 'profile' class='profile-link'}}{{currentUser.username}}{{/link-to}}</li> --}}
+      <li><a href="#" class="logout-link" onclick={{action 'logout'}}>Logout</a></li>
+    {{else}}
+      <li>{{#link-to 'login' class='login-link'}}Login{{/link-to}}</li>
+    {{/if}}
+  </ul>
 </nav>
 {{outlet}}

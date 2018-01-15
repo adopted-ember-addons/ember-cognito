@@ -22,7 +22,7 @@ test('updateAttributes updates existing', async function(assert) {
   let user = MockUser.create({
     userAttributes: [
       { name: 'given_name', value: 'John' },
-      { name: 'family_name', value: 'Coltrane '}
+      { name: 'family_name', value: 'Coltrane' }
     ]
   });
 

@@ -2,20 +2,20 @@ import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 import { authenticateSession } from '../../tests/helpers/ember-simple-auth';
 import { mockCognitoUser } from '../../tests/helpers/ember-cognito';
-import { visit, currentURL, findAll } from 'ember-native-dom-helpers';
+import { visit, currentURL, find, findAll } from 'ember-native-dom-helpers';
 
-moduleForAcceptance('Acceptance | profile');
+moduleForAcceptance('Acceptance | index');
 
-test('visiting /profile unauthenticated', async function(assert) {
-  await visit('/profile');
-
-  assert.equal(currentURL(), '/login');
+test('visiting / unauthenticated', async function(assert) {
+  await visit('/');
+  assert.equal(currentURL(), '/');
+  assert.ok(find('.index-unauth'));
 });
 
 //
 // This is an example of how to mock user attributes in an acceptance test.
 //
-test('visiting /profile', async function(assert) {
+test('visiting /', async function(assert) {
   authenticateSession(this.application);
   mockCognitoUser(this.application, {
     username: 'testuser',
@@ -26,9 +26,9 @@ test('visiting /profile', async function(assert) {
     ]
   });
 
-  await visit('/profile');
+  await visit('/');
 
-  assert.equal(currentURL(), '/profile');
+  assert.equal(currentURL(), '/');
   // Map each element to get the text from it
   let text = findAll('tbody td').map(function(elem) {
     return elem.textContent.trim();
@@ -36,7 +36,6 @@ test('visiting /profile', async function(assert) {
 
   assert.deepEqual(text, [
     'sub', 'aaaabbbb-cccc-dddd-eeee-ffffgggghhhh',
-    'username', 'testuser',
     'email', 'testuser@gmail.com',
     'email_verified', 'false'
   ]);
