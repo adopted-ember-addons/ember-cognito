@@ -76,7 +76,7 @@ export default EmberObject.extend({
   },
 
   verifyAttribute(attributeName, confirmationCode) {
-    return this._callback('verifyAttribute', attributeName, confirmationCode);
+    return this._callbackObj('verifyAttribute', attributeName, confirmationCode);
   },
 
   // Non-AWS method
