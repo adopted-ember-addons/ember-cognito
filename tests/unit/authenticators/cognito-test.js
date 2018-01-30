@@ -1,14 +1,9 @@
 import { set, get } from '@ember/object';
-import {
-  CognitoAccessToken,
-  CognitoIdToken,
-  CognitoRefreshToken,
-  CognitoUserSession
-} from 'amazon-cognito-identity-js';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import { skip } from 'qunit';
 import { MockUser } from '../../utils/ember-cognito';
+import { makeToken, newSession } from '../../utils/session';
 
 moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
   needs: [
@@ -37,27 +32,6 @@ moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
     this.container.lookup('service:cognito').stopRefreshTask();
   }
 });
-
-// Makes a JWT token from a payload
-function makeToken(duration = 1000, header = 'header') {
-  const now = Math.floor(new Date() / 1000);
-  // To get a non-zero clock drift.
-  const iat = now - 123;
-  const payload = {
-    iat,
-    exp: iat + duration
-  };
-  return `${header}.${btoa(JSON.stringify(payload))}`;
-}
-
-function newSession({ idToken, refreshToken, accessToken } = {}) {
-  const token = makeToken();
-  return new CognitoUserSession({
-    IdToken: new CognitoIdToken({ IdToken: idToken || token }),
-    RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken || token }),
-    AccessToken: new CognitoAccessToken({ AccessToken: accessToken || token })
-  });
-}
 
 test('config is set correctly', function(assert) {
   let service = this.subject();

@@ -3,6 +3,8 @@ import { moduleFor, test } from 'ember-qunit';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
 import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import CognitoUser from 'dummy/utils/cognito-user';
+import { newSession } from '../../utils/session';
+import { run, cancel } from '@ember/runloop';
 
 moduleFor('service:cognito', 'Unit | Service | cognito', {
   needs: [
@@ -70,4 +72,39 @@ sinonTest('signup error', async function(assert) {
   } catch (err) {
     assert.equal(err, 'error');
   }
+});
+
+sinonTest('refreshSession', async function(assert) {
+  // Not much to test here, other than included coverage?
+  let subject = this.subject({
+    user: CognitoUser.create()
+  });
+  let auth = this.stub(get(subject, 'session'), 'authenticate').resolves();
+  subject.refreshSession();
+  assert.ok(auth.called);
+});
+
+sinonTest('refreshSession unauthenticated', async function(assert) {
+  // Not much to test here, other than included coverage?
+  let subject = this.subject();
+  let auth = this.stub(get(subject, 'session'), 'authenticate').resolves();
+  await subject.refreshSession();
+  assert.notOk(auth.called);
+});
+
+test('destroy timer', function(assert) {
+  let subject = this.subject({
+    autoRefreshSession: true
+  });
+  subject.startRefreshTask(newSession());
+  assert.ok(get(subject, 'task'));
+
+  run(() => {
+    subject.destroy();
+  });
+  // If we try to cancel the task, it should return false
+  assert.notOk(cancel(get(subject, 'task')));
+
+  // calling refreshSession should do nothing
+  subject.refreshSession();
 });
