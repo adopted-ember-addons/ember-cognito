@@ -2588,7 +2588,7 @@ ember-cli-broccoli-sane-watcher@^2.0.4:
     rsvp "^3.0.18"
     sane "^1.1.1"
 
-ember-cli-code-coverage@1.0.0-beta.0:
+ember-cli-code-coverage@^1.0.0-beta.0:
   version "1.0.0-beta.0"
   resolved "https://registry.yarnpkg.com/ember-cli-code-coverage/-/ember-cli-code-coverage-1.0.0-beta.0.tgz#c3825249e1cd60bbb071e6cd4c03c9ac6fd68728"
   dependencies:
@@ -2796,7 +2796,7 @@ ember-cli-uglify@^2.0.0:
     broccoli-uglify-sourcemap "^2.0.0"
     lodash.defaultsdeep "^4.6.0"
 
-ember-cli-update@0.14.0:
+ember-cli-update@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.14.0.tgz#70911fada9dd7bf4e00278ef48280dbf11d01ae8"
   dependencies:
