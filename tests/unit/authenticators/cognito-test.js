@@ -26,10 +26,6 @@ moduleFor('authenticator:cognito', 'Unit | Authenticator | cognito', {
         return user;
       });
     };
-  },
-
-  afterEach() {
-    this.container.lookup('service:cognito').stopRefreshTask();
   }
 });
 

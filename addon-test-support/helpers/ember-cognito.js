@@ -16,13 +16,6 @@ export function unmockCognitoUser(app) {
   return wait();
 }
 
-export function stopRefreshTask(app) {
-  const { __container__: container } = app;
-  const cognito = container.lookup('service:cognito');
-  cognito.stopRefreshTask();
-  return wait();
-}
-
 export function getAuthenticator(app) {
   return app.__container__.lookup('authenticator:cognito');
 }

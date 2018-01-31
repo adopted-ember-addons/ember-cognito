@@ -16,10 +16,7 @@ export default Service.extend({
 
   willDestroy() {
     this._super(...arguments);
-    let task = this.get('task');
-    if (task) {
-      cancel(task);
-    }
+    this.stopRefreshTask();
   },
 
 
@@ -82,9 +79,6 @@ export default Service.extend({
   },
 
   refreshSession() {
-    if (this.isDestroyed) {
-      return;
-    }
     let user = this.get('user');
     if (user) {
       return this.get('session').authenticate('authenticator:cognito', { state: { name: 'refresh' } });

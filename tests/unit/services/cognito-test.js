@@ -4,7 +4,7 @@ import sinonTest from 'ember-sinon-qunit/test-support/test';
 import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import CognitoUser from 'dummy/utils/cognito-user';
 import { newSession } from '../../utils/session';
-import { run, cancel } from '@ember/runloop';
+import { run } from '@ember/runloop';
 
 moduleFor('service:cognito', 'Unit | Service | cognito', {
   needs: [
@@ -102,9 +102,5 @@ test('destroy timer', function(assert) {
   run(() => {
     subject.destroy();
   });
-  // If we try to cancel the task, it should return false
-  assert.notOk(cancel(get(subject, 'task')));
-
-  // calling refreshSession should do nothing
-  subject.refreshSession();
+  assert.notOk(get(subject, 'task'));
 });
