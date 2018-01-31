@@ -40,6 +40,14 @@ var ENV = {
 
 Note that the Cognito JavaScript SDK requires that your App be created *without* a Client Secret.
 
+## Optional Configuration
+
+You can specify these optional configuration options to the above configuration hash:
+
+* `autoRefreshToken`. Cognito access tokens are only valid for an hour. By default, this addon will
+refresh expired tokens on application startup. Setting `autoRefreshToken` to `true` will enable a timer
+that will automatically refresh the access token when it expires.
+
 ## Usage
 
 ### Cognito Authenticator
