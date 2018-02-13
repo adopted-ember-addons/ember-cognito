@@ -231,6 +231,29 @@ test('authenticated route', function(assert) {
 See [the dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/acceptance/index-test.js)
 for an example of this type of test.
 
+If your app is using `ember-cli-qunit` 4.2.0 or greater, consider migrating to the [modern testing syntax](https://dockyard.com/blog/2018/01/11/modern-ember-testing).
+In this case, helpers can be imported from the `ember-cognito` namespace, and can be used
+in any time of test (unit, integration, acceptance).
+
+
+```js
+import { authenticateSession } from 'ember-simple-auth/test-support';
+import { mockCognitoUser } from 'ember-cognito/test-support';
+
+module('Acceptance | authenticated route', function(hooks) {
+  test('authenticated route', async function(assert) {
+    await authenticateSession();
+    await mockCognitoUser({
+      username: 'testuser'
+      // userAttributes...
+    });
+    // No helper necessary to get the authenticator!
+    let authenticator = this.owner.lookup('authenticator:cognito');
+    
+  });
+});
+```
+
 ## Support
 
 ember-cognito is tested on Ember versions 2.12, 2.16 and 2.17+.
