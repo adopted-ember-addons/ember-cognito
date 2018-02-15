@@ -233,7 +233,7 @@ for an example of this type of test.
 
 If your app is using `ember-cli-qunit` 4.2.0 or greater, consider migrating to the [modern testing syntax](https://dockyard.com/blog/2018/01/11/modern-ember-testing).
 In this case, helpers can be imported from the `ember-cognito` namespace, and can be used
-in any time of test (unit, integration, acceptance).
+in any type of test (unit, integration, acceptance).
 
 
 ```js
