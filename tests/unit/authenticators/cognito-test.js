@@ -294,8 +294,6 @@ module('Unit | Authenticator | cognito', function(hooks) {
       session,
       storageData: {
         access_token: 'oldtoken',
-        clientId: 'TEST',
-        poolId: 'us-east-1_TEST',
         'Cognito.StorageItem': 'test'
       }
     }));
