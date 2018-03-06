@@ -1,33 +1,32 @@
+import { setupApplicationTest } from 'ember-qunit';
+import { module } from 'qunit';
+import sinonTest from 'ember-sinon-qunit/test-support/test';
 import { get } from '@ember/object';
+import { visit, fillIn, click, currentURL } from '@ember/test-helpers';
+import { currentSession } from 'ember-simple-auth/test-support';
+import { mockCognitoUser } from 'ember-cognito/test-support';
 import { resolve } from 'rsvp';
-import { currentSession } from '../../tests/helpers/ember-simple-auth';
-import { mockCognitoUser, getAuthenticator } from '../../tests/helpers/ember-cognito';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import test from 'ember-sinon-qunit/test-support/test';
-import { visit, fillIn, click, currentURL } from 'ember-native-dom-helpers';
 
 //
 // This is an example of testing authentication by stubbing the authenticator.
-// Because you may want to test more functionality within an acceptance test
-// (for instance, loading the current user and navigation on success),
-// you can't stub session.authenticate directly.
 //
 
-moduleForAcceptance('Acceptance | login');
+module('Acceptance | login', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('login', async function(assert) {
-  let authenticator = getAuthenticator(this.application);
-  this.stub(authenticator, 'authenticate').callsFake(({ username }) => {
-    mockCognitoUser(this.application, { username });
-    return resolve();
+  sinonTest('login', async function(assert) {
+    await mockCognitoUser();
+    let authenticator = this.owner.lookup('authenticator:cognito');
+    this.stub(authenticator, 'authenticate').callsFake(() => resolve());  // works with 2.12
+    // this.stub(authenticator, 'authenticate').resolves();  // OK for 2.16+
+
+    await visit('/login');
+    await fillIn('#username', 'testuser');
+    await fillIn('#password', 'password');
+    await click('.login-form [type=submit]');
+
+    let session = await currentSession();
+    assert.equal(get(session, 'isAuthenticated'), true);
+    assert.equal(currentURL(), '/');
   });
-
-  await visit('/login');
-  await fillIn('#username', 'testuser');
-  await fillIn('#password', 'password');
-  await click('.login-form [type=submit]');
-
-  let session = currentSession(this.application);
-  assert.equal(get(session, 'isAuthenticated'), true);
-  assert.equal(currentURL(), '/');
 });
