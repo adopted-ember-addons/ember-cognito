@@ -80,6 +80,8 @@ export default Base.extend({
         let newData = user.getStorageData();
         newData.access_token = session.getIdToken().getJwtToken();
         // newData.refreshed = new Date().toISOString();
+        newData.poolId = this.get('poolId');
+        newData.clientId = this.get('clientId');
         return newData;
       } else {
         return reject('session is invalid');
