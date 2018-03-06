@@ -1,31 +1,33 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-import { authenticateSession } from '../../tests/helpers/ember-simple-auth';
-import { mockCognitoUser } from '../../tests/helpers/ember-cognito';
-import { visit, currentURL, find } from 'ember-native-dom-helpers';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import { visit, currentURL, find } from '@ember/test-helpers';
+import { authenticateSession } from 'ember-simple-auth/test-support';
+import { mockCognitoUser } from 'ember-cognito/test-support';
 
 //
 // This is an example of how one could use the Cognito authenticator and service in an acceptance test.
 //
 
-moduleForAcceptance('Acceptance | nav bar');
+module('Acceptance | nav bar', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('logout', async function(assert) {
-  await visit('/');
+  test('logout', async function(assert) {
+    await visit('/');
 
-  assert.equal(currentURL(), '/');
-  assert.ok(find('.login-link'));
-  assert.notOk(find('.logout-link'));
-});
-
-test('login', async function(assert) {
-  authenticateSession(this.application);
-  mockCognitoUser(this.application, {
-    username: 'testuser'
+    assert.equal(currentURL(), '/');
+    assert.ok(find('.login-link'));
+    assert.notOk(find('.logout-link'));
   });
-  await visit('/');
 
-  assert.equal(currentURL(), '/');
-  assert.notOk(find('.login-link'));
-  assert.ok(find('.logout-link'));
+  test('login', async function(assert) {
+    await authenticateSession();
+    await mockCognitoUser({
+      username: 'testuser'
+    });
+    await visit('/');
+
+    assert.equal(currentURL(), '/');
+    assert.notOk(find('.login-link'));
+    assert.ok(find('.logout-link'));
+  });
 });
