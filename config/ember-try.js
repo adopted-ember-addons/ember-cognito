@@ -12,6 +12,14 @@ module.exports = function() {
       useYarn: true,
       scenarios: [
         {
+          name: 'amazon-cognito-identity-js-1.x',
+          npm: {
+            dependencies: {
+              'amazon-cognito-identity-js': '^1.31.0'
+            }
+          }
+        },
+        {
           name: 'ember-lts-2.12',
           npm: {
             devDependencies: {

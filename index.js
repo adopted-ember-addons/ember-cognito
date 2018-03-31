@@ -1,5 +1,6 @@
 /* eslint-env node */
 'use strict';
+const VersionChecker = require('ember-cli-version-checker');
 
 module.exports = {
   name: 'ember-cognito',
@@ -21,7 +22,11 @@ module.exports = {
   },
   included: function(app) {
     this._super.included.apply(this, arguments);
-    app.import('vendor/amazon-cognito-identity-js/aws-cognito-sdk.js');
+    let checker = new VersionChecker(this);
+    let cognito = checker.for('amazon-cognito-identity-js');
+    if (cognito.lt('2.0.2')) {
+      app.import('vendor/amazon-cognito-identity-js/aws-cognito-sdk.js');
+    }
     app.import('vendor/amazon-cognito-identity-js/amazon-cognito-identity.min.js');
     app.import('vendor/shims/amazon-cognito-identity-js.js');
   }
