@@ -160,7 +160,9 @@ export default Base.extend({
 
   invalidate(data) {
     let user = this._getCurrentUser(data);
-    user.signOut();
+    if (user) {
+      user.signOut();
+    }
     set(this, 'cognito.user', undefined);
     return resolve(data);
   }
