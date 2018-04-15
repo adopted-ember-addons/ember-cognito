@@ -92,6 +92,10 @@ export default Base.extend({
   _handleNewPasswordRequired({ state, password }) {
     return new Promise((resolve, reject) => {
       let that = this;
+      let userAttrs = state.userAttributes;
+      // the api doesn't accept these fields back
+      delete userAttrs.phone_number_verified;
+      delete userAttrs.email_verified;
       state.user.completeNewPasswordChallenge(password, state.userAttributes, {
         onSuccess(result) {
           that._resolveAuth(resolve, result, state);
