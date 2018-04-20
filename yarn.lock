@@ -2518,9 +2518,9 @@ ember-cli-uglify@^2.0.0:
     broccoli-uglify-sourcemap "^2.1.1"
     lodash.defaultsdeep "^4.6.0"
 
-ember-cli-update@^0.20.1:
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.20.1.tgz#886ec0ebf72bdc1cd0e2b0613b35aacd6eda2754"
+ember-cli-update@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-update/-/ember-cli-update-0.21.0.tgz#e2bc4dbd2a7039a7acc49b678c8fbc7a0239de1e"
   dependencies:
     debug "^3.0.0"
     execa "^0.10.0"
