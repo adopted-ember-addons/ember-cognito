@@ -48,6 +48,11 @@ You can specify these optional configuration options to the above configuration 
 refresh expired sessions on application startup. Setting `autoRefreshSession` to `true` will enable a timer
 that will automatically refresh the Cognito session when it expires.
 
+* `authenticationFlowType`. The authentication flow type that should be used. 
+Default value: `USER_SRP_AUTH`
+Allowed values: `USER_SRP_AUTH | USER_PASSWORD_AUTH`
+More details - [Auth Flow](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_InitiateAuth.html?shortFooter=true#API_InitiateAuth_RequestSyntax)
+
 ## Usage
 
 ### Cognito Authenticator

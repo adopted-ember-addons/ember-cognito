@@ -29,6 +29,7 @@ module('Unit | Authenticator | cognito', function(hooks) {
     let service = this.owner.lookup('authenticator:cognito');
     assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
     assert.equal(get(service, 'clientId'), 'TEST');
+    assert.equal(get(service, 'authenticationFlowType'), 'USER_SRP_AUTH');
   });
 
   sinonTest('restore', async function(assert) {
@@ -187,6 +188,7 @@ module('Unit | Authenticator | cognito', function(hooks) {
     assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
     assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
     assert.notOk(get(service, 'cognito.task'), 'Refresh session task not set.');
+    assert.equal(get(service, 'cognito.authenticationFlowType'), 'USER_SRP_AUTH', 'Authentication Flow Type is set correctly.');
   });
 
   sinonTest('authenticateUser, failure', async function(assert) {
@@ -325,5 +327,23 @@ module('Unit | Authenticator | cognito', function(hooks) {
     assert.deepEqual(data, resolvedData);
     // Cognito user no longer exists on service
     assert.equal(get(service, 'cognito.user'), undefined);
+  });
+
+  sinonTest('authenticateUser, authentication flow type', async function(assert) {
+    let service = this.owner.lookup('authenticator:cognito');
+    set(service, 'cognito.authenticationFlowType', 'USER_PASSWORD_AUTH');
+
+    this.stubUserMethod(service, 'authenticateUser', (authDetails, callbacks) => {
+      callbacks.onSuccess(newSession());
+    });
+
+    let data = await service.authenticate({ username: 'testuser', password: 'password' });
+
+    assert.equal(data.poolId, 'us-east-1_TEST');
+    assert.equal(data.clientId, 'TEST');
+    assert.ok(data.access_token.startsWith('header.'));
+    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
+    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
+    assert.equal(get(service, 'cognito.authenticationFlowType'), 'USER_PASSWORD_AUTH', 'Authentication Flow Type is set correctly.');
   });
 });

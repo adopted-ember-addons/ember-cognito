@@ -29,6 +29,7 @@ module('Unit | Service | cognito', function(hooks) {
     assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
     assert.equal(get(service, 'clientId'), 'TEST');
     assert.strictEqual(get(service, 'autoRefreshSession'), true);
+    assert.equal(get(service, 'authenticationFlowType'), 'USER_SRP_AUTH');
   });
 
   sinonTest('signup works', async function(assert) {

@@ -16,6 +16,7 @@ export default Base.extend({
   cognito: service(),
   poolId: readOnly('cognito.poolId'),
   clientId: readOnly('cognito.clientId'),
+  authenticationFlowType: readOnly('cognito.authenticationFlowType'),
 
   _stubUser(user) {
     return user;
@@ -126,7 +127,7 @@ export default Base.extend({
     return new Promise((resolve, reject) => {
       let that = this;
 
-      let { poolId, clientId } = getProperties(this, 'poolId', 'clientId');
+      let { poolId, clientId, authenticationFlowType } = getProperties(this, 'poolId', 'clientId', 'authenticationFlowType');
       let pool = new CognitoUserPool({
         UserPoolId: poolId,
         ClientId: clientId,
@@ -134,6 +135,10 @@ export default Base.extend({
       });
       let user = this._stubUser(new AWSCognitoUser({ Username: username, Pool: pool, Storage: pool.storage }));
       let authDetails = new AuthenticationDetails({ Username: username, Password: password });
+
+      if (authenticationFlowType) { 
+        user.setAuthenticationFlowType(authenticationFlowType);
+      }
 
       user.authenticateUser(authDetails, {
         onSuccess(result) {
