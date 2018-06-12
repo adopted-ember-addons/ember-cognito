@@ -56,6 +56,19 @@ module('Unit | Utility | cognito user', function() {
       assert.equal(err, 'error');
     }
   });
+  sinonTest('getSession exception', async function(assert) {
+    let awsUser = getAwsUser();
+    this.stub(awsUser, 'getSession').callsFake(() => {
+      throw('error');
+    });
+    let user = CognitoUser.create({ user: awsUser });
+    try {
+      await user.getSession();
+      assert.ok(false);
+    } catch (err) {
+      assert.equal(err, 'error');
+    }
+  });
 
   sinonTest('changePassword', async function(assert) {
     assert.expect(2);
@@ -120,6 +133,21 @@ module('Unit | Utility | cognito user', function() {
     });
     let user = CognitoUser.create({ user: awsUser });
     await user.forgotPassword();
+  });
+  sinonTest('forgotPassword exception', async function(assert) {
+    assert.expect(1);
+
+    let awsUser = getAwsUser();
+    this.stub(awsUser, 'forgotPassword').callsFake(() => {
+      throw('some error');
+    });
+    let user = CognitoUser.create({ user: awsUser });
+
+    try {
+      await user.forgotPassword();
+    } catch (err) {
+      assert.equal(err, 'some error');
+    }
   });
 
   sinonTest('getAttributeVerificationCode', async function(assert) {
