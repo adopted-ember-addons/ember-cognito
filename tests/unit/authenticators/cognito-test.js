@@ -4,6 +4,7 @@ import sinonTest from 'ember-sinon-qunit/test-support/test';
 import { module, skip } from 'qunit';
 import { MockUser } from '../../utils/ember-cognito';
 import { makeToken, newSession } from '../../utils/session';
+import config from '../../../config/environment';
 
 module('Unit | Authenticator | cognito', function(hooks) {
   setupTest(hooks);
@@ -29,7 +30,7 @@ module('Unit | Authenticator | cognito', function(hooks) {
     let service = this.owner.lookup('authenticator:cognito');
     assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
     assert.equal(get(service, 'clientId'), 'TEST');
-    assert.equal(get(service, 'authenticationFlowType'), 'USER_SRP_AUTH');
+    assert.equal(get(service, 'authenticationFlowType'), config.cognito.authenticationFlowType);
   });
 
   sinonTest('restore', async function(assert) {
@@ -188,7 +189,7 @@ module('Unit | Authenticator | cognito', function(hooks) {
     assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
     assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
     assert.notOk(get(service, 'cognito.task'), 'Refresh session task not set.');
-    assert.equal(get(service, 'cognito.authenticationFlowType'), 'USER_SRP_AUTH', 'Authentication Flow Type is set correctly.');
+    assert.equal(get(service, 'cognito.authenticationFlowType'), config.cognito.authenticationFlowType, 'Authentication Flow Type is set correctly.');
   });
 
   sinonTest('authenticateUser, failure', async function(assert) {
