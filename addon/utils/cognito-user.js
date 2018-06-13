@@ -28,15 +28,15 @@ export default EmberObject.extend({
   // Support for methods that user { onSuccess, onFailure } callback hashes
   _callbackObj(method, ...args) {
     return new Promise((resolve, reject) => {
-        try {
-          this.get('user')[method](...args, {
-            onSuccess: resolve,
-            onFailure: reject
-          });
-        } catch (error) {
-          reject(error);
-        }
-      }, `cognito-user#${method}`);
+      try {
+        this.get('user')[method](...args, {
+          onSuccess: resolve,
+          onFailure: reject
+        });
+      } catch (error) {
+        reject(error);
+      }
+    }, `cognito-user#${method}`);
 
   },
 

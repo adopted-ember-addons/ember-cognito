@@ -45,9 +45,7 @@ module('Unit | Utility | cognito user', function() {
 
   sinonTest('getSession error', async function(assert) {
     let awsUser = getAwsUser();
-    this.stub(awsUser, 'getSession').callsFake((callback) => {
-      callback('error', null);
-    });
+    this.stub(awsUser, 'getSession').throws('error');
     let user = CognitoUser.create({ user: awsUser });
     try {
       await user.getSession();
@@ -138,9 +136,7 @@ module('Unit | Utility | cognito user', function() {
     assert.expect(1);
 
     let awsUser = getAwsUser();
-    this.stub(awsUser, 'forgotPassword').callsFake(() => {
-      throw('some error');
-    });
+    this.stub(awsUser, 'forgotPassword').throws('some error');
     let user = CognitoUser.create({ user: awsUser });
 
     try {
