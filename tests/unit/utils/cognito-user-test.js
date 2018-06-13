@@ -45,8 +45,19 @@ module('Unit | Utility | cognito user', function() {
 
   sinonTest('getSession error', async function(assert) {
     let awsUser = getAwsUser();
-    this.stub(awsUser, 'getSession').callsFake((callback) => {
-      callback('error', null);
+    this.stub(awsUser, 'getSession').throws('error');
+    let user = CognitoUser.create({ user: awsUser });
+    try {
+      await user.getSession();
+      assert.ok(false);
+    } catch (err) {
+      assert.equal(err, 'error');
+    }
+  });
+  sinonTest('getSession exception', async function(assert) {
+    let awsUser = getAwsUser();
+    this.stub(awsUser, 'getSession').callsFake(() => {
+      throw('error');
     });
     let user = CognitoUser.create({ user: awsUser });
     try {
@@ -120,6 +131,19 @@ module('Unit | Utility | cognito user', function() {
     });
     let user = CognitoUser.create({ user: awsUser });
     await user.forgotPassword();
+  });
+  sinonTest('forgotPassword exception', async function(assert) {
+    assert.expect(1);
+
+    let awsUser = getAwsUser();
+    this.stub(awsUser, 'forgotPassword').throws('some error');
+    let user = CognitoUser.create({ user: awsUser });
+
+    try {
+      await user.forgotPassword();
+    } catch (err) {
+      assert.equal(err, 'some error');
+    }
   });
 
   sinonTest('getAttributeVerificationCode', async function(assert) {
