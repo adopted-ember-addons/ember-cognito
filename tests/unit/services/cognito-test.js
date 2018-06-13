@@ -6,6 +6,7 @@ import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-i
 import CognitoUser from 'dummy/utils/cognito-user';
 import { newSession } from '../../utils/session';
 import { run } from '@ember/runloop';
+import config from '../../../config/environment';
 
 module('Unit | Service | cognito', function(hooks) {
   setupTest(hooks);
@@ -29,6 +30,7 @@ module('Unit | Service | cognito', function(hooks) {
     assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
     assert.equal(get(service, 'clientId'), 'TEST');
     assert.strictEqual(get(service, 'autoRefreshSession'), true);
+    assert.equal(get(service, 'authenticationFlowType'), config.cognito.authenticationFlowType);
   });
 
   sinonTest('signup works', async function(assert) {
