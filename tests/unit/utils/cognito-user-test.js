@@ -120,6 +120,16 @@ module('Unit | Utility | cognito user', function() {
     await user.deleteAttributes(['first_name', 'last_name']);
   });
 
+  sinonTest('deleteUser', async function(assert) {
+    let awsUser = getAwsUser();
+    this.stub(awsUser, 'deleteUser').callsFake((callback) => {
+      callback(null, 'SUCCESS');
+    });
+    let user = CognitoUser.create({ user: awsUser });
+    let text = await user.deleteUser();
+    assert.equal(text, 'SUCCESS');
+  });
+
   sinonTest('forgotPassword', async function(assert) {
     assert.expect(2);
 
