@@ -56,6 +56,10 @@ export default EmberObject.extend({
     return this._callback('deleteAttributes', attributeList);
   },
 
+  deleteUser() {
+    return this._callback('deleteUser');
+  },
+
   forgotPassword() {
     return this._callbackObj('forgotPassword');
   },
