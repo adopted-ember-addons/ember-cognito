@@ -165,7 +165,7 @@ module('Unit | Authenticator | cognito', function(hooks) {
       'CognitoIdentityServiceProvider.TEST.LastAuthUser': 'testuser'
     };
     await service.restore(data);
-    assert.ok(get(service, 'cognito.task'), 'Refresh timer was scheduled.');
+    assert.ok(get(service, 'cognito.task') !== undefined, 'Refresh timer was scheduled.');
     let taskDuration = get(service, 'cognito._taskDuration');
     assert.ok(taskDuration > (1000 * 1000));
   });
