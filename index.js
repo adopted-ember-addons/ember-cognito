@@ -12,6 +12,7 @@ module.exports = {
             srcDir: 'dist',
             include: [
               'aws-cognito-sdk.js',
+              'amazon-cognito-identity.js',
               'amazon-cognito-identity.min.js',
               'amazon-cognito-identity.min.js.map'
             ]
@@ -27,7 +28,11 @@ module.exports = {
     if (cognito.lt('2.0.2')) {
       app.import('vendor/amazon-cognito-identity-js/aws-cognito-sdk.js');
     }
-    app.import('vendor/amazon-cognito-identity-js/amazon-cognito-identity.min.js');
+    if (cognito.gte('2.0.14')) {
+      app.import('vendor/amazon-cognito-identity-js/amazon-cognito-identity.js');
+    } else {
+      app.import('vendor/amazon-cognito-identity-js/amazon-cognito-identity.min.js');
+    }
     app.import('vendor/shims/amazon-cognito-identity-js.js');
   }
 };
