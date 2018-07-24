@@ -45,7 +45,7 @@
     "ember-load-initializers": "^1.0.0",
     "ember-maybe-import-regenerator-for-testing": "^1.0.0",
     "ember-native-dom-helpers": "^0.6.2",
-    "ember-resolver": "^4.0.0",
+    "ember-resolver": "^5.0.0",
     "ember-simple-auth": "^1.5.1",
     "ember-sinon": "^2.1.0",
     "ember-sinon-qunit": "^3.1.0",
