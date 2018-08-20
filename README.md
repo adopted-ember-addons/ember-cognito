@@ -229,31 +229,31 @@ And a template like this:
 ```hbs
 {{#if newUser}}
   <h1>Your confirmation code</h1>
-  <form class="login-form" onsubmit={{action 'signupConfirm'}}>
+  <form onsubmit={{action 'signupConfirm'}}>
     {{#if errorMessage}}
-    <div class="alert alert-danger">{{errorMessage}}</div>
+      <div>{{errorMessage}}</div>
     {{/if}}
-    <div class="form-group">
+    <div>
       <label for="confirmationCode">Confirmation Code</label>
-      {{input value=confirmationCode class="form-control" id="confirmationCode" placeholder="Check your email" autofocus=true required=true}}
+      {{input value=confirmationCode id="confirmationCode" placeholder="Check your email" autofocus=true required=true}}
     </div>
-    <button type="submit" class="btn btn-primary">Sign Up</button>
+    <button type="submit">Sign Up</button>
   </form>
 {{else}}
   <h1>Sign Up Today!</h1>
-  <form class="login-form" onsubmit={{action 'signup'}}>
+  <form onsubmit={{action 'signup'}}>
     {{#if errorMessage}}
-    <div class="alert alert-danger">{{errorMessage}}</div>
+      <div>{{errorMessage}}</div>
     {{/if}}
-    <div class="form-group">
+    <div>
       <label for="username">Username</label>
-      {{input value=username class="form-control" id="username" placeholder="Username" autofocus=true required=true}}
+      {{input value=username id="username" placeholder="Username" autofocus=true required=true}}
     </div>
-    <div class="form-group">
+    <div>
       <label for="password">Password</label>
-      {{input value=password type="password" class="form-control" id="password" placeholder="Password" required=true}}
+      {{input value=password type="password" id="password" placeholder="Password" required=true}}
     </div>
-    <button type="submit" class="btn btn-primary">Sign Up</button>
+    <button type="submit">Sign Up</button>
   </form>
 {{/if}}
 ```
