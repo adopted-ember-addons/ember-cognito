@@ -172,6 +172,105 @@ export default Service.extend({
 See [the dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/dummy/app/services/current-user.js)
 for an example of this in action.
 
+### Allowing a user to sign up
+
+You can allow a user to create and confirm a new account with a
+controller like this:
+
+```js
+import { equal } from '@ember/object/computed';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+
+export default Controller.extend({
+  session: service(),
+  cognito: service(),
+
+  actions: {
+    signup(e) {
+      e.preventDefault();
+      let params = this.getProperties('username', 'password');
+      this.get('cognito').signUp( params.username, params.password, [], null).then((newUser) => {
+        this.set('newUser', newUser);
+      }).catch((error) => {
+        console.log('caught an error', error);
+      });
+    },
+    signupConfirm(e) {
+      e.preventDefault();
+      let { confirmationCode, newUser, username, password, cognito } = this.getProperties('confirmationCode', 'newUser', 'username', 'password', 'cognito');
+      let _controller = this;
+      let cognitoUser = newUser.user;
+      cognitoUser.confirmRegistration(confirmationCode).then(() => {
+        _controller.authenticate({ username, password });
+      }).catch((error) => {
+        console.log('we caught an error', error);
+      });
+    }
+  },
+
+  authenticate(params) {
+    this.get('session').authenticate('authenticator:cognito', params).then(() => {
+      this.transitionToRoute('/');
+    }).catch((err) => {
+      if (err.state && err.state.name === 'newPasswordRequired') {
+        this.set('errorMessage', '');
+        this.set('state', err.state);
+      } else {
+        this.set('errorMessage', err.message || err);
+      }
+    });
+  }
+});
+```
+
+And a template like this:
+
+```hbs
+{{#if newUser}}
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <h1>Your confirmation code</h1>
+        <form class="login-form" onsubmit={{action 'signupConfirm'}}>
+          {{#if errorMessage}}
+          <div class="alert alert-danger">{{errorMessage}}</div>
+          {{/if}}
+          <div class="form-group">
+            <label for="confirmationCode">Confirmation Code</label>
+            {{input value=confirmationCode class="form-control" id="confirmationCode" placeholder="Check your email" autofocus=true required=true}}
+          </div>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{{else}}
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <h1>Sign Up Today!</h1>
+        <form class="login-form" onsubmit={{action 'signup'}}>
+          {{#if errorMessage}}
+          <div class="alert alert-danger">{{errorMessage}}</div>
+          {{/if}}
+          <div class="form-group">
+            <label for="username">Username</label>
+            {{input value=username class="form-control" id="username" placeholder="Username" autofocus=true required=true}}
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            {{input value=password type="password" class="form-control" id="password" placeholder="Password" required=true}}
+          </div>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{{/if}}
+```
+
+
 #### Advanced Configuration
 
 If you don't want to specify the Pool ID and Client ID in the Ember environment, you can override the CognitoService
