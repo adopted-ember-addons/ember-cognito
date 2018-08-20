@@ -228,45 +228,33 @@ And a template like this:
 
 ```hbs
 {{#if newUser}}
-  <div class="container">
-    <div class="row">
-      <div class="col-4">
-        <h1>Your confirmation code</h1>
-        <form class="login-form" onsubmit={{action 'signupConfirm'}}>
-          {{#if errorMessage}}
-          <div class="alert alert-danger">{{errorMessage}}</div>
-          {{/if}}
-          <div class="form-group">
-            <label for="confirmationCode">Confirmation Code</label>
-            {{input value=confirmationCode class="form-control" id="confirmationCode" placeholder="Check your email" autofocus=true required=true}}
-          </div>
-          <button type="submit" class="btn btn-primary">Sign Up</button>
-        </form>
-      </div>
+  <h1>Your confirmation code</h1>
+  <form class="login-form" onsubmit={{action 'signupConfirm'}}>
+    {{#if errorMessage}}
+    <div class="alert alert-danger">{{errorMessage}}</div>
+    {{/if}}
+    <div class="form-group">
+      <label for="confirmationCode">Confirmation Code</label>
+      {{input value=confirmationCode class="form-control" id="confirmationCode" placeholder="Check your email" autofocus=true required=true}}
     </div>
-  </div>
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+  </form>
 {{else}}
-  <div class="container">
-    <div class="row">
-      <div class="col-4">
-        <h1>Sign Up Today!</h1>
-        <form class="login-form" onsubmit={{action 'signup'}}>
-          {{#if errorMessage}}
-          <div class="alert alert-danger">{{errorMessage}}</div>
-          {{/if}}
-          <div class="form-group">
-            <label for="username">Username</label>
-            {{input value=username class="form-control" id="username" placeholder="Username" autofocus=true required=true}}
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            {{input value=password type="password" class="form-control" id="password" placeholder="Password" required=true}}
-          </div>
-          <button type="submit" class="btn btn-primary">Sign Up</button>
-        </form>
-      </div>
+  <h1>Sign Up Today!</h1>
+  <form class="login-form" onsubmit={{action 'signup'}}>
+    {{#if errorMessage}}
+    <div class="alert alert-danger">{{errorMessage}}</div>
+    {{/if}}
+    <div class="form-group">
+      <label for="username">Username</label>
+      {{input value=username class="form-control" id="username" placeholder="Username" autofocus=true required=true}}
     </div>
-  </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      {{input value=password type="password" class="form-control" id="password" placeholder="Password" required=true}}
+    </div>
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+  </form>
 {{/if}}
 ```
 
