@@ -3,7 +3,7 @@
 const VersionChecker = require('ember-cli-version-checker');
 
 module.exports = {
-  name: 'ember-cognito',
+  name: require('./package').name,
   options: {
     nodeAssets: {
       'amazon-cognito-identity-js': function() {
