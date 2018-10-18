@@ -1,3 +1,4 @@
+/* eslint-env node */
 module.exports = {
   root: true,
   parserOptions: {
@@ -18,13 +19,13 @@ module.exports = {
     'eqeqeq': ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'ember/no-jquery': 'error',
-    'ember/use-ember-get-and-set': [2, {ignoreThisExpressions: true}]
+    'ember/use-ember-get-and-set': [2, { ignoreThisExpressions: true }]
   },
   overrides: [
     // node files
     {
       files: [
-        // 'index.js',
+        '.template-lintrc.js',
         'ember-cli-build.js',
         'testem.js',
         'blueprints/*/index.js',
