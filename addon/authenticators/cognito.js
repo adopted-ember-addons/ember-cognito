@@ -1,6 +1,6 @@
 import { readOnly } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import { resolve, reject, Promise } from 'rsvp';
 import { getProperties, get, set } from '@ember/object';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
@@ -61,7 +61,7 @@ export default Base.extend({
 
     // Make sure to put the idToken in a place where the DataAdapterMixin wants it (access_token)
     // Add any data that's from the user's and pool's storage.
-    let data = merge({
+    let data = assign({
       access_token: result.getIdToken().getJwtToken(),
       poolId: pool.getUserPoolId(),
       clientId: pool.getClientId()
