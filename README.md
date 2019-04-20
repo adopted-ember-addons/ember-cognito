@@ -261,4 +261,6 @@ module('Acceptance | authenticated route', function(hooks) {
 
 ## Support
 
-ember-cognito is tested on Ember versions 2.12, 2.16, 2.18 and 3.0+.
+* Ember versions 2.18, 3.4 and 3.9+
+* Amazon Cognito SDK 2.x.
+
