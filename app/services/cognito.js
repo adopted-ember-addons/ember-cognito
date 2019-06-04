@@ -1,8 +1,8 @@
 import CognitoService from 'ember-cognito/services/cognito';
 import ENV from '../config/environment';
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 
-const cognitoEnv = merge({
+const cognitoEnv = assign({
   autoRefreshSession: false
 }, ENV.cognito);
 

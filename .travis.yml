@@ -5,7 +5,7 @@ node_js:
   # so that your addon works for all apps
   - "8"
 
-sudo: required
+sudo: false
 dist: trusty
 
 addons:
@@ -66,3 +66,6 @@ after_script:
 after_success:
   - yarn global add codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info
+
+script:
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
