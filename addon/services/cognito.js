@@ -1,10 +1,8 @@
-import Service from '@ember/service';
+import Service, { inject as service } from '@ember/service';
 import { Promise } from 'rsvp';
-import { CognitoUserPool } from "amazon-cognito-identity-js";
+// import { CognitoUserPool } from "amazon-cognito-identity-js";
 import CognitoStorage from '../utils/cognito-storage';
 import CognitoUser from '../utils/cognito-user';
-import { later, cancel } from '@ember/runloop';
-import { inject as service } from '@ember/service';
 
 /**
  * @public
@@ -13,12 +11,6 @@ import { inject as service } from '@ember/service';
  */
 export default Service.extend({
   session: service(),
-
-  willDestroy() {
-    this._super(...arguments);
-    this.stopRefreshTask();
-  },
-
 
   // Primarily used so we can stub methods.
   _stubPool(pool) {
@@ -51,37 +43,5 @@ export default Service.extend({
         }
       });
     }, `cognito-service#signUp`);
-  },
-
-  /**
-   * Enable the token refresh timer.
-   */
-  startRefreshTask(session) {
-    if (!this.get('autoRefreshSession')) {
-      return;
-    }
-    // Schedule a task for just past when the token expires.
-    const now = Math.floor(new Date() / 1000);
-    const exp = session.getIdToken().getExpiration();
-    const adjusted = now - session.getClockDrift();
-    const duration = (exp - adjusted) * 1000 + 100;
-    this.set('_taskDuration', duration);
-    this.set('task', later(this, 'refreshSession', duration));
-  },
-
-  /**
-   * Disable the token refresh timer.
-   */
-  stopRefreshTask() {
-    cancel(this.get('task'));
-    this.set('task', undefined);
-    this.set('_taskDuration', undefined);
-  },
-
-  refreshSession() {
-    let user = this.get('user');
-    if (user) {
-      return this.get('session').authenticate('authenticator:cognito', { state: { name: 'refresh' } });
-    }
   }
 });
