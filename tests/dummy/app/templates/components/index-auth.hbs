@@ -2,7 +2,7 @@
   <div class="col-6">
     <h2>Username</h2>
     <div class="mb-4">
-      {{currentUser.username}}
+      {{this.currentUser.username}}
     </div>
 
     <h2>User Attributes</h2>
@@ -27,7 +27,7 @@
     <h2>Cognito Service</h2>
     <dl>
       <dt>Task Duration</dt>
-      <dd>{{cognito._taskDuration}}</dd>
+      <dd>{{this.cognito._taskDuration}}</dd>
     </dl>
   </div>
 </div>
@@ -36,21 +36,21 @@
     <h2>ID Token</h2>
     <dl>
       <dt>Expiration</dt>
-      <dd>{{idToken.expiration}}</dd>
+      <dd>{{this.idToken.expiration}}</dd>
     </dl>
-    <pre><code>{{idToken.formatted}}</code></pre>
+    <pre><code>{{this.idToken.formatted}}</code></pre>
 
     <h2>Access Token</h2>
     <dl>
       <dt>Expiration</dt>
-      <dd>{{accessToken.expiration}}</dd>
+      <dd>{{this.accessToken.expiration}}</dd>
     </dl>
-    <pre><code>{{accessToken.formatted}}</code></pre>
+    <pre><code>{{this.accessToken.formatted}}</code></pre>
   </div>
 </div>
 <div class="row">
   <div class="col">
     <h2>Authenticated Data</h2>
-    <pre><code>{{authenticatedData}}</code></pre>
+    <pre><code>{{this.authenticatedData}}</code></pre>
   </div>
 </div>

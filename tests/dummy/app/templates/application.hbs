@@ -8,8 +8,8 @@
       class="form-control mr-sm-2"
       placeholder="Cognito Pool ID"
       aria-label="Cognito Pool ID"
-      value={{poolId}}
-      oninput={{action (mut poolId) value="target.value"}}
+      value={{this.poolId}}
+      oninput={{action (mut this.poolId) value="target.value"}}
     >
     <label for="client_id" class="sr-only">Cognito Client ID</label>
     <input
@@ -17,13 +17,13 @@
       class="form-control mr-sm-2"
       placeholder="Cognito Client ID"
       aria-label="Cognito Client ID"
-      value={{clientId}}
-      oninput={{action (mut clientId) value="target.value"}}
+      value={{this.clientId}}
+      oninput={{action (mut this.clientId) value="target.value"}}
     >
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Save</button>
   </form>
   <ul class="navbar-nav navbar-right ml-4">
-    {{#if session.isAuthenticated}}
+    {{#if this.session.isAuthenticated}}
       {{!-- <li>{{#link-to "profile" class="profile-link"}}{{currentUser.username}}{{/link-to}}</li> --}}
       <li><a href="#" class="logout-link" onclick={{action "logout"}}>Logout</a></li>
     {{else}}
