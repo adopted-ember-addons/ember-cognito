@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light navbar-expand bg-light">
   {{#link-to "index" class="navbar-brand"}}ember-cognito{{/link-to}}
 
   <div class="collapse navbar-collapse">
@@ -25,7 +25,6 @@
     </form>
     <ul class="navbar-nav ml-4">
       {{#if this.session.isAuthenticated}}
-      {{!-- <li>{{#link-to "profile" class="profile-link"}}{{currentUser.username}}{{/link-to}}</li> --}}
         <li class="nav-item"><a href="#" class="logout-link" onclick={{action "logout"}}>Logout</a></li>
       {{else}}
         <li class="nav-item">{{#link-to "login" class="nav-link login-link"}}Login{{/link-to}}</li>

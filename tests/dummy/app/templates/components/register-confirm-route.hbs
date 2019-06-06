@@ -1,0 +1,35 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-4">
+      <h1>Confirm Registration</h1>
+      <form class="register-confim-form" onsubmit={{action "confirm"}}>
+        {{#if this.errorMessage}}
+          <div class="alert alert-danger">{{this.errorMessage}}</div>
+        {{/if}}
+        <div class="form-group">
+          <label for="username">Username</label>
+          {{input
+            value=this.username
+            class="form-control"
+            id="username"
+            placeholder="Username"
+            autofocus=true
+            required=true
+          }}
+        </div>
+        <div class="form-group">
+          <label for="code">Code</label>
+          {{input
+            value=this.code
+            class="form-control"
+            id="code"
+            placeholder="123456"
+            required=true
+          }}
+        </div>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </form>
+    </div>
+  </div>
+</div>

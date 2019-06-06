@@ -1,8 +1,8 @@
 import Service, { inject as service } from '@ember/service';
-import { Promise } from 'rsvp';
-// import { CognitoUserPool } from "amazon-cognito-identity-js";
-import CognitoStorage from '../utils/cognito-storage';
+import { typeOf } from '@ember/utils';
+import { assign } from '@ember/polyfills';
 import CognitoUser from '../utils/cognito-user';
+import Auth from "@aws-amplify/auth";
 
 /**
  * @public
@@ -12,9 +12,19 @@ import CognitoUser from '../utils/cognito-user';
 export default Service.extend({
   session: service(),
 
-  // Primarily used so we can stub methods.
-  _stubPool(pool) {
-    return pool;
+  /**
+   * Configures the Amplify library with the pool & client IDs, and any additional
+   * configuration.
+   * @param awsconfig Extra AWS configuration.
+   */
+  configure(awsconfig) {
+    const { poolId, clientId } = this.getProperties('poolId', 'clientId');
+    const params =  assign({
+      userPoolId: poolId,
+      userPoolWebClientId: clientId,
+    }, awsconfig);
+
+    Auth.configure(params);
   },
 
   /**
@@ -22,26 +32,44 @@ export default Service.extend({
    *
    * @param username User's username
    * @param password Plain-text initial password entered by user.
-   * @param attributeList New user attributes.
+   * @param attributes New user attributes.
    * @param validationData Application metadata.
    */
-  signUp(username, password, attributeList, validationData) {
-    let { poolId, clientId } = this.getProperties('poolId', 'clientId');
-    let pool = this._stubPool(new CognitoUserPool({
-      UserPoolId: poolId,
-      ClientId: clientId,
-      Storage: new CognitoStorage({})
-    }));
+  signUp(username, password, attributes, validationData) {
+    this.configure();
 
-    return new Promise((resolve, reject) => {
-      pool.signUp(username, password, attributeList, validationData, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          result.user = CognitoUser.create({ user: result.user });
-          resolve(result);
-        }
-      });
-    }, `cognito-service#signUp`);
+    // If the attributeList is an object, then it is treated as
+    // a hash of attributes, otherwise it is treated as a list of CognitoUserAttributes,
+    // for backward compatibility.
+    if (typeOf(attributes) === 'array') {
+      // TODO: Deprecate this path.
+      let newAttrs = {};
+      for (const attr of attributes) {
+        newAttrs[attr.getName()] = attr.getValue();
+      }
+      attributes = newAttrs;
+    }
+
+    return Auth.signUp({
+      username,
+      password,
+      attributes,
+      validationData
+    }).then((result) => {
+      // Replace the user with a wrapped user.
+      result.user = CognitoUser.create({ user: result.user });
+      return result;
+    });
+  },
+
+  /**
+   * Confirm signup for user.
+   * @param username User's username.
+   * @param code The confirmation code.
+   * @returns {Promise<any>}
+   */
+  confirmSignUp(username, code) {
+    this.configure();
+    return Auth.confirmSignUp(username, code);
   }
 });

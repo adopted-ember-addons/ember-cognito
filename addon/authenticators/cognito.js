@@ -25,7 +25,7 @@ export default Base.extend({
     set(this, 'cognito.user', CognitoUser.create({ user }));
     // TODO: Do we want to actually put the tokens in the auth data anymore?
     // They won't be refreshed, so they will be invalid after an hour.
-    return {"poolId": poolId, "clientId": clientId};
+    return { "poolId": poolId, "clientId": clientId };
   },
 
   // _handleRefresh(/* params */) {
