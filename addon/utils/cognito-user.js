@@ -2,7 +2,6 @@ import { reject, resolve } from 'rsvp';
 import EmberObject, { computed, get } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { readOnly } from '@ember/object/computed';
-import Auth from "@aws-amplify/auth";
 
 //
 // Wraps an AWS CognitoUser and provides promisified versions of many functions.
@@ -49,7 +48,7 @@ export default EmberObject.extend({
   },
 
   getSession() {
-    return Auth.currentSession();
+    return this.get('auth').currentSession();
   },
 
   getUserAttributes() {

@@ -1,11 +1,9 @@
 import { setupApplicationTest } from 'ember-qunit';
-import { module } from 'qunit';
-import sinonTest from 'ember-sinon-qunit/test-support/test';
+import { module, test } from 'qunit';
 import { get } from '@ember/object';
-import { visit, fillIn, click, currentURL } from '@ember/test-helpers';
+import { click, currentURL, fillIn, visit } from '@ember/test-helpers';
 import { currentSession } from 'ember-simple-auth/test-support';
 import { mockCognitoUser } from 'ember-cognito/test-support';
-import { resolve } from 'rsvp';
 
 //
 // This is an example of testing authentication by stubbing the authenticator.
@@ -14,11 +12,8 @@ import { resolve } from 'rsvp';
 module('Acceptance | login', function(hooks) {
   setupApplicationTest(hooks);
 
-  sinonTest('login', async function(assert) {
-    await mockCognitoUser();
-    let authenticator = this.owner.lookup('authenticator:cognito');
-    this.stub(authenticator, 'authenticate').callsFake(() => resolve());  // works with 2.12
-    // this.stub(authenticator, 'authenticate').resolves();  // OK for 2.16+
+  test('login', async function(assert) {
+    await mockCognitoUser({ username: 'testuser' });
 
     await visit('/login');
     await fillIn('#username', 'testuser');

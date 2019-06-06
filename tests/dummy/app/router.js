@@ -7,7 +7,9 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('login');
+  this.route('login', function() {
+    this.route('new-password');
+  });
   this.route('profile');
   this.route('register', function() {
     this.route('confirm');

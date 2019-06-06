@@ -1,11 +1,9 @@
-import { get, set } from '@ember/object';
+import { get } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
 import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import CognitoUser from 'dummy/utils/cognito-user';
-import { newSession } from '../../utils/session';
-import { run } from '@ember/runloop';
 import config from '../../../config/environment';
 
 module('Unit | Service | cognito', function(hooks) {
@@ -29,7 +27,6 @@ module('Unit | Service | cognito', function(hooks) {
     let service = this.owner.lookup('service:cognito');
     assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
     assert.equal(get(service, 'clientId'), 'TEST');
-    assert.strictEqual(get(service, 'autoRefreshSession'), true);
     assert.equal(get(service, 'authenticationFlowType'), config.cognito.authenticationFlowType);
   });
 
@@ -74,34 +71,6 @@ module('Unit | Service | cognito', function(hooks) {
     }
   });
 
-  sinonTest('refreshSession', async function(assert) {
-    // Not much to test here, other than included coverage?
-    let subject = this.owner.lookup('service:cognito');
-    set(subject, 'user', CognitoUser.create());
-
-    let auth = this.stub(get(subject, 'session'), 'authenticate').resolves();
-    subject.refreshSession();
-    assert.ok(auth.called);
-  });
-
-  sinonTest('refreshSession unauthenticated', async function(assert) {
-    // Not much to test here, other than included coverage?
-    let subject = this.owner.lookup('service:cognito');
-    let auth = this.stub(get(subject, 'session'), 'authenticate').resolves();
-    await subject.refreshSession();
-    assert.notOk(auth.called);
-  });
-
-  test('destroy timer', function(assert) {
-    let subject = this.owner.factoryFor('service:cognito').create({
-      autoRefreshSession: true
-    });
-    subject.startRefreshTask(newSession());
-    assert.ok(get(subject, 'task'));
-
-    run(() => {
-      subject.destroy();
-    });
-    assert.notOk(get(subject, 'task'));
-  });
+  // TODO: Test attributes/validation data
+  // TODO: Test deprecated attributes
 });

@@ -11,6 +11,7 @@ import Auth from "@aws-amplify/auth";
  */
 export default Service.extend({
   session: service(),
+  auth: Auth,
 
   /**
    * Configures the Amplify library with the pool & client IDs, and any additional
@@ -24,7 +25,7 @@ export default Service.extend({
       userPoolWebClientId: clientId,
     }, awsconfig);
 
-    Auth.configure(params);
+    this.get('auth').configure(params);
   },
 
   /**
@@ -50,14 +51,14 @@ export default Service.extend({
       attributes = newAttrs;
     }
 
-    return Auth.signUp({
+    return this.get('Auth').signUp({
       username,
       password,
       attributes,
       validationData
     }).then((result) => {
       // Replace the user with a wrapped user.
-      result.user = CognitoUser.create({ user: result.user });
+      result.user = this._setUser(result.user);
       return result;
     });
   },
@@ -70,6 +71,13 @@ export default Service.extend({
    */
   confirmSignUp(username, code) {
     this.configure();
-    return Auth.confirmSignUp(username, code);
+    return this.get('auth').confirmSignUp(username, code);
+  },
+
+  _setUser(awsUser) {
+    // Creates and sets the Cognito user.
+    const user = CognitoUser.create({ auth: this.get('auth'), user: awsUser });
+    this.set('user', user);
+    return user;
   }
 });
