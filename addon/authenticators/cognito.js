@@ -71,7 +71,7 @@ export default Base.extend({
   },
 
   invalidate(data) {
-    return  this.get('auth').signOut().then(() => {
+    return  this.get('cognito.user').signOut().then(() => {
       this.set('cognito.user', undefined);
       return data;
     });

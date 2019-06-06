@@ -18,8 +18,10 @@ export default EmberObject.extend({
   },
 
   confirmRegistration(confirmationCode, forceAliasCreation) {
-    // return this._callback('confirmRegistration', confirmationCode, forceAliasCreation);
-    return reject("not implemented");
+    // TODO: Deprecate this, call cognito confirmSignUp
+    const { auth, username } = this.getProperties('auth', 'username');
+    const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
+    return auth.confirmSignUp(username, confirmationCode, options);
   },
 
   confirmPassword(verificationCode, newPassword) {
@@ -68,13 +70,13 @@ export default EmberObject.extend({
   },
 
   resendConfirmationCode() {
-    // return this._callback('resendConfirmationCode');
-    return reject("not implemented");
+    // TODO: Deprecate this, switch to cognito.resendSignUp()
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.resendSignUp(username);
   },
 
   signOut() {
-    // return get(this, 'user').signOut();
-    return reject("not implemented");
+    return this.get('auth').signOut();
   },
 
   updateAttributes(attributeList) {
@@ -94,4 +96,6 @@ export default EmberObject.extend({
       return payload['cognito:groups'] || [];
     });
   }
+
+  // TODO: re-implement getStorageData()?
 });

@@ -3,10 +3,10 @@ import { setupTest } from 'ember-qunit';
 import { get } from '@ember/object';
 import { mockCognitoUser, unmockCognitoUser } from 'ember-cognito/test-support';
 
-module('Unit | Utility | flash errors', function(hooks) {
+module('Unit | Utility | mock helpers', function(hooks) {
   setupTest(hooks);
 
-  test('it works', async function(assert) {
+  test('mockCognitoUser', async function(assert) {
     await mockCognitoUser({
       username: 'testuser',
       userAttributes: [
@@ -23,4 +23,7 @@ module('Unit | Utility | flash errors', function(hooks) {
     await unmockCognitoUser();
     assert.notOk(get(cognito, 'user'));
   });
+
+  // TODO: mockAuth
+  // TODO: newUser
 });

@@ -1,8 +1,17 @@
 import { getContext } from '@ember/test-helpers';
 import { getProperties, set } from '@ember/object';
 import { MockUser } from './utils/ember-cognito';
+import { typeOf } from '@ember/utils';
 import MockAuth from './utils/-mock-auth';
 import { CognitoUser as AWSUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+
+export function newUser(username) {
+  const { owner } = getContext();
+  const cognito = owner.lookup('service:cognito');
+  const { poolId, clientId } = getProperties(cognito, "poolId", "clientId");
+  const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
+  return new AWSUser({ Username: username, Pool: pool });
+}
 
 export function mockCognitoUser(userAttributes) {
   const { owner } = getContext();
@@ -24,10 +33,12 @@ export function unmockCognitoUser() {
   set(cognito, 'user', undefined);
 }
 
-export function mockAuth(auth) {
+export function mockAuth(authClassOrInstance = MockAuth) {
   const { owner } = getContext();
   const cognito = owner.lookup('service:cognito');
-  set(cognito, 'auth', auth || MockAuth.create());
+  const auth = typeOf(authClassOrInstance) === 'class' ?
+    authClassOrInstance.create() : authClassOrInstance;
+  set(cognito, 'auth', auth);
 }
 
 // Re-export MockUser so everything can be in this new namespace

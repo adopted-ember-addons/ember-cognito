@@ -51,7 +51,7 @@ export default Service.extend({
       attributes = newAttrs;
     }
 
-    return this.get('Auth').signUp({
+    return this.get('auth').signUp({
       username,
       password,
       attributes,
@@ -69,9 +69,19 @@ export default Service.extend({
    * @param code The confirmation code.
    * @returns {Promise<any>}
    */
-  confirmSignUp(username, code) {
+  confirmSignUp(username, code, options) {
     this.configure();
-    return this.get('auth').confirmSignUp(username, code);
+    return this.get('auth').confirmSignUp(username, code, options);
+  },
+
+  /**
+   * Resends the sign up code.
+   * @param username User's username.
+   * @returns {*|Promise<string>}
+   */
+  resendSignUp(username) {
+    this.configure();
+    return this.get('auth').resendSignUp(username);
   },
 
   _setUser(awsUser) {

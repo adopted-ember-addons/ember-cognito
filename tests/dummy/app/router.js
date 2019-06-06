@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('profile');
   this.route('register', function() {
     this.route('confirm');
+    this.route('resend');
   });
 });
 

@@ -1,22 +1,12 @@
-import { get, getProperties } from '@ember/object';
+import { get } from '@ember/object';
 import { setupTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import config from '../../../config/environment';
-import { mockAuth, MockAuth, mockCognitoUser } from "ember-cognito/test-support";
-import { CognitoUser as AWSUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { mockAuth, MockAuth, mockCognitoUser, newUser } from "ember-cognito/test-support";
 import { reject } from 'rsvp';
 
 module('Unit | Authenticator | cognito', function(hooks) {
   setupTest(hooks);
-
-  hooks.beforeEach(function() {
-    this.newAWSUser = function(username) {
-      const service = this.owner.lookup('authenticator:cognito');
-      const { poolId, clientId } = getProperties(service, "poolId", "clientId");
-      const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
-      return new AWSUser({ Username: username, Pool: pool });
-    }
-  });
 
   test('config is set correctly', function(assert) {
     let service = this.owner.lookup('authenticator:cognito');
@@ -52,9 +42,8 @@ module('Unit | Authenticator | cognito', function(hooks) {
   test('authenticateUser', async function(assert) {
     const service = this.owner.lookup('authenticator:cognito');
 
-    const user = this.newAWSUser('testuser');
-    const auth = MockAuth.create({ _authenticatedUser: user });
-    await mockAuth(auth);
+    const user = newUser('testuser');
+    await mockAuth(MockAuth.create({ _authenticatedUser: user }));
 
     const data = await service.authenticate({ username: 'testuser', password: 'password' });
     assert.equal(data.poolId, 'us-east-1_TEST');
@@ -65,12 +54,11 @@ module('Unit | Authenticator | cognito', function(hooks) {
 
   test('authenticateUser, failure', async function(assert) {
     const service = this.owner.lookup('authenticator:cognito');
-    const authClass = MockAuth.extend({
+    await mockAuth(MockAuth.extend({
       signIn() {
         return reject({ message: 'Username or password incorrect.' });
       }
-    });
-    await mockAuth(authClass.create());
+    }));
 
     try {
       await service.authenticate({ username: 'testuser', password: 'password' });
@@ -82,10 +70,9 @@ module('Unit | Authenticator | cognito', function(hooks) {
 
   test('authenticateUser, newPasswordRequired', async function(assert) {
     const service = this.owner.lookup('authenticator:cognito');
-    let user = this.newAWSUser('testuser');
+    let user = newUser('testuser');
     user.challengeName = 'NEW_PASSWORD_REQUIRED';
-    const authClass = MockAuth.extend({ _authenticatedUser: user });
-    await mockAuth(authClass.create());
+    await mockAuth(MockAuth.create({ _authenticatedUser: user }));
 
     let state;
     try {
@@ -107,9 +94,9 @@ module('Unit | Authenticator | cognito', function(hooks) {
 
   test('authenticateUser, newPasswordRequired failure', async function(assert) {
     const service = this.owner.lookup('authenticator:cognito');
-    let user = this.newAWSUser('testuser');
+    let user = newUser('testuser');
     user.challengeName = 'NEW_PASSWORD_REQUIRED';
-    await mockAuth(MockAuth.extend({ _authenticatedUser: user }).create());
+    await mockAuth(MockAuth.create({ _authenticatedUser: user }));
 
     let state;
     try {
@@ -120,12 +107,11 @@ module('Unit | Authenticator | cognito', function(hooks) {
       assert.equal(err.state.name, 'newPasswordRequired');
     }
 
-    const authClass = MockAuth.extend({
+    await mockAuth(MockAuth.extend({
       completeNewPassword() {
         return reject({ message: 'Invalid password.' });
       }
-    });
-    await mockAuth(authClass.create());
+    }));
 
     try {
       // Call authenticate again with the state and the new password.
