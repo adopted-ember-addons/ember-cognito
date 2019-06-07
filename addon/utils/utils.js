@@ -17,7 +17,6 @@ export function normalizeAttributes(attributes, showDeprecation = true) {
       !showDeprecation,
       { id: 'ember-cognito-attribute-list', until: '1.0' }
     );
-    // TODO: Deprecate this path.
     let newAttrs = {};
     for (const attr of attributes) {
       newAttrs[attr.getName()] = attr.getValue();

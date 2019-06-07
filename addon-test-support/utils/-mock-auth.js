@@ -6,16 +6,17 @@ import {
   CognitoRefreshToken,
   CognitoUserSession
 } from "amazon-cognito-identity-js";
+import { assign } from '@ember/polyfills';
 
 // Makes a JWT from a payload
-export function makeToken(duration = 1000, header = 'header') {
+export function makeToken({ duration = 1000, header = 'header', extra = {} } = {}) {
   const now = Math.floor(new Date() / 1000);
   // To get a non-zero clock drift.
   const iat = now - 123;
-  const payload = {
+  const payload = assign({
     iat,
     exp: iat + duration
-  };
+  }, extra);
   return `${header}.${btoa(JSON.stringify(payload))}`;
 }
 
@@ -35,8 +36,8 @@ export default EmberObject.extend({
   },
 
   signUp() {
-    // TODO: How to mock the user?
-    return resolve({ user: null, userConfirmed: false, userSub: "xxxx" });
+    const user = this.get('_authenticatedUser');
+    return resolve({ user, userConfirmed: false, userSub: "xxxx" });
   },
 
   signIn() {

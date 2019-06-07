@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { get } from '@ember/object';
-import { mockCognitoUser, unmockCognitoUser } from 'ember-cognito/test-support';
+import { mockAuth, MockAuth, mockCognitoUser, newUser, unmockCognitoUser } from 'ember-cognito/test-support';
 
 module('Unit | Utility | mock helpers', function(hooks) {
   setupTest(hooks);
@@ -22,8 +22,23 @@ module('Unit | Utility | mock helpers', function(hooks) {
 
     await unmockCognitoUser();
     assert.notOk(get(cognito, 'user'));
+    assert.equal(get(cognito, 'auth._authenticatedUser.username'), 'testuser');
   });
 
-  // TODO: mockAuth
-  // TODO: newUser
+  test('newUser', async function(assert) {
+    const awsUser = newUser('testuser');
+    assert.equal(awsUser.username, 'testuser');
+  });
+
+  test('mockAuth can accept an auth class', async function(assert) {
+    await mockAuth(MockAuth.extend({ foo: 'bar' }));
+    const cognito = this.owner.lookup('service:cognito');
+    assert.equal(get(cognito, 'auth.foo'), 'bar');
+  });
+
+  test('mockAuth can accept an auth instance', async function(assert) {
+    await mockAuth(MockAuth.create({ bar: 'baz' }));
+    const cognito = this.owner.lookup('service:cognito');
+    assert.equal(get(cognito, 'auth.bar'), 'baz');
+  });
 });

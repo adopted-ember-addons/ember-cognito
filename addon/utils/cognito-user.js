@@ -34,6 +34,17 @@ export default EmberObject.extend({
     return auth.changePassword(user, oldPassword, newPassword);
   },
 
+  confirmPassword(verificationCode, newPassword) {
+    deprecate(
+      'This functionality has moved to forgotPasswordSubmit() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-confirm-password', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
+  },
+
   confirmRegistration(confirmationCode, forceAliasCreation) {
     deprecate(
       'This functionality has moved to confirmSignUp() on the Cognito service.',
@@ -44,17 +55,6 @@ export default EmberObject.extend({
     const { auth, username } = this.getProperties('auth', 'username');
     const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
     return auth.confirmSignUp(username, confirmationCode, options);
-  },
-
-  confirmPassword(verificationCode, newPassword) {
-    deprecate(
-      'This functionality has moved to forgotPasswordSubmit() on the Cognito service.',
-      false,
-      { id: 'ember-cognito-confirm-password', until: '1.0' }
-    );
-
-    const { auth, username } = this.getProperties('auth', 'username');
-    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
   },
 
   deleteAttributes(attributeList) {
@@ -129,7 +129,14 @@ export default EmberObject.extend({
       let payload = session.getIdToken().payload || {};
       return payload['cognito:groups'] || [];
     });
-  }
+  },
 
-  // TODO: re-implement getStorageData()?
+  getStorageData() {
+    deprecate(
+      'getStorageData() no longer used, and always returns an empty object.',
+      false,
+      { id: 'ember-cognito-get-storage-data', until: '1.0' }
+    );
+    return {};
+  }
 });

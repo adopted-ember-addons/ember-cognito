@@ -43,3 +43,4 @@ export function mockAuth(authClassOrInstance = MockAuth) {
 
 // Re-export MockUser so everything can be in this new namespace
 export { MockUser, MockAuth };
+export * from './utils/-mock-auth';
