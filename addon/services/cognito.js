@@ -84,6 +84,28 @@ export default Service.extend({
     return this.get('auth').resendSignUp(username);
   },
 
+  /**
+   * Sends a user a code to reset their password.
+   * @param username
+   * @returns {*|Promise<any>|RSVP.Promise|void}
+   */
+  forgotPassword(username) {
+    this.configure();
+    return this.get('auth').forgotPassword(username);
+  },
+
+  /**
+   * Submits a new password.
+   * @param username User's username.
+   * @param code The verification code sent by forgotPassword.
+   * @param newPassword The user's new password.
+   * @returns {*|Promise<void>|void}
+   */
+  forgotPasswordSubmit(username, code, newPassword) {
+    this.configure();
+    return this.get('auth').forgotPasswordSubmit(username, code, newPassword);
+  },
+
   _setUser(awsUser) {
     // Creates and sets the Cognito user.
     const user = CognitoUser.create({ auth: this.get('auth'), user: awsUser });

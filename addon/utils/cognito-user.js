@@ -25,8 +25,9 @@ export default EmberObject.extend({
   },
 
   confirmPassword(verificationCode, newPassword) {
-    // return this._callbackObj('confirmPassword', verificationCode, newPassword);
-    return reject("not implemented");
+    // TODO: Deprecate this, call cognito.forgotPasswordSubmit
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
   },
 
   deleteAttributes(attributeList) {
@@ -40,8 +41,9 @@ export default EmberObject.extend({
   },
 
   forgotPassword() {
-    // return this._callbackObj('forgotPassword');
-    return reject("not implemented");
+    // TODO: Deprecate this, call cognito forgotPassword()
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.forgotPassword(username);
   },
 
   getAttributeVerificationCode(attributeName) {
