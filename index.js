@@ -1,6 +1,5 @@
 /* eslint-env node */
 'use strict';
-const VersionChecker = require('ember-cli-version-checker');
 
 module.exports = {
   name: require('./package').name,
