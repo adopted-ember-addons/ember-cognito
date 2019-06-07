@@ -7,6 +7,8 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('change-password');
+  this.route('delete-user');
   this.route('forgot-password', function() {
     this.route('confirm');
   });

@@ -1,4 +1,4 @@
-import { reject, resolve } from 'rsvp';
+import { Promise, reject, resolve } from 'rsvp';
 import EmberObject, { computed, get } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { readOnly } from '@ember/object/computed';
@@ -13,8 +13,8 @@ export default EmberObject.extend({
   attributes: readOnly("user.attributes"),
 
   changePassword(oldPassword, newPassword) {
-    // return this._callback('changePassword', oldPassword, newPassword)
-    return reject("not implemented");
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.changePassword(user, oldPassword, newPassword);
   },
 
   confirmRegistration(confirmationCode, forceAliasCreation) {
@@ -36,8 +36,19 @@ export default EmberObject.extend({
   },
 
   deleteUser() {
-    // return this._callback('deleteUser');
-    return reject("not implemented");
+    return new Promise((resolve, reject) => {
+      try {
+        this.get('user').deleteUser((err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    }, 'cognito-user#deleteUser');
   },
 
   forgotPassword() {

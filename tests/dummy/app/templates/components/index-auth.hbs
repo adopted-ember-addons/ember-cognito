@@ -22,21 +22,29 @@
         {{/each}}
       </tbody>
     </table>
-  </div>
-  <div class="col-6">
     <h2>Actions</h2>
-    {{! TODO: changePassword }}
-    {{! TODO: confirmPassword? }}
+    <div class="row">
+      <div class="col-9">
+        {{#link-to "change-password" class="btn btn-primary btn-block"}}
+          Change password
+        {{/link-to}}
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-9">
+        {{#link-to "delete-user" class="btn btn-danger btn-block"}}
+          Delete user
+        {{/link-to}}
+      </div>
+    </div>
+
     {{! TODO: deleteAttributes }}
-    {{! TODO: deleteUser }}
     {{! TODO: getAttributeVerificationCode }}
     {{! TODO: updateAttributes }}
     {{! TODO: verifyAttributes }}
-
   </div>
-</div>
-<div class="row">
-  <div class="col">
+
+  <div class="col-6">
     <h2>ID Token</h2>
     <dl>
       <dt>Expiration</dt>
@@ -50,10 +58,7 @@
       <dd>{{this.accessToken.expiration}}</dd>
     </dl>
     <pre><code>{{this.accessToken.formatted}}</code></pre>
-  </div>
-</div>
-<div class="row">
-  <div class="col">
+
     <h2>Authenticated Data</h2>
     <pre><code>{{this.authenticatedData}}</code></pre>
   </div>
