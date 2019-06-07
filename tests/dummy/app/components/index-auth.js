@@ -4,12 +4,30 @@ import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 
+
+function attributeEqual(attributeName, value) {
+  return computed('model.attributes', function() {
+    const attributes = this.get('model.attributes');
+    for (const attr of attributes) {
+      if (attr.name === attributeName) {
+        return attr.value === value;
+      }
+    }
+    // Maybe? It doesn't *need* to be verified
+    return true;
+  })
+}
+
 export default Component.extend({
   layout,
   currentUser: service(),
   cognito: service(),
+  router: service(),
   session: service(),
   cognitoUser: readOnly('cognito.user'),
+
+  emailVerified: attributeEqual('email_verified', 'true'),
+  phoneNumberVerified: attributeEqual('phone_number_verified', 'true'),
 
   init() {
     this._super(...arguments);
@@ -52,5 +70,13 @@ export default Component.extend({
 
   authenticatedData: computed('session.data', function() {
     return JSON.stringify(this.get('session.data'), undefined, 2);
-  })
+  }),
+
+  actions: {
+    verifyAttribute(attributeName) {
+      this.get('cognitoUser').getAttributeVerificationCode(attributeName).then(() => {
+        this.get('router').transitionTo('attribute-verify', { queryParams: { name: attributeName } });
+      });
+    }
+  }
 });

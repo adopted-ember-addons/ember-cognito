@@ -18,30 +18,36 @@
           <tr>
             <td>{{attr.name}}</td>
             <td>{{attr.value}}</td>
+            <td>
+              {{#link-to "attribute" (query-params name=attr.name)}}
+                Edit
+              {{/link-to}}
+            </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
-    <h2>Actions</h2>
-    <div class="row">
-      <div class="col-9">
-        {{#link-to "change-password" class="btn btn-primary btn-block"}}
-          Change password
-        {{/link-to}}
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-9">
-        {{#link-to "delete-user" class="btn btn-danger btn-block"}}
-          Delete user
-        {{/link-to}}
-      </div>
-    </div>
+    {{#link-to "attribute" (query-params name=undefined) class="btn btn-light btn-block"}}
+      Add attribute
+    {{/link-to}}
+    {{#unless this.emailVerified}}
+      <button class="btn btn-light btn-block" onclick={{action "verifyAttribute" "email"}}>
+        Verify email
+      </button>
+    {{/unless}}
+    {{#unless this.phonenNumberVerified}}
+      <button class="btn btn-light btn-block" onclick={{action "verifyAttribute" "phone_number"}}>
+        Verify phone number
+      </button>
+    {{/unless}}
 
-    {{! TODO: deleteAttributes }}
-    {{! TODO: getAttributeVerificationCode }}
-    {{! TODO: updateAttributes }}
-    {{! TODO: verifyAttributes }}
+    <h2 class="mt-4">Actions</h2>
+    {{#link-to "change-password" class="btn btn-light btn-block"}}
+      Change password
+    {{/link-to}}
+    {{#link-to "delete-user" class="btn btn-outline-danger btn-block mt-3"}}
+      Delete user
+    {{/link-to}}
   </div>
 
   <div class="col-6">

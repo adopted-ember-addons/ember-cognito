@@ -1,10 +1,11 @@
-import { Promise, reject, resolve } from 'rsvp';
-import EmberObject, { computed, get } from '@ember/object';
-import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import { Promise } from 'rsvp';
+import EmberObject, { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
+import { deprecate } from '@ember/application/deprecations';
+import { normalizeAttributes } from "./utils";
 
 //
-// Wraps an AWS CognitoUser and provides promisified versions of many functions.
+// Wraps an AWS CognitoUser.
 //
 export default EmberObject.extend({
   username: computed('user', function() {
@@ -12,33 +13,10 @@ export default EmberObject.extend({
   }),
   attributes: readOnly("user.attributes"),
 
-  changePassword(oldPassword, newPassword) {
-    const { auth, user } = this.getProperties('auth', 'user');
-    return auth.changePassword(user, oldPassword, newPassword);
-  },
-
-  confirmRegistration(confirmationCode, forceAliasCreation) {
-    // TODO: Deprecate this, call cognito confirmSignUp
-    const { auth, username } = this.getProperties('auth', 'username');
-    const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
-    return auth.confirmSignUp(username, confirmationCode, options);
-  },
-
-  confirmPassword(verificationCode, newPassword) {
-    // TODO: Deprecate this, call cognito.forgotPasswordSubmit
-    const { auth, username } = this.getProperties('auth', 'username');
-    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
-  },
-
-  deleteAttributes(attributeList) {
-    // return this._callback('deleteAttributes', attributeList);
-    return reject("not implemented");
-  },
-
-  deleteUser() {
+  _callback(method, ...args) {
     return new Promise((resolve, reject) => {
       try {
-        this.get('user').deleteUser((err, result) => {
+        this.get('user')[method](...args, (err, result) => {
           if (err) {
             reject(err);
           } else {
@@ -48,18 +26,59 @@ export default EmberObject.extend({
       } catch (error) {
         reject(error);
       }
-    }, 'cognito-user#deleteUser');
+    }, `cognito-user#${method}`);
+  },
+
+  changePassword(oldPassword, newPassword) {
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.changePassword(user, oldPassword, newPassword);
+  },
+
+  confirmRegistration(confirmationCode, forceAliasCreation) {
+    deprecate(
+      'This functionality has moved to confirmSignUp() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-confirm-registration', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
+    return auth.confirmSignUp(username, confirmationCode, options);
+  },
+
+  confirmPassword(verificationCode, newPassword) {
+    deprecate(
+      'This functionality has moved to forgotPasswordSubmit() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-confirm-password', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
+  },
+
+  deleteAttributes(attributeList) {
+    return this._callback('deleteAttributes', attributeList);
+  },
+
+  deleteUser() {
+    return this._callback('deleteUser');
   },
 
   forgotPassword() {
-    // TODO: Deprecate this, call cognito forgotPassword()
+    deprecate(
+      'This functionality has moved to forgotPassword() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-forgot-password', until: '1.0' }
+    );
+
     const { auth, username } = this.getProperties('auth', 'username');
     return auth.forgotPassword(username);
   },
 
   getAttributeVerificationCode(attributeName) {
-    // return this._callbackObj('getAttributeVerificationCode', attributeName);
-    return reject("not implemented");
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.verifyUserAttribute(user, attributeName);
   },
 
   getSession() {
@@ -67,23 +86,24 @@ export default EmberObject.extend({
   },
 
   getUserAttributes() {
-    // TODO: Mark as deprecated
-    // Backwards compatibility -- construct a list of CognitoUserAttribute objects
-    const attrs = this.get("attributes");
-    let result = [];
-    for (const attr in attrs) {
-      if (attrs.hasOwnProperty(attr)) {
-        result.push(new CognitoUserAttribute({
-          Name: attr,
-          Value: attrs[attr]
-        }))
-      }
-    }
-    return resolve(result);
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.userAttributes(user);
+  },
+
+  getUserAttributesHash() {
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.userAttributes(user).then((result) => {
+      return normalizeAttributes(result, false);
+    });
   },
 
   resendConfirmationCode() {
-    // TODO: Deprecate this, switch to cognito.resendSignUp()
+    deprecate(
+      'This functionality has moved to resendSignUp() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-resend-confirmation-code', until: '1.0' }
+    );
+
     const { auth, username } = this.getProperties('auth', 'username');
     return auth.resendSignUp(username);
   },
@@ -92,14 +112,15 @@ export default EmberObject.extend({
     return this.get('auth').signOut();
   },
 
-  updateAttributes(attributeList) {
-    // return this._callback('updateAttributes', attributeList);
-    return reject("not implemented");
+  updateAttributes(attributes) {
+    const { auth, user } = this.getProperties('auth', 'user');
+    const normalized = normalizeAttributes(attributes);
+    return auth.updateUserAttributes(user, normalized);
   },
 
   verifyAttribute(attributeName, confirmationCode) {
-    // return this._callbackObj('verifyAttribute', attributeName, confirmationCode);
-    return reject("not implemented");
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.verifyUserAttributeSubmit(user, attributeName, confirmationCode);
   },
 
   // Non-AWS method

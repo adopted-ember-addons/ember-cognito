@@ -21,8 +21,6 @@ export default Base.extend({
 
   _resolveAuth(user) {
     this.get('cognito')._setUser(user);
-    // TODO: Do we want to actually put the tokens in the auth data anymore?
-    // They won't be refreshed, so they will be invalid after an hour.
     return { "poolId": user.pool.getUserPoolId(), "clientId": user.pool.getClientId() };
   },
 
@@ -35,7 +33,6 @@ export default Base.extend({
       } else {
         throw { state: { name: user.challengeName, user } };
       }
-      // TODO: Handle other challenge states...
     } else {
       return this._resolveAuth(user);
     }

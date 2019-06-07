@@ -1,7 +1,7 @@
 import Service, { inject as service } from '@ember/service';
-import { typeOf } from '@ember/utils';
 import { assign } from '@ember/polyfills';
 import CognitoUser from '../utils/cognito-user';
+import { normalizeAttributes } from "../utils/utils";
 import Auth from "@aws-amplify/auth";
 
 /**
@@ -39,22 +39,10 @@ export default Service.extend({
   signUp(username, password, attributes, validationData) {
     this.configure();
 
-    // If the attributeList is an object, then it is treated as
-    // a hash of attributes, otherwise it is treated as a list of CognitoUserAttributes,
-    // for backward compatibility.
-    if (typeOf(attributes) === 'array') {
-      // TODO: Deprecate this path.
-      let newAttrs = {};
-      for (const attr of attributes) {
-        newAttrs[attr.getName()] = attr.getValue();
-      }
-      attributes = newAttrs;
-    }
-
     return this.get('auth').signUp({
       username,
       password,
-      attributes,
+      attributes: normalizeAttributes(attributes),
       validationData
     }).then((result) => {
       // Replace the user with a wrapped user.

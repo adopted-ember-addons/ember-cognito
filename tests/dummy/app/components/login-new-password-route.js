@@ -18,7 +18,7 @@ export default Component.extend({
         // Nothing to do.
       }).catch((err) => {
         // TODO: Handle another state, like TOTP
-        this.set('errorMessage', err.message || err);
+        this.set('errorMessage', err.message);
       });
     },
   }

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { visit, currentURL, find, findAll } from '@ember/test-helpers';
+import { currentURL, find, findAll, visit } from '@ember/test-helpers';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { mockCognitoUser } from 'ember-cognito/test-support';
 
@@ -36,9 +36,9 @@ module('Acceptance | index', function(hooks) {
     });
 
     assert.deepEqual(text, [
-      'sub', 'aaaabbbb-cccc-dddd-eeee-ffffgggghhhh',
-      'email', 'testuser@gmail.com',
-      'email_verified', 'false'
+      'sub', 'aaaabbbb-cccc-dddd-eeee-ffffgggghhhh', 'Edit',
+      'email', 'testuser@gmail.com', 'Edit',
+      'email_verified', 'false', 'Edit'
     ]);
   });
 });

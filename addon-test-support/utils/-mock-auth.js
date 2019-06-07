@@ -77,5 +77,9 @@ export default EmberObject.extend({
     } else {
       return reject('user not authenticated');
     }
+  },
+
+  userAttributes() {
+    return resolve([]);
   }
 });
