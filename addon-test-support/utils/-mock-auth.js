@@ -40,13 +40,17 @@ export default EmberObject.extend({
     return resolve({ user, userConfirmed: false, userSub: "xxxx" });
   },
 
-  signIn() {
+  _resolveAuthedUser(msg) {
     const user = this.get('_authenticatedUser');
     if (user) {
       return resolve(user);
     } else {
-      return reject('invalid user');
+      return reject(msg);
     }
+  },
+
+  signIn() {
+    return this._resolveAuthedUser('invalid user');
   },
 
   signOut() {
@@ -54,21 +58,11 @@ export default EmberObject.extend({
   },
 
   currentAuthenticatedUser() {
-    const user = this.get('_authenticatedUser');
-    if (user) {
-      return resolve(user);
-    } else {
-      return reject("user not authenticated");
-    }
+    return this._resolveAuthedUser("user not authenticated");
   },
 
   completeNewPassword() {
-    const user = this.get('_authenticatedUser');
-    if (user) {
-      return resolve(user);
-    } else {
-      return reject('invalid user');
-    }
+    return this._resolveAuthedUser('invalid user');
   },
 
   currentSession() {
