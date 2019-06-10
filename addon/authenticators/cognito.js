@@ -21,6 +21,14 @@ export default Base.extend({
     });
   },
 
+  _makeAuthData(user, session) {
+    return {
+      poolId: user.pool.getUserPoolId(),
+      clientId: user.pool.getClientId(),
+      access_token: session.getIdToken().getJwtToken()
+    };
+  },
+
   _resolveAuth(user) {
     const cognito = this.get('cognito');
     cognito._setUser(user);
@@ -28,11 +36,7 @@ export default Base.extend({
     return get(cognito, 'user').getSession().then((session) => {
       /* eslint-disable camelcase */
       cognito.startRefreshTask(session);
-      return {
-        poolId: user.pool.getUserPoolId(),
-        clientId: user.pool.getClientId(),
-        access_token: session.getIdToken().getJwtToken()
-      };
+      return this._makeAuthData(user, session);
     });
   },
 
@@ -66,11 +70,7 @@ export default Base.extend({
 
         cognito.startRefreshTask(session);
         return get(cognito, 'auth').currentAuthenticatedUser().then((awsUser) => {
-          return {
-            poolId: awsUser.pool.getUserPoolId(),
-            clientId: awsUser.pool.getClientId(),
-            access_token: session.getIdToken().getJwtToken()
-          };
+          return this._makeAuthData(awsUser, session);
         });
       } else {
         return reject('session is invalid');
