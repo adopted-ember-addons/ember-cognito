@@ -1,6 +1,7 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import EmberObject, { get, set } from '@ember/object';
 import { resolve } from 'rsvp';
+import { newSession } from "./-mock-auth";
 
 const MockUser = EmberObject.extend({
   init() {
@@ -33,7 +34,11 @@ const MockUser = EmberObject.extend({
   },
 
   getSession() {
-    return resolve(get(this, 'session'));
+    const session = this.get('session');
+    if (session) {
+      return resolve(session);
+    }
+    return resolve(newSession());
   },
 
   getUserAttributes() {

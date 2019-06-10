@@ -3,6 +3,7 @@ import { assign } from '@ember/polyfills';
 import CognitoUser from '../utils/cognito-user';
 import { normalizeAttributes } from "../utils/utils";
 import Auth from "@aws-amplify/auth";
+import { cancel, later } from '@ember/runloop';
 
 /**
  * @public
@@ -12,6 +13,11 @@ import Auth from "@aws-amplify/auth";
 export default Service.extend({
   session: service(),
   auth: Auth,
+
+  willDestroy() {
+    this._super(...arguments);
+    this.stopRefreshTask();
+  },
 
   /**
    * Configures the Amplify library with the pool & client IDs, and any additional
@@ -92,6 +98,38 @@ export default Service.extend({
   forgotPasswordSubmit(username, code, newPassword) {
     this.configure();
     return this.get('auth').forgotPasswordSubmit(username, code, newPassword);
+  },
+
+  /**
+   * Enable the token refresh timer.
+   */
+  startRefreshTask(session) {
+    if (!this.get('autoRefreshSession')) {
+      return;
+    }
+    // Schedule a task for just past when the token expires.
+    const now = Math.floor(new Date() / 1000);
+    const exp = session.getIdToken().getExpiration();
+    const adjusted = now - session.getClockDrift();
+    const duration = (exp - adjusted) * 1000 + 100;
+    this.set('_taskDuration', duration);
+    this.set('task', later(this, 'refreshSession', duration));
+  },
+
+  /**
+   * Disable the token refresh timer.
+   */
+  stopRefreshTask() {
+    cancel(this.get('task'));
+    this.set('task', undefined);
+    this.set('_taskDuration', undefined);
+  },
+
+  refreshSession() {
+    let user = this.get('user');
+    if (user) {
+      return this.get('session').authenticate('authenticator:cognito', { state: { name: 'refresh' } });
+    }
   },
 
   _setUser(awsUser) {

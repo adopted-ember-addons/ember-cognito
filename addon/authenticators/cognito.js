@@ -1,6 +1,8 @@
+import { get } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Base from 'ember-simple-auth/authenticators/base';
+import { reject } from 'rsvp';
 
 export default Base.extend({
   cognito: service(),
@@ -20,8 +22,18 @@ export default Base.extend({
   },
 
   _resolveAuth(user) {
-    this.get('cognito')._setUser(user);
-    return { "poolId": user.pool.getUserPoolId(), "clientId": user.pool.getClientId() };
+    const cognito = this.get('cognito');
+    cognito._setUser(user);
+    // Now pull out the (promisified) user
+    return get(cognito, 'user').getSession().then((session) => {
+      /* eslint-disable camelcase */
+      cognito.startRefreshTask(session);
+      return {
+        poolId: user.pool.getUserPoolId(),
+        clientId: user.pool.getClientId(),
+        access_token: session.getIdToken().getJwtToken()
+      };
+    });
   },
 
   _handleSignIn(user) {
@@ -44,8 +56,32 @@ export default Base.extend({
     });
   },
 
+  _handleRefresh() {
+    const cognito = this.get('cognito');
+    const user = get(cognito, 'user');
+    // Get the session, which will refresh it if necessary
+    return user.getSession().then((session) => {
+      if (session.isValid()) {
+        /* eslint-disable camelcase */
+
+        cognito.startRefreshTask(session);
+        return get(cognito, 'auth').currentAuthenticatedUser().then((awsUser) => {
+          return {
+            poolId: awsUser.pool.getUserPoolId(),
+            clientId: awsUser.pool.getClientId(),
+            access_token: session.getIdToken().getJwtToken()
+          };
+        });
+      } else {
+        return reject('session is invalid');
+      }
+    });
+  },
+
   _handleState(name, params) {
-    if (name === 'newPasswordRequired') {
+    if (name === 'refresh') {
+      return this._handleRefresh();
+    } else if (name === 'newPasswordRequired') {
       return this._handleNewPasswordRequired(params);
     } else {
       throw new Error('invalid state');
