@@ -8,7 +8,8 @@ import { CognitoUser as AWSUser, CognitoUserPool } from 'amazon-cognito-identity
 export function newUser(username) {
   const { owner } = getContext();
   const cognito = owner.lookup('service:cognito');
-  const { poolId, clientId } = getProperties(cognito, "poolId", "clientId");
+  const { poolId  = 'us-east-1_TEST', clientId = 'TEST' } =
+    getProperties(cognito, "poolId", "clientId");
   const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
   return new AWSUser({ Username: username, Pool: pool });
 }
@@ -18,7 +19,8 @@ export function mockCognitoUser(userAttributes) {
 
   const { username } = userAttributes;
   const cognito = owner.lookup('service:cognito');
-  const { poolId, clientId } = getProperties(cognito, "poolId", "clientId");
+  const { poolId  = 'us-east-1_TEST', clientId = 'TEST' } =
+    getProperties(cognito, "poolId", "clientId");
   const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
   const user = new AWSUser({ Username: username, Pool: pool });
   const auth = MockAuth.create({ _authenticatedUser: user });

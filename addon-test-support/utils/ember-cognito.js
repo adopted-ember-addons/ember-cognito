@@ -34,11 +34,7 @@ const MockUser = EmberObject.extend({
   },
 
   getSession() {
-    const session = this.get('session');
-    if (session) {
-      return resolve(session);
-    }
-    return resolve(newSession());
+    return resolve(this.get('session') || newSession());
   },
 
   getUserAttributes() {
