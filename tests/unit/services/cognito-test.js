@@ -4,7 +4,7 @@ import { setupTest } from 'ember-qunit';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import CognitoUser from 'dummy/utils/cognito-user';
 import config from '../../../config/environment';
-import { mockAuth, MockAuth, newUser } from "ember-cognito/test-support";
+import { mockAuth, MockAuth, mockCognitoUser, newUser } from "ember-cognito/test-support";
 import { reject, resolve } from 'rsvp';
 
 module('Unit | Service | cognito', function(hooks) {
@@ -81,5 +81,18 @@ module('Unit | Service | cognito', function(hooks) {
       phone_number: '555-1212'
     });
     assert.deepEqual(get(auth, 'validationData'), [{ 'foo': 'bar' }]);
+  });
+
+  test('getIdToken auth', async function(assert) {
+    await mockCognitoUser({ username: 'testuser' });
+
+    const service = this.owner.lookup('service:cognito');
+    const token = await service.getIdToken();
+    assert.ok(token.startsWith('header.'));
+  });
+
+  test('getIdToken unauth', async function(assert) {
+    const service = this.owner.lookup('service:cognito');
+    assert.rejects(service.getIdToken());
   });
 });

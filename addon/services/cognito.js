@@ -4,6 +4,7 @@ import CognitoUser from '../utils/cognito-user';
 import { normalizeAttributes } from "../utils/utils";
 import Auth from "@aws-amplify/auth";
 import { cancel, later } from '@ember/runloop';
+import { reject } from 'rsvp';
 
 /**
  * @public
@@ -129,6 +130,20 @@ export default Service.extend({
     let user = this.get('user');
     if (user) {
       return this.get('session').authenticate('authenticator:cognito', { state: { name: 'refresh' } });
+    }
+  },
+
+  /**
+   * A helper that resolves to the logged in user's id token.
+   */
+  getIdToken() {
+    const user = this.get('user');
+    if (user) {
+      return user.getSession().then((session) => {
+        return session.getIdToken().getJwtToken();
+      })
+    } else {
+      return reject('user not authenticated');
     }
   },
 
