@@ -1,3 +1,4 @@
+import { deprecate } from '@ember/application/deprecations';
 
 /**
  * @private
@@ -11,6 +12,11 @@
  */
 export default class CognitoStorage {
   constructor(data = {}) {
+    deprecate(
+      'The CognitoStorage object has been deprecated.',
+      false,
+      { id: 'ember-cognito-storage', until: '1.0' }
+    );
     this.data = data;
   }
 
