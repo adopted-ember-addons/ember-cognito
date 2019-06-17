@@ -1,13 +1,17 @@
 import { Promise } from 'rsvp';
-import EmberObject, { get, computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
+import { readOnly } from '@ember/object/computed';
+import { deprecate } from '@ember/application/deprecations';
+import { normalizeAttributes } from "./utils";
 
 //
-// Wraps an AWS CognitoUser and provides promisified versions of many functions.
+// Wraps an AWS CognitoUser.
 //
 export default EmberObject.extend({
   username: computed('user', function() {
     return this.get('user').getUsername();
   }),
+  attributes: readOnly("user.attributes"),
 
   _callback(method, ...args) {
     return new Promise((resolve, reject) => {
@@ -25,31 +29,32 @@ export default EmberObject.extend({
     }, `cognito-user#${method}`);
   },
 
-  // Support for methods that user { onSuccess, onFailure } callback hashes
-  _callbackObj(method, ...args) {
-    return new Promise((resolve, reject) => {
-      try {
-        this.get('user')[method](...args, {
-          onSuccess: resolve,
-          onFailure: reject
-        });
-      } catch (error) {
-        reject(error);
-      }
-    }, `cognito-user#${method}`);
-
-  },
-
   changePassword(oldPassword, newPassword) {
-    return this._callback('changePassword', oldPassword, newPassword)
-  },
-
-  confirmRegistration(confirmationCode, forceAliasCreation) {
-    return this._callback('confirmRegistration', confirmationCode, forceAliasCreation);
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.changePassword(user, oldPassword, newPassword);
   },
 
   confirmPassword(verificationCode, newPassword) {
-    return this._callbackObj('confirmPassword', verificationCode, newPassword);
+    deprecate(
+      'This functionality has moved to forgotPasswordSubmit() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-confirm-password', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
+  },
+
+  confirmRegistration(confirmationCode, forceAliasCreation) {
+    deprecate(
+      'This functionality has moved to confirmSignUp() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-confirm-registration', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
+    return auth.confirmSignUp(username, confirmationCode, options);
   },
 
   deleteAttributes(attributeList) {
@@ -61,35 +66,61 @@ export default EmberObject.extend({
   },
 
   forgotPassword() {
-    return this._callbackObj('forgotPassword');
+    deprecate(
+      'This functionality has moved to forgotPassword() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-forgot-password', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.forgotPassword(username);
   },
 
   getAttributeVerificationCode(attributeName) {
-    return this._callbackObj('getAttributeVerificationCode', attributeName);
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.verifyUserAttribute(user, attributeName);
   },
 
   getSession() {
-    return this._callback('getSession');
+    return this.get('auth').currentSession();
   },
 
   getUserAttributes() {
-    return this._callback('getUserAttributes');
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.userAttributes(user);
+  },
+
+  getUserAttributesHash() {
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.userAttributes(user).then((result) => {
+      return normalizeAttributes(result, false);
+    });
   },
 
   resendConfirmationCode() {
-    return this._callback('resendConfirmationCode');
+    deprecate(
+      'This functionality has moved to resendSignUp() on the Cognito service.',
+      false,
+      { id: 'ember-cognito-resend-confirmation-code', until: '1.0' }
+    );
+
+    const { auth, username } = this.getProperties('auth', 'username');
+    return auth.resendSignUp(username);
   },
 
   signOut() {
-    return get(this, 'user').signOut();
+    return this.get('auth').signOut();
   },
 
-  updateAttributes(attributeList) {
-    return this._callback('updateAttributes', attributeList);
+  updateAttributes(attributes) {
+    const { auth, user } = this.getProperties('auth', 'user');
+    const normalized = normalizeAttributes(attributes);
+    return auth.updateUserAttributes(user, normalized);
   },
 
   verifyAttribute(attributeName, confirmationCode) {
-    return this._callbackObj('verifyAttribute', attributeName, confirmationCode);
+    const { auth, user } = this.getProperties('auth', 'user');
+    return auth.verifyUserAttributeSubmit(user, attributeName, confirmationCode);
   },
 
   // Non-AWS method
@@ -100,8 +131,12 @@ export default EmberObject.extend({
     });
   },
 
-  // Non-AWS method
   getStorageData() {
-    return get(this, 'user').storage.getData();
+    deprecate(
+      'getStorageData() no longer used, and always returns an empty object.',
+      false,
+      { id: 'ember-cognito-get-storage-data', until: '1.0' }
+    );
+    return {};
   }
 });

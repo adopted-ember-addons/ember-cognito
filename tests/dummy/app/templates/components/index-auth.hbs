@@ -18,21 +18,45 @@
           <tr>
             <td>{{attr.name}}</td>
             <td>{{attr.value}}</td>
+            <td>
+              {{#link-to "attribute" (query-params name=attr.name)}}
+                Edit
+              {{/link-to}}
+            </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
+    {{#link-to "attribute" (query-params name=undefined) class="btn btn-light btn-block"}}
+      Add attribute
+    {{/link-to}}
+    {{#unless this.emailVerified}}
+      <button class="btn btn-light btn-block" onclick={{action "verifyAttribute" "email"}}>
+        Verify email
+      </button>
+    {{/unless}}
+    {{#unless this.phonenNumberVerified}}
+      <button class="btn btn-light btn-block" onclick={{action "verifyAttribute" "phone_number"}}>
+        Verify phone number
+      </button>
+    {{/unless}}
+
+    <h2 class="mt-4">Actions</h2>
+    {{#link-to "change-password" class="btn btn-light btn-block"}}
+      Change password
+    {{/link-to}}
+    {{#link-to "delete-user" class="btn btn-outline-danger btn-block mt-3"}}
+      Delete user
+    {{/link-to}}
   </div>
+
   <div class="col-6">
     <h2>Cognito Service</h2>
     <dl>
       <dt>Task Duration</dt>
       <dd>{{this.cognito._taskDuration}}</dd>
     </dl>
-  </div>
-</div>
-<div class="row">
-  <div class="col">
+
     <h2>ID Token</h2>
     <dl>
       <dt>Expiration</dt>
@@ -46,10 +70,7 @@
       <dd>{{this.accessToken.expiration}}</dd>
     </dl>
     <pre><code>{{this.accessToken.formatted}}</code></pre>
-  </div>
-</div>
-<div class="row">
-  <div class="col">
+
     <h2>Authenticated Data</h2>
     <pre><code>{{this.authenticatedData}}</code></pre>
   </div>

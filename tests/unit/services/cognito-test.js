@@ -1,51 +1,34 @@
-import { get, set } from '@ember/object';
+import { get } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import sinonTest from 'ember-sinon-qunit/test-support/test';
-import { CognitoUser as AWSCognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import CognitoUser from 'dummy/utils/cognito-user';
-import { newSession } from '../../utils/session';
-import { run } from '@ember/runloop';
 import config from '../../../config/environment';
+import { mockAuth, MockAuth, mockCognitoUser, newUser } from "ember-cognito/test-support";
+import { reject, resolve } from 'rsvp';
 
 module('Unit | Service | cognito', function(hooks) {
   setupTest(hooks);
 
-  hooks.beforeEach(function() {
-    this.stubPoolMethod = function(service, method, fn) {
-      this.stub(service, '_stubPool').callsFake((pool) => {
-        this.stub(pool, method).callsFake(fn);
-        return pool;
-      });
-    };
-  });
-
-  function getAwsUser(username) {
-    let pool = new CognitoUserPool({ UserPoolId: 'us-east-1_TEST', ClientId: 'TEST' });
-    return new AWSCognitoUser({ Username: username, Pool: pool });
-  }
-
   test('config is set correctly', function(assert) {
-    let service = this.owner.lookup('service:cognito');
+    const service = this.owner.lookup('service:cognito');
     assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
     assert.equal(get(service, 'clientId'), 'TEST');
-    assert.strictEqual(get(service, 'autoRefreshSession'), true);
     assert.equal(get(service, 'authenticationFlowType'), config.cognito.authenticationFlowType);
   });
 
-  sinonTest('signup works', async function(assert) {
-    let service = this.owner.lookup('service:cognito');
-    this.stubPoolMethod(service, 'signUp', (username, password, attributeList, validationData, callback) => {
-      // Return data is:
-      // user: new CognitoUser
-      // userConfirmed: boolean
-      // userSub: ID
-      callback(null, {
-        user: getAwsUser(username),
-        userConfirmed: true,
-        userSub: 'xxxx'
-      });
-    });
+  test('signup works', async function(assert) {
+    const service = this.owner.lookup('service:cognito');
+
+    await mockAuth(MockAuth.extend({
+      signUp(username) {
+        return resolve({
+          user: newUser(username),
+          userConfirmed: true,
+          userSub: 'xxxx'
+        })
+      }
+    }));
 
     let result = await service.signUp('testuser', 'password', [], null);
     // The user should be upgraded to one of our users
@@ -54,17 +37,14 @@ module('Unit | Service | cognito', function(hooks) {
     assert.equal(result.userSub, 'xxxx');
   });
 
-  sinonTest('signup error', async function(assert) {
-    assert.expect(1);
+  test('signup error', async function(assert) {
+    const service = this.owner.lookup('service:cognito');
 
-    let service = this.owner.lookup('service:cognito');
-    this.stubPoolMethod(service, 'signUp', (username, password, attributeList, validationData, callback) => {
-      // Return data is:
-      // user: new CognitoUser
-      // userConfirmed: boolean
-      // userSub: ID
-      callback('error', null);
-    });
+    await mockAuth(MockAuth.extend({
+      signUp() {
+        return reject('error');
+      }
+    }));
 
     try {
       await service.signUp('testuser', 'password', [], null);
@@ -74,34 +54,45 @@ module('Unit | Service | cognito', function(hooks) {
     }
   });
 
-  sinonTest('refreshSession', async function(assert) {
-    // Not much to test here, other than included coverage?
-    let subject = this.owner.lookup('service:cognito');
-    set(subject, 'user', CognitoUser.create());
+  test('deprecated attribute array', async function(assert) {
+    const service = this.owner.lookup('service:cognito');
 
-    let auth = this.stub(get(subject, 'session'), 'authenticate').resolves();
-    subject.refreshSession();
-    assert.ok(auth.called);
+    const auth = MockAuth.extend({
+      signUp({ username, attributes, validationData }) {
+        this.set('attributes', attributes);
+        this.set('validationData', validationData);
+        return resolve({
+          user: newUser(username),
+          userConfirmed: true,
+          userSub: 'xxxx'
+        });
+      }
+    }).create();
+    await mockAuth(auth);
+    const attrs = [
+      new CognitoUserAttribute({ Name: 'email', Value: 'test@email.com' }),
+      new CognitoUserAttribute({ Name: 'phone_number', Value: '555-1212' })
+    ];
+    const validation = [{ 'foo': 'bar' }];
+
+    await service.signUp('testuser', 'password', attrs, validation);
+    assert.deepEqual(get(auth, 'attributes'), {
+      email: 'test@email.com',
+      phone_number: '555-1212'
+    });
+    assert.deepEqual(get(auth, 'validationData'), [{ 'foo': 'bar' }]);
   });
 
-  sinonTest('refreshSession unauthenticated', async function(assert) {
-    // Not much to test here, other than included coverage?
-    let subject = this.owner.lookup('service:cognito');
-    let auth = this.stub(get(subject, 'session'), 'authenticate').resolves();
-    await subject.refreshSession();
-    assert.notOk(auth.called);
+  test('getIdToken auth', async function(assert) {
+    await mockCognitoUser({ username: 'testuser' });
+
+    const service = this.owner.lookup('service:cognito');
+    const token = await service.getIdToken();
+    assert.ok(token.startsWith('header.'));
   });
 
-  test('destroy timer', function(assert) {
-    let subject = this.owner.factoryFor('service:cognito').create({
-      autoRefreshSession: true
-    });
-    subject.startRefreshTask(newSession());
-    assert.ok(get(subject, 'task'));
-
-    run(() => {
-      subject.destroy();
-    });
-    assert.notOk(get(subject, 'task'));
+  test('getIdToken unauth', async function(assert) {
+    const service = this.owner.lookup('service:cognito');
+    assert.rejects(service.getIdToken());
   });
 });
