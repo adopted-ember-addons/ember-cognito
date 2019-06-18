@@ -1,5 +1,6 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import EmberObject, { get, set } from '@ember/object';
+import EmberObject, { get } from '@ember/object';
+import { typeOf } from '@ember/utils';
 import { resolve } from 'rsvp';
 import { newSession } from "./-mock-auth";
 
@@ -43,6 +44,13 @@ const MockUser = EmberObject.extend({
     }));
   },
 
+  getUserAttributesHash() {
+    return resolve(get(this, 'userAttributes').reduce((acc, { name, value }) => {
+      acc[name] = value;
+      return acc;
+    }, {}));
+  },
+
   resendConfirmationCode() {
     return resolve({});
   },
@@ -51,9 +59,9 @@ const MockUser = EmberObject.extend({
     return resolve({});
   },
 
-  updateAttributes(attributeList) {
-    let attrs = get(this, 'userAttributes');
-    attributeList.forEach((updated) => {
+  _updateAttrsList(attributesList) {
+    let attrs = this.get('userAttributes');
+    attributesList.forEach((updated) => {
       let found = false;
       attrs.forEach((existing) => {
         if (existing.name === updated.getName()) {
@@ -65,7 +73,34 @@ const MockUser = EmberObject.extend({
         attrs.push({ name: updated.getName(), value: updated.getValue() });
       }
     });
-    set(this, 'userAttributes', attrs);
+    this.set('userAttributes', attrs)
+  },
+
+  _updateAttrsHash(attributes) {
+    let attrs = this.get('userAttributes');
+    Object.keys(attributes).forEach((name) => {
+      let found = false;
+      attrs.forEach((existing) => {
+        if (existing.name === name) {
+          existing.value = attributes[name];
+          found = true;
+        }
+      });
+      if (!found) {
+        attrs.push({ name, value: attributes[name] });
+      }
+    });
+    this.set('userAttributes', attrs)
+  },
+
+  updateAttributes(attributes) {
+    if (typeOf(attributes) === 'array') {
+      this._updateAttrsList(attributes);
+    } else if (typeOf(attributes) === 'object') {
+      this._updateAttrsHash(attributes);
+    } else {
+      throw new Error(`Unknown value: ${attributes}`);
+    }
     return resolve({});
   },
 

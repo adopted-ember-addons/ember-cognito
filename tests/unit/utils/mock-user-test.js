@@ -45,6 +45,33 @@ module('Unit | Utility | mock user', function() {
     ]);
   });
 
+  test('updateAttributes supports hash arguments', async function(assert) {
+    let user = MockUser.create({
+      userAttributes: [
+        { name: 'given_name', value: 'John' },
+        { name: 'family_name', value: 'Coltrane' }
+      ]
+    });
+    await user.updateAttributes({ family_name: "New Trane" });
+    assert.deepEqual(get(user, 'userAttributes'), [
+      { name: 'given_name', value: 'John' },
+      { name: 'family_name', value: 'New Trane' }
+    ]);
+  });
+
+  test('getUserAttributesHash', async function(assert) {
+    let user = MockUser.create({
+      userAttributes: [
+        { name: 'given_name', value: 'John' },
+        { name: 'family_name', value: 'Coltrane' }
+      ]
+    });
+    assert.deepEqual(await user.getUserAttributesHash(), {
+      given_name: 'John',
+      family_name: 'Coltrane'
+    })
+  });
+
   test('simple methods', async function(assert) {
     let user = MockUser.create();
     assert.deepEqual(await user.changePassword('old', 'new'), {});
