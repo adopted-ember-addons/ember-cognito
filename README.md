@@ -103,7 +103,7 @@ Amplify auth object. The service provides access to the following Amplify/auth m
 * `confirmSignUp(username, code, options)`
 * `resendSignUp(username)`
 * `forgotPassword(username)`
-* `forgotpasswordSubmit(username, code, newPassword)`
+* `forgotPasswordSubmit(username, code, newPassword)`
 
 It also provides a helper to quickly access the current user's Cognito ID token:
 
