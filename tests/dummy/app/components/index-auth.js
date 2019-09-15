@@ -59,6 +59,7 @@ export default Component.extend({
     if (session) {
       return this.tokenInfo(session.getAccessToken());
     }
+    return undefined;
   }),
 
   idToken: computed('cognitoSession', function() {
@@ -66,6 +67,7 @@ export default Component.extend({
     if (session) {
       return this.tokenInfo(session.getIdToken());
     }
+    return undefined;
   }),
 
   authenticatedData: computed('session.data', function() {

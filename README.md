@@ -239,5 +239,5 @@ login, logout, and updating/verifying user attributes.
 
 ## Support
 
-* Ember versions 2.18, 3.4 and 3.10+
+* Ember versions 3.4+
 * AWS Amplify 1.x
