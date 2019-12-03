@@ -22,7 +22,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "@aws-amplify/auth": "^1.2.22",
+    "@aws-amplify/auth": "^2.1.1",
     "@aws-amplify/core": "^1.0.25",
     "amazon-cognito-identity-js": "^3.0.12",
     "ember-auto-import": "^1.4.0",
