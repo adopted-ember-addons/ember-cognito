@@ -57,7 +57,7 @@
     "eslint-plugin-node": "^10.0.0",
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.9.0",
-    "release-it": "^12.3.6"
+    "release-it": "^13.0.0"
   },
   "release-it": {
     "github": {
