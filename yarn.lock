@@ -1289,13 +1289,22 @@ ajv@^6.1.0, ajv@^6.10.2, ajv@^6.5.5, ajv@^6.9.1:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-cognito-identity-js@^3.0.12, amazon-cognito-identity-js@^3.0.15:
+amazon-cognito-identity-js@^3.0.15:
   version "3.0.15"
   resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-3.0.15.tgz#2dcd79ca65486d6293b5a166140d68330b718b5f"
   integrity sha512-FVVd6hO0ipEODE95i2Z/6Ue/6YV8JI3sdK8zzmC8WLvI/FihbiHiNtjXojD6b48Ng2D6MZwN4C/Hqkiw5jVeFw==
   dependencies:
     buffer "4.9.1"
     crypto-js "^3.1.9-1"
+    js-cookie "^2.1.4"
+
+amazon-cognito-identity-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-4.2.0.tgz#11d31f17248a90a9313d30ede726645156b29aec"
+  integrity sha512-w9WHth5khfv3PDKG8fSKKnoxmcQviR4OwmgrCK65QscpG5yPeGmZ6eWVfIaPGT11f2M9iBoLDylttEa0fJtntw==
+  dependencies:
+    buffer "4.9.1"
+    crypto-js "^3.3.0"
     js-cookie "^2.1.4"
 
 amd-name-resolver@1.2.0:
@@ -3800,6 +3809,11 @@ crypto-js@^3.1.9-1:
   version "3.1.9-1"
   resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
   integrity sha1-/aGedh/Ad+Af+/3G6f38WeiAbNg=
+
+crypto-js@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
+  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
 
 crypto-random-string@^1.0.0:
   version "1.0.0"
