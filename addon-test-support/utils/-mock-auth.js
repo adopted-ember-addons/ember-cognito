@@ -6,14 +6,13 @@ import {
   CognitoRefreshToken,
   CognitoUserSession
 } from "amazon-cognito-identity-js";
-import { assign } from '@ember/polyfills';
 
 // Makes a JWT from a payload
 export function makeToken({ duration = 1000, header = 'header', extra = {} } = {}) {
   const now = Math.floor(new Date() / 1000);
   // To get a non-zero clock drift.
   const iat = now - 123;
-  const payload = assign({
+  const payload = Object.assign({
     iat,
     exp: iat + duration
   }, extra);
