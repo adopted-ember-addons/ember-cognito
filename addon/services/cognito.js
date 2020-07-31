@@ -1,5 +1,4 @@
 import Service, { inject as service } from '@ember/service';
-import { assign } from '@ember/polyfills';
 import CognitoUser from '../utils/cognito-user';
 import { normalizeAttributes } from "../utils/utils";
 import Auth from "@aws-amplify/auth";
@@ -27,7 +26,7 @@ export default Service.extend({
    */
   configure(awsconfig) {
     const { poolId, clientId } = this.getProperties('poolId', 'clientId');
-    const params =  assign({
+    const params =  Object.assign({
       userPoolId: poolId,
       userPoolWebClientId: clientId,
     }, awsconfig);
