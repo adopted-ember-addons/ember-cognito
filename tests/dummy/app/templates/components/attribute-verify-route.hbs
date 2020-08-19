@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Verify {{@name}}</h1>
-      <form class="verify-attribute-form" onsubmit={{action "verifyAttribute"}}>
+      <form class="verify-attribute-form" {{on "submit" (fn this.verifyAttribute)}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}

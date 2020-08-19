@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Confirm Registration</h1>
-      <form class="register-confim-form" onsubmit={{action "confirm"}}>
+      <form class="register-confirm-form" {{on "submit" (fn this.confirm)}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}

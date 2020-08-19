@@ -1,22 +1,23 @@
 import Component from '@ember/component';
 import layout from '../templates/components/forgot-password-index-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class ForgotPasswordIndexRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
+  @service cognito;
 
-  actions: {
-    forgotPassword(e) {
-      const username = this.username;
-      e.preventDefault();
+  @action
+  async forgotPassword(e) {
+    const username = this.username;
+    e.preventDefault();
 
-      this.cognito.forgotPassword(username).then(() => {
-        this.onComplete();
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
+    try {
+      await this.cognito.forgotPassword(username);
+      this.onComplete();
+    } catch (err) {
+      this.set('errorMessage', err.message);
     }
   }
-});
+}

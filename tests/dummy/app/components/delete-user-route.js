@@ -1,27 +1,28 @@
 import Component from '@ember/component';
 import layout from '../templates/components/delete-user-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class DeleteUserRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
-  session: service(),
+  @service cognito;
+  @service session;
 
-  actions: {
-    deleteUser(e) {
-      e.preventDefault();
-      const deleteVal = this.deleteVal;
-      if (deleteVal !== 'DELETE') {
-        this.set('errorMessage', 'Type "DELETE"');
-        return;
-      }
+  @action
+  async deleteUser(e) {
+    e.preventDefault();
+    const deleteVal = this.deleteVal;
+    if (deleteVal !== 'DELETE') {
+      this.set('errorMessage', 'Type "DELETE"');
+      return;
+    }
 
-      this.cognito.user.deleteUser().then(() => {
-        return this.session.invalidate();
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
+    try {
+      await this.cognito.user.deleteUser();
+      await this.session.invalidate();
+    } catch (err) {
+      this.set('errorMessage', err.message);
     }
   }
-});
+}

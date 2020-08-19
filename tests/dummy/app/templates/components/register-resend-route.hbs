@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Resend registration code</h1>
-      <form class="register-confim-form" onsubmit={{action "confirm"}}>
+      <form class="register-resend-form" {{on "submit" (fn this.resend)}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}

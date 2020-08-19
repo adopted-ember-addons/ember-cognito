@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Login</h1>
-      <form class="login-form" onsubmit={{action "login"}}>
+      <form class="login-form" {{on "submit" (fn this.login)}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}

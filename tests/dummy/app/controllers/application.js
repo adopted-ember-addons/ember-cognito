@@ -25,6 +25,16 @@ export default class ApplicationController extends Controller {
   }
 
   @action
+  setPoolId(e) {
+    set(this, 'poolId', e.target.value);
+  }
+
+  @action
+  setClientId(e) {
+    set(this, 'clientId', e.target.value);
+  }
+
+  @action
   saveIds(e) {
     e.preventDefault();
     localStorage.setItem('ember-cognito/dummy/poolId', this.poolId);

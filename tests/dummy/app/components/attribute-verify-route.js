@@ -1,23 +1,24 @@
 import Component from '@ember/component';
 import layout from '../templates/components/attribute-verify-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class AttributeVerifyRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
+  @service cognito;
 
-  actions: {
-    verifyAttribute(e) {
-      e.preventDefault();
+  @action
+  async verifyAttribute(e) {
+    e.preventDefault();
 
-      const { name, code } = this;
+    const { name, code } = this;
 
-      this.cognito.user.verifyAttribute(name, code).then(() => {
-        this.onComplete();
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
+    try {
+      await this.cognito.user.verifyAttribute(name, code);
+      this.onComplete();
+    } catch (err) {
+      this.set('errorMessage', err.message);
     }
   }
-});
+}
