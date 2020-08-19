@@ -11,9 +11,9 @@ export default Component.extend({
   actions: {
     newPassword(e) {
       e.preventDefault();
-      this.get('session').authenticate('authenticator:cognito', {
-        password: this.get('password'),
-        state: this.get('model')
+      this.session.authenticate('authenticator:cognito', {
+        password: this.password,
+        state: this.model
       }).then(() => {
         // Nothing to do.
       }).catch((err) => {

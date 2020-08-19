@@ -9,12 +9,11 @@ export default Component.extend({
 
   actions: {
     changePassword(e) {
-      const { oldPassword, newPassword, } =
-        this.getProperties('oldPassword', 'newPassword');
+      const { oldPassword, newPassword, } = this;
 
       e.preventDefault();
 
-      this.get('cognito.user').changePassword(oldPassword, newPassword).then(() => {
+      this.cognito.user.changePassword(oldPassword, newPassword).then(() => {
         this.onComplete();
       }).catch((err) => {
         this.set('errorMessage', err.message);

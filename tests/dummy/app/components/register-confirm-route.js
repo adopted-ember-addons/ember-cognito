@@ -9,10 +9,10 @@ export default Component.extend({
 
   actions: {
     confirm(e) {
-      const { username, code } = this.getProperties('username', 'code');
+      const { username, code } = this;
 
       e.preventDefault();
-      this.get('cognito').confirmSignUp(username, code).then(() => {
+      this.cognito.confirmSignUp(username, code).then(() => {
         this.onComplete();
       }).catch((err) => {
         this.set('errorMessage', err.message);

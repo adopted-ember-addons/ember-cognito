@@ -9,15 +9,14 @@ export default Component.extend({
 
   actions: {
     register(e) {
-      const { username, password, phone, email } =
-        this.getProperties('username', 'password', 'phone', 'email');
+      const { username, password, phone, email } = this;
       const attributes = {
         email,
         phone_number: phone
       };
 
       e.preventDefault();
-      this.get('cognito').signUp(username, password, attributes).then((result) => {
+      this.cognito.signUp(username, password, attributes).then((result) => {
         // If the user is confirmed, take then right to the
         if (result.userConfirmed) {
           this.onComplete(result.user);

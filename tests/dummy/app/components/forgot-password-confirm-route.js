@@ -9,12 +9,11 @@ export default Component.extend({
 
   actions: {
     forgotPasswordSubmit(e) {
-      const { username, code, password, } =
-        this.getProperties('username', 'code', 'password');
+      const { username, code, password, } = this;
 
       e.preventDefault();
 
-      this.get('cognito').forgotPasswordSubmit(username, code, password).then(() => {
+      this.cognito.forgotPasswordSubmit(username, code, password).then(() => {
         this.onComplete();
       }).catch((err) => {
         this.set('errorMessage', err.message);

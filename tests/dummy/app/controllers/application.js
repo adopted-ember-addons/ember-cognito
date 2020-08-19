@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { alias } from '@ember/object/computed';
 
 export default Controller.extend({
@@ -27,12 +27,12 @@ export default Controller.extend({
   actions: {
     saveIds(e) {
       e.preventDefault();
-      localStorage.setItem('ember-cognito/dummy/poolId', get(this, 'poolId'));
-      localStorage.setItem('ember-cognito/dummy/clientId', get(this, 'clientId'));
+      localStorage.setItem('ember-cognito/dummy/poolId', this.poolId);
+      localStorage.setItem('ember-cognito/dummy/clientId', this.clientId);
     },
 
     logout() {
-      this.get('session').invalidate();
+      this.session.invalidate();
     }
   }
 });

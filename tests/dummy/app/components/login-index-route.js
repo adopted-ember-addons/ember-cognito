@@ -11,8 +11,8 @@ export default Component.extend({
   actions: {
     login(e) {
       e.preventDefault();
-      let params = this.getProperties('username', 'password');
-      this.get('session').authenticate('authenticator:cognito', params).then(() => {
+      let params = { username: this.username, password: this.password };
+      this.session.authenticate('authenticator:cognito', params).then(() => {
         // Nothing to do.
       }).catch((err) => {
         if (err.state && err.state.name === 'newPasswordRequired') {

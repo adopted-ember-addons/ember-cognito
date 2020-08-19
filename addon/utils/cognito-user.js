@@ -9,14 +9,14 @@ import { normalizeAttributes } from "./utils";
 //
 export default EmberObject.extend({
   username: computed('user', function() {
-    return this.get('user').getUsername();
+    return this.user.getUsername();
   }),
   attributes: readOnly("user.attributes"),
 
   _callback(method, ...args) {
     return new Promise((resolve, reject) => {
       try {
-        this.get('user')[method](...args, (err, result) => {
+        this.user[method](...args, (err, result) => {
           if (err) {
             reject(err);
           } else {
@@ -30,7 +30,7 @@ export default EmberObject.extend({
   },
 
   changePassword(oldPassword, newPassword) {
-    const { auth, user } = this.getProperties('auth', 'user');
+    const { auth, user } = this;
     return auth.changePassword(user, oldPassword, newPassword);
   },
 
@@ -41,7 +41,7 @@ export default EmberObject.extend({
       { id: 'ember-cognito-confirm-password', until: '1.0' }
     );
 
-    const { auth, username } = this.getProperties('auth', 'username');
+    const { auth, username } = this;
     return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
   },
 
@@ -52,7 +52,7 @@ export default EmberObject.extend({
       { id: 'ember-cognito-confirm-registration', until: '1.0' }
     );
 
-    const { auth, username } = this.getProperties('auth', 'username');
+    const { auth, username } = this;
     const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
     return auth.confirmSignUp(username, confirmationCode, options);
   },
@@ -72,26 +72,26 @@ export default EmberObject.extend({
       { id: 'ember-cognito-forgot-password', until: '1.0' }
     );
 
-    const { auth, username } = this.getProperties('auth', 'username');
+    const { auth, username } = this;
     return auth.forgotPassword(username);
   },
 
   getAttributeVerificationCode(attributeName) {
-    const { auth, user } = this.getProperties('auth', 'user');
+    const { auth, user } = this;
     return auth.verifyUserAttribute(user, attributeName);
   },
 
   getSession() {
-    return this.get('auth').currentSession();
+    return this.auth.currentSession();
   },
 
   getUserAttributes() {
-    const { auth, user } = this.getProperties('auth', 'user');
+    const { auth, user } = this;
     return auth.userAttributes(user);
   },
 
   getUserAttributesHash() {
-    const { auth, user } = this.getProperties('auth', 'user');
+    const { auth, user } = this;
     return auth.userAttributes(user).then((result) => {
       return normalizeAttributes(result, false);
     });
@@ -104,22 +104,22 @@ export default EmberObject.extend({
       { id: 'ember-cognito-resend-confirmation-code', until: '1.0' }
     );
 
-    const { auth, username } = this.getProperties('auth', 'username');
+    const { auth, username } = this;
     return auth.resendSignUp(username);
   },
 
   signOut() {
-    return this.get('auth').signOut();
+    return this.auth.signOut();
   },
 
   updateAttributes(attributes) {
-    const { auth, user } = this.getProperties('auth', 'user');
+    const { auth, user } = this;
     const normalized = normalizeAttributes(attributes);
     return auth.updateUserAttributes(user, normalized);
   },
 
   verifyAttribute(attributeName, confirmationCode) {
-    const { auth, user } = this.getProperties('auth', 'user');
+    const { auth, user } = this;
     return auth.verifyUserAttributeSubmit(user, attributeName, confirmationCode);
   },
 

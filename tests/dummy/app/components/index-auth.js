@@ -7,7 +7,7 @@ import { readOnly } from '@ember/object/computed';
 
 function attributeEqual(attributeName, value) {
   return computed('model.attributes', function() {
-    const attributes = this.get('model.attributes');
+    const attributes = this.model.attributes;
     for (const attr of attributes) {
       if (attr.name === attributeName) {
         return attr.value === value;
@@ -36,7 +36,7 @@ export default Component.extend({
 
   getSession() {
     // Fetch the cognito session
-    let cognitoUser = this.get('cognitoUser');
+    let cognitoUser = this.cognitoUser;
     if (cognitoUser) {
       return cognitoUser.getSession().then((session) => {
         // It can happen in acceptance tests that 'session' is falsey
@@ -55,7 +55,7 @@ export default Component.extend({
   },
 
   accessToken: computed('cognitoSession', function() {
-    let session = this.get('cognitoSession');
+    let session = this.cognitoSession;
     if (session) {
       return this.tokenInfo(session.getAccessToken());
     }
@@ -63,7 +63,7 @@ export default Component.extend({
   }),
 
   idToken: computed('cognitoSession', function() {
-    let session = this.get('cognitoSession');
+    let session = this.cognitoSession;
     if (session) {
       return this.tokenInfo(session.getIdToken());
     }
@@ -71,13 +71,13 @@ export default Component.extend({
   }),
 
   authenticatedData: computed('session.data', function() {
-    return JSON.stringify(this.get('session.data'), undefined, 2);
+    return JSON.stringify(this.session.data, undefined, 2);
   }),
 
   actions: {
     verifyAttribute(attributeName) {
-      this.get('cognitoUser').getAttributeVerificationCode(attributeName).then(() => {
-        this.get('router').transitionTo('attribute-verify', { queryParams: { name: attributeName } });
+      this.cognitoUser.getAttributeVerificationCode(attributeName).then(() => {
+        this.router.transitionTo('attribute-verify', { queryParams: { name: attributeName } });
       });
     }
   }

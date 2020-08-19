@@ -9,10 +9,10 @@ export default Component.extend({
 
   actions: {
     confirm(e) {
-      const username = this.get('username');
+      const username = this.username;
 
       e.preventDefault();
-      this.get('cognito').resendSignUp(username).then(() => {
+      this.cognito.resendSignUp(username).then(() => {
         this.onComplete();
       }).catch((err) => {
         this.set('errorMessage', err.message);

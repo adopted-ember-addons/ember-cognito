@@ -1,4 +1,3 @@
-import { get } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Base from 'ember-simple-auth/authenticators/base';
@@ -12,11 +11,11 @@ export default Base.extend({
   authenticationFlowType: readOnly('cognito.authenticationFlowType'),
 
   restore({ poolId, clientId }) {
-    this.get('cognito').configure({
+    this.cognito.configure({
       userPoolId: poolId,
       userPoolWebClientId: clientId
     });
-    return this.get('auth').currentAuthenticatedUser().then((user) => {
+    return this.auth.currentAuthenticatedUser().then((user) => {
       return this._resolveAuth(user);
     });
   },
@@ -30,10 +29,10 @@ export default Base.extend({
   },
 
   _resolveAuth(user) {
-    const cognito = this.get('cognito');
+    const { cognito } = this;
     cognito._setUser(user);
     // Now pull out the (promisified) user
-    return get(cognito, 'user').getSession().then((session) => {
+    return cognito.user.getSession().then((session) => {
       /* eslint-disable camelcase */
       cognito.startRefreshTask(session);
       return this._makeAuthData(user, session);
@@ -55,21 +54,21 @@ export default Base.extend({
   },
 
   _handleNewPasswordRequired({ password, state: { user } }) {
-    return this.get('auth').completeNewPassword(user, password).then((user) => {
+    return this.auth.completeNewPassword(user, password).then((user) => {
       return this._handleSignIn(user);
     });
   },
 
   _handleRefresh() {
-    const cognito = this.get('cognito');
-    const user = get(cognito, 'user');
+    const { cognito } = this;
+    const { auth, user } = cognito;
     // Get the session, which will refresh it if necessary
     return user.getSession().then((session) => {
       if (session.isValid()) {
         /* eslint-disable camelcase */
 
         cognito.startRefreshTask(session);
-        return get(cognito, 'auth').currentAuthenticatedUser().then((awsUser) => {
+        return auth.currentAuthenticatedUser().then((awsUser) => {
           return this._makeAuthData(awsUser, session);
         });
       } else {
@@ -94,9 +93,8 @@ export default Base.extend({
       return this._handleState(state.name, params);
     }
 
-    const { auth, authenticationFlowType } =
-      this.getProperties('auth', 'authenticationFlowType');
-    this.get('cognito').configure({ authenticationFlowType });
+    const { auth, authenticationFlowType, cognito } = this;
+    cognito.configure({ authenticationFlowType });
 
     return auth.signIn(username, password).then((user) => {
       return this._handleSignIn(user);
@@ -104,7 +102,7 @@ export default Base.extend({
   },
 
   invalidate(data) {
-    return  this.get('cognito.user').signOut().then(() => {
+    return  this.cognito.user.signOut().then(() => {
       this.set('cognito.user', undefined);
       return data;
     });

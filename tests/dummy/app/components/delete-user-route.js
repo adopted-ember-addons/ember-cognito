@@ -11,14 +11,14 @@ export default Component.extend({
   actions: {
     deleteUser(e) {
       e.preventDefault();
-      const deleteVal = this.get('deleteVal');
+      const deleteVal = this.deleteVal;
       if (deleteVal !== 'DELETE') {
         this.set('errorMessage', 'Type "DELETE"');
         return;
       }
 
-      this.get('cognito.user').deleteUser().then(() => {
-        return this.get('session').invalidate();
+      this.cognito.user.deleteUser().then(() => {
+        return this.session.invalidate();
       }).catch((err) => {
         this.set('errorMessage', err.message);
       });

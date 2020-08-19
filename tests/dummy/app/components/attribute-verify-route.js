@@ -11,9 +11,9 @@ export default Component.extend({
     verifyAttribute(e) {
       e.preventDefault();
 
-      const { name, code, } = this.getProperties('name', 'code');
+      const { name, code } = this;
 
-      this.get('cognito.user').verifyAttribute(name, code).then(() => {
+      this.cognito.user.verifyAttribute(name, code).then(() => {
         this.onComplete();
       }).catch((err) => {
         this.set('errorMessage', err.message);

@@ -9,10 +9,10 @@ export default Component.extend({
 
   actions: {
     forgotPassword(e) {
-      const username = this.get('username');
+      const username = this.username;
       e.preventDefault();
 
-      this.get('cognito').forgotPassword(username).then(() => {
+      this.cognito.forgotPassword(username).then(() => {
         this.onComplete();
       }).catch((err) => {
         this.set('errorMessage', err.message);

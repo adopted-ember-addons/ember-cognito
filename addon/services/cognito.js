@@ -25,13 +25,13 @@ export default Service.extend({
    * @param awsconfig Extra AWS configuration.
    */
   configure(awsconfig) {
-    const { poolId, clientId } = this.getProperties('poolId', 'clientId');
+    const { poolId, clientId } = this;
     const params =  Object.assign({
       userPoolId: poolId,
       userPoolWebClientId: clientId,
     }, awsconfig);
 
-    this.get('auth').configure(params);
+    this.auth.configure(params);
   },
 
   /**
@@ -45,7 +45,7 @@ export default Service.extend({
   signUp(username, password, attributes, validationData) {
     this.configure();
 
-    return this.get('auth').signUp({
+    return this.auth.signUp({
       username,
       password,
       attributes: normalizeAttributes(attributes),
@@ -65,7 +65,7 @@ export default Service.extend({
    */
   confirmSignUp(username, code, options) {
     this.configure();
-    return this.get('auth').confirmSignUp(username, code, options);
+    return this.auth.confirmSignUp(username, code, options);
   },
 
   /**
@@ -75,7 +75,7 @@ export default Service.extend({
    */
   resendSignUp(username) {
     this.configure();
-    return this.get('auth').resendSignUp(username);
+    return this.auth.resendSignUp(username);
   },
 
   /**
@@ -85,7 +85,7 @@ export default Service.extend({
    */
   forgotPassword(username) {
     this.configure();
-    return this.get('auth').forgotPassword(username);
+    return this.auth.forgotPassword(username);
   },
 
   /**
@@ -97,14 +97,14 @@ export default Service.extend({
    */
   forgotPasswordSubmit(username, code, newPassword) {
     this.configure();
-    return this.get('auth').forgotPasswordSubmit(username, code, newPassword);
+    return this.auth.forgotPasswordSubmit(username, code, newPassword);
   },
 
   /**
    * Enable the token refresh timer.
    */
   startRefreshTask(session) {
-    if (!this.get('autoRefreshSession')) {
+    if (!this.autoRefreshSession) {
       return;
     }
     // Schedule a task for just past when the token expires.
@@ -120,15 +120,15 @@ export default Service.extend({
    * Disable the token refresh timer.
    */
   stopRefreshTask() {
-    cancel(this.get('task'));
+    cancel(this.task);
     this.set('task', undefined);
     this.set('_taskDuration', undefined);
   },
 
   refreshSession() {
-    let user = this.get('user');
+    let user = this.user;
     if (user) {
-      return this.get('session').authenticate('authenticator:cognito', { state: { name: 'refresh' } });
+      return this.session.authenticate('authenticator:cognito', { state: { name: 'refresh' } });
     }
   },
 
@@ -136,7 +136,7 @@ export default Service.extend({
    * A helper that resolves to the logged in user's id token.
    */
   getIdToken() {
-    const user = this.get('user');
+    const user = this.user;
     if (user) {
       return user.getSession().then((session) => {
         return session.getIdToken().getJwtToken();
@@ -148,7 +148,7 @@ export default Service.extend({
 
   _setUser(awsUser) {
     // Creates and sets the Cognito user.
-    const user = CognitoUser.create({ auth: this.get('auth'), user: awsUser });
+    const user = CognitoUser.create({ auth: this.auth, user: awsUser });
     this.set('user', user);
     return user;
   }
