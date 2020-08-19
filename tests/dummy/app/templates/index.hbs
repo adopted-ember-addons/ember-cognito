@@ -4,8 +4,8 @@
     <h2>Amazon Cognito and ember-simple-auth integration</h2>
   </div>
   {{#if this.session.isAuthenticated}}
-    {{index-auth model=this.model}}
+    <IndexAuth @model={{this.model}} />
   {{else}}
-    {{index-unauth model=this.model}}
+    <IndexUnauth @model={{this.model}} />
   {{/if}}
 </div>

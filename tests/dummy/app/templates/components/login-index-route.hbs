@@ -8,28 +8,28 @@
         {{/if}}
         <div class="form-group">
           <label for="username">Username</label>
-          {{input
-            value=this.username
+          <Input
+            @value={{this.username}}
             class="form-control"
-            id="username"
+            @id="username"
             placeholder="Username"
-            autofocus=true
-            required=true
-          }}
+            autofocus
+            required
+          />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          {{input
-            value=this.password
-            type="password"
+          <Input
+            @value={{this.password}}
+            @type="password"
             class="form-control"
-            id="password"
+            @id="password"
             placeholder="Password"
-            required=true
-          }}
+            required
+          />
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
-        {{#link-to "forgot-password.index" class="btn btn-link"}}Forgot password{{/link-to}}
+        <LinkTo @route="forgot-password.index" class="btn btn-link">Forgot password</LinkTo>
       </form>
     </div>
   </div>

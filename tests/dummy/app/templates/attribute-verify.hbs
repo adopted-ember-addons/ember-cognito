@@ -1,3 +1,4 @@
-{{attribute-verify-route
-  name=this.name
-  onComplete=(action (transition-to-route this "index"))}}
+<AttributeVerifyRoute
+  @name={{this.name}}
+  @onComplete={{fn (transition-to-route this "index")}}
+/>

@@ -10,16 +10,16 @@
         {{/if}}
         <div class="form-group">
           <label for="delete">Delete</label>
-          {{input
-            value=this.deleteVal
+          <Input
+            @value={{this.deleteVal}}
             class="form-control"
-            id="delete"
-            autofocus=true
-            required=true
-          }}
+            @id="delete"
+            autofocus
+            required
+          />
         </div>
         <button type="submit" class="btn btn-danger">Delete User</button>
-        {{#link-to "index" class="btn btn-info ml-auto"}}Go back{{/link-to}}
+        <LinkTo @route="index" class="btn btn-info ml-auto">Go back</LinkTo>
       </form>
     </div>
   </div>

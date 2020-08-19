@@ -1,4 +1,4 @@
-{{register-index-route
-  onComplete=(action (transition-to-route this "index"))
-  onConfirmationRequired=(action (transition-to-route this "register.confirm"))
-}}
+<RegisterIndexRoute
+  @onComplete={{fn (transition-to-route this "index")}}
+  @onConfirmationRequired={{fn (transition-to-route this "register.confirm")}}
+/>

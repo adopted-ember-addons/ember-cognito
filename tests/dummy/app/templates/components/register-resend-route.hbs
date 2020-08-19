@@ -8,14 +8,14 @@
         {{/if}}
         <div class="form-group">
           <label for="username">Username</label>
-          {{input
-            value=this.username
+          <Input
+            @value={{this.username}}
             class="form-control"
-            id="username"
+            @id="username"
             placeholder="Username"
-            autofocus=true
-            required=true
-          }}
+            autofocus
+            required
+          />
         </div>
         <button type="submit" class="btn btn-primary">Resend</button>
       </form>

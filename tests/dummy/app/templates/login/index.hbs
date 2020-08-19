@@ -1,2 +1,3 @@
-{{login-index-route
-  onNewPasswordRequired=(action (transition-to-route this "login.new-password"))}}
+<LoginIndexRoute
+  @onNewPasswordRequired={{fn (transition-to-route this "login.new-password")}}
+/>
