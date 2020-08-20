@@ -10,14 +10,14 @@ import { reject } from 'rsvp';
  * This is a container for easily accessing the logged-in CognitoUser object,
  * as well as creating others using signUp().
  */
-export default Service.extend({
-  session: service(),
-  auth: Auth,
+export default class CognitoService extends Service {
+  @service session;
+  auth = Auth;
 
   willDestroy() {
-    this._super(...arguments);
+    super.willDestroy(...arguments);
     this.stopRefreshTask();
-  },
+  }
 
   /**
    * Configures the Amplify library with the pool & client IDs, and any additional
@@ -32,7 +32,7 @@ export default Service.extend({
     }, awsconfig);
 
     this.auth.configure(params);
-  },
+  }
 
   /**
    * Method for signing up a user.
@@ -42,20 +42,18 @@ export default Service.extend({
    * @param attributes New user attributes.
    * @param validationData Application metadata.
    */
-  signUp(username, password, attributes, validationData) {
+  async signUp(username, password, attributes, validationData) {
     this.configure();
-
-    return this.auth.signUp({
+    const result = await this.auth.signUp({
       username,
       password,
       attributes: normalizeAttributes(attributes),
       validationData
-    }).then((result) => {
-      // Replace the user with a wrapped user.
-      result.user = this._setUser(result.user);
-      return result;
     });
-  },
+    // Replace the user with a wrapped user.
+    result.user = this._setUser(result.user);
+    return result;
+  }
 
   /**
    * Confirm signup for user.
@@ -66,7 +64,7 @@ export default Service.extend({
   confirmSignUp(username, code, options) {
     this.configure();
     return this.auth.confirmSignUp(username, code, options);
-  },
+  }
 
   /**
    * Resends the sign up code.
@@ -76,7 +74,7 @@ export default Service.extend({
   resendSignUp(username) {
     this.configure();
     return this.auth.resendSignUp(username);
-  },
+  }
 
   /**
    * Sends a user a code to reset their password.
@@ -86,7 +84,7 @@ export default Service.extend({
   forgotPassword(username) {
     this.configure();
     return this.auth.forgotPassword(username);
-  },
+  }
 
   /**
    * Submits a new password.
@@ -98,7 +96,7 @@ export default Service.extend({
   forgotPasswordSubmit(username, code, newPassword) {
     this.configure();
     return this.auth.forgotPasswordSubmit(username, code, newPassword);
-  },
+  }
 
   /**
    * Enable the token refresh timer.
@@ -114,7 +112,7 @@ export default Service.extend({
     const duration = (exp - adjusted) * 1000 + 100;
     this.set('_taskDuration', duration);
     this.set('task', later(this, 'refreshSession', duration));
-  },
+  }
 
   /**
    * Disable the token refresh timer.
@@ -123,28 +121,27 @@ export default Service.extend({
     cancel(this.task);
     this.set('task', undefined);
     this.set('_taskDuration', undefined);
-  },
+  }
 
   refreshSession() {
     let user = this.user;
     if (user) {
       return this.session.authenticate('authenticator:cognito', { state: { name: 'refresh' } });
     }
-  },
+  }
 
   /**
    * A helper that resolves to the logged in user's id token.
    */
-  getIdToken() {
+  async getIdToken() {
     const user = this.user;
     if (user) {
-      return user.getSession().then((session) => {
-        return session.getIdToken().getJwtToken();
-      })
+      const session = await user.getSession();
+      return session.getIdToken().getJwtToken();
     } else {
       return reject('user not authenticated');
     }
-  },
+  }
 
   _setUser(awsUser) {
     // Creates and sets the Cognito user.
@@ -152,4 +149,4 @@ export default Service.extend({
     this.set('user', user);
     return user;
   }
-});
+}

@@ -1,16 +1,15 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  cognito: service(),
+export default class AttributeRoute extends Route {
+  @service cognito;
 
-  model({ name }) {
+  async model({ name }) {
     if (name) {
-      return this.cognito.user.getUserAttributesHash().then((attrs) => {
-        const value = attrs[name];
-        return { name, value };
-      });
+      const attrs = await this.cognito.user.getUserAttributesHash();
+      const value = attrs[name];
+      return { name, value };
     }
     return { isNew: true };
   }
-});
+}
