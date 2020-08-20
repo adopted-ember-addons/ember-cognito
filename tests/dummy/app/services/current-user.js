@@ -1,22 +1,18 @@
 import { readOnly } from '@ember/object/computed';
-import { resolve } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 
-export default Service.extend({
-  session: service(),
-  cognito: service(),
-  cognitoUser: readOnly('cognito.user'),
-  username: readOnly('cognitoUser.username'),
+export default class CurrentUserService extends Service {
+  @service session;
+  @service cognito;
+  @readOnly('cognito.user') cognitoUser;
+  @readOnly('cognitoUser.username') username;
 
-  load() {
+  async load() {
     if (this.session.isAuthenticated) {
-      return this.cognitoUser.getUserAttributes().then((userAttributes) => {
-        userAttributes.forEach((attr) => {
-          this.set(attr.getName(), attr.getValue());
-        });
+      const userAttributes = await this.cognitoUser.getUserAttributes();
+      userAttributes.forEach((attr) => {
+        this.set(attr.getName(), attr.getValue());
       });
-    } else {
-      return resolve();
     }
   }
-});
+}
