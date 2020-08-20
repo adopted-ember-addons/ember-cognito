@@ -5,7 +5,7 @@ export default Route.extend({
   cognito: service(),
 
   model() {
-    let state = this.get("cognito.state");
+    let state = this.cognito.state;
     if (state && state.name === "newPasswordRequired") {
       return state;
     } else {

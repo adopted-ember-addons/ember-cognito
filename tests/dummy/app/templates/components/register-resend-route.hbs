@@ -2,20 +2,20 @@
   <div class="row">
     <div class="col-4">
       <h1>Resend registration code</h1>
-      <form class="register-confim-form" onsubmit={{action "confirm"}}>
+      <form class="register-resend-form" {{on "submit" (fn this.resend)}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}
         <div class="form-group">
           <label for="username">Username</label>
-          {{input
-            value=this.username
+          <Input
+            @value={{this.username}}
             class="form-control"
-            id="username"
+            @id="username"
             placeholder="Username"
-            autofocus=true
-            required=true
-          }}
+            autofocus
+            required
+          />
         </div>
         <button type="submit" class="btn btn-primary">Resend</button>
       </form>

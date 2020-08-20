@@ -35,12 +35,12 @@ export default EmberObject.extend({
   },
 
   signUp() {
-    const user = this.get('_authenticatedUser');
+    const user = this._authenticatedUser;
     return resolve({ user, userConfirmed: false, userSub: "xxxx" });
   },
 
   _resolveAuthedUser(msg) {
-    const user = this.get('_authenticatedUser');
+    const user = this._authenticatedUser;
     if (user) {
       return resolve(user);
     } else {
@@ -65,7 +65,7 @@ export default EmberObject.extend({
   },
 
   currentSession() {
-    const user = this.get('_authenticatedUser');
+    const user = this._authenticatedUser;
     if (user) {
       return resolve(newSession());
     } else {

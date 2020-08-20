@@ -1,5 +1,5 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import EmberObject, { get } from '@ember/object';
+import EmberObject from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { resolve } from 'rsvp';
 import { newSession } from "./-mock-auth";
@@ -35,17 +35,17 @@ const MockUser = EmberObject.extend({
   },
 
   getSession() {
-    return resolve(this.get('session') || newSession());
+    return resolve(this.session || newSession());
   },
 
   getUserAttributes() {
-    return resolve(get(this, 'userAttributes').map(({ name, value }) => {
+    return resolve(this.userAttributes.map(({ name, value }) => {
       return new CognitoUserAttribute({ Name: name, Value: value });
     }));
   },
 
   getUserAttributesHash() {
-    return resolve(get(this, 'userAttributes').reduce((acc, { name, value }) => {
+    return resolve(this.userAttributes.reduce((acc, { name, value }) => {
       acc[name] = value;
       return acc;
     }, {}));
@@ -60,7 +60,7 @@ const MockUser = EmberObject.extend({
   },
 
   _updateAttrsList(attributesList) {
-    let attrs = this.get('userAttributes');
+    let attrs = this.userAttributes;
     attributesList.forEach((updated) => {
       let found = false;
       attrs.forEach((existing) => {
@@ -77,7 +77,7 @@ const MockUser = EmberObject.extend({
   },
 
   _updateAttrsHash(attributes) {
-    let attrs = this.get('userAttributes');
+    let attrs = this.userAttributes;
     Object.keys(attributes).forEach((name) => {
       let found = false;
       attrs.forEach((existing) => {
@@ -110,12 +110,12 @@ const MockUser = EmberObject.extend({
 
   // Non-AWS method
   getGroups() {
-    return resolve(get(this, 'groups'));
+    return resolve(this.groups);
   },
 
   // Non-AWS method
   getStorageData() {
-    return get(this, 'storageData');
+    return this.storageData;
   }
 });
 

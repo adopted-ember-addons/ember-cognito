@@ -1,4 +1,5 @@
-{{attribute-route
-  model=this.model
-  onSave=(action (transition-to-route this "index"))
-  onDelete=(action (transition-to-route this "index"))}}
+<AttributeRoute
+  @model={{this.model}}
+  @onSave={{fn (transition-to-route this "index")}}
+  @onDelete={{fn (transition-to-route this "index")}}
+/>

@@ -8,8 +8,8 @@ export default Route.extend({
   session: service(),
 
   model() {
-    if (this.get('session.isAuthenticated')) {
-      return this.get('cognitoUser').getUserAttributes().then((cognitoAttrs) => {
+    if (this.session.isAuthenticated) {
+      return this.cognitoUser.getUserAttributes().then((cognitoAttrs) => {
         let attributes = [];
         cognitoAttrs.forEach((attr) => {
           attributes.push({ name: attr.getName(), value: attr.getValue() });

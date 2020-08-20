@@ -1,27 +1,27 @@
 import Component from '@ember/component';
+import { action } from '@ember/object';
 import layout from '../templates/components/login-index-route';
 import { inject as service } from '@ember/service';
 
-export default Component.extend({
-  layout,
+export default class LoginIndexRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
-  session: service(),
+  @service cognito;
+  @service session;
 
-  actions: {
-    login(e) {
-      e.preventDefault();
-      let params = this.getProperties('username', 'password');
-      this.get('session').authenticate('authenticator:cognito', params).then(() => {
-        // Nothing to do.
-      }).catch((err) => {
-        if (err.state && err.state.name === 'newPasswordRequired') {
-          this.set('cognito.state', err.state);
-          this.onNewPasswordRequired();
-        } else {
-          this.set('errorMessage', err.message || err);
-        }
-      });
-    },
+  @action
+  async login(e) {
+    e.preventDefault();
+    let params = { username: this.username, password: this.password };
+    try {
+      await this.session.authenticate('authenticator:cognito', params);
+    } catch (err) {
+      if (err.state && err.state.name === 'newPasswordRequired') {
+        this.set('cognito.state', err.state);
+        this.onNewPasswordRequired();
+      } else {
+        this.set('errorMessage', err.message || err);
+      }
+    }
   }
-});
+}

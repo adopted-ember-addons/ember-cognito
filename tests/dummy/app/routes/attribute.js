@@ -6,7 +6,7 @@ export default Route.extend({
 
   model({ name }) {
     if (name) {
-      return this.get('cognito.user').getUserAttributesHash().then((attrs) => {
+      return this.cognito.user.getUserAttributesHash().then((attrs) => {
         const value = attrs[name];
         return { name, value };
       });

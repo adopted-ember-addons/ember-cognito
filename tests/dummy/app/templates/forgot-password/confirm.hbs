@@ -1,2 +1,3 @@
-{{forgot-password-confirm-route
-  onComplete=(action (transition-to-route this "login"))}}
+<ForgotPasswordConfirmRoute
+  @onComplete={{fn (transition-to-route this "login")}}
+/>

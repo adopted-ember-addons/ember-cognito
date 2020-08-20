@@ -1,22 +1,24 @@
 import Component from '@ember/component';
 import layout from '../templates/components/register-confirm-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class RegisterConfirmRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
+  @service cognito;
 
-  actions: {
-    confirm(e) {
-      const { username, code } = this.getProperties('username', 'code');
+  @action
+  async confirm(e) {
+    const { username, code } = this;
 
-      e.preventDefault();
-      this.get('cognito').confirmSignUp(username, code).then(() => {
-        this.onComplete();
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
+    e.preventDefault();
+    try {
+      await this.cognito.confirmSignUp(username, code);
+      this.onComplete();
+    } catch (err) {
+      this.set('errorMessage', err.message);
     }
   }
-});
+}
+

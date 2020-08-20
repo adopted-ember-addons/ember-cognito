@@ -1,25 +1,25 @@
 import Component from '@ember/component';
 import layout from '../templates/components/login-new-password-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class LoginNewPasswordRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
-  session: service(),
+  @service cognito;
+  @service session;
 
-  actions: {
-    newPassword(e) {
-      e.preventDefault();
-      this.get('session').authenticate('authenticator:cognito', {
-        password: this.get('password'),
-        state: this.get('model')
-      }).then(() => {
-        // Nothing to do.
-      }).catch((err) => {
-        // TODO: Handle another state, like TOTP
-        this.set('errorMessage', err.message);
+  @action
+  async newPassword(e) {
+    e.preventDefault();
+    try {
+      await this.session.authenticate('authenticator:cognito', {
+        password: this.password,
+        state: this.model
       });
-    },
+    } catch (err) {
+      // TODO: Handle another state, like TOTP
+      this.set('errorMessage', err.message);
+    }
   }
-});
+}

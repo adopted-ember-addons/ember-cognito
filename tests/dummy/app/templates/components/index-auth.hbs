@@ -14,40 +14,40 @@
         </tr>
       </thead>
       <tbody>
-        {{#each model.attributes as |attr|}}
+        {{#each @model.attributes as |attr|}}
           <tr>
             <td>{{attr.name}}</td>
             <td>{{attr.value}}</td>
             <td>
-              {{#link-to "attribute" (query-params name=attr.name)}}
+              <LinkTo @route="attribute" @query={{hash name=attr.name}}>
                 Edit
-              {{/link-to}}
+              </LinkTo>
             </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
-    {{#link-to "attribute" (query-params name=undefined) class="btn btn-light btn-block"}}
+    <LinkTo @route="attribute" @query={{hash name=undefined}} class="btn btn-light btn-block">
       Add attribute
-    {{/link-to}}
+    </LinkTo>
     {{#unless this.emailVerified}}
-      <button class="btn btn-light btn-block" onclick={{action "verifyAttribute" "email"}}>
+      <button class="btn btn-light btn-block" {{on "click" (fn this.verifyAttribute "email")}} type="button">
         Verify email
       </button>
     {{/unless}}
-    {{#unless this.phonenNumberVerified}}
-      <button class="btn btn-light btn-block" onclick={{action "verifyAttribute" "phone_number"}}>
+    {{#unless this.phoneNumberVerified}}
+      <button class="btn btn-light btn-block" {{on "click" (fn this.verifyAttribute "phone_number")}} type="button">
         Verify phone number
       </button>
     {{/unless}}
 
     <h2 class="mt-4">Actions</h2>
-    {{#link-to "change-password" class="btn btn-light btn-block"}}
+    <LinkTo @route="change-password" class="btn btn-light btn-block">
       Change password
-    {{/link-to}}
-    {{#link-to "delete-user" class="btn btn-outline-danger btn-block mt-3"}}
+    </LinkTo>
+    <LinkTo @route="delete-user" class="btn btn-outline-danger btn-block mt-3">
       Delete user
-    {{/link-to}}
+    </LinkTo>
   </div>
 
   <div class="col-6">

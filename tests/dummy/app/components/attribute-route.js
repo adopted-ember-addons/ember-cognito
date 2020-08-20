@@ -1,33 +1,36 @@
 import Component from '@ember/component';
 import layout from '../templates/components/attribute-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class AttributeRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
+  @service cognito;
 
-  actions: {
-    save(e) {
-      e.preventDefault();
-      const { name, value } = this.get('model');
+  @action
+  async save(e) {
+    e.preventDefault();
+    const { name, value } = this.model;
 
-      this.get('cognito.user').updateAttributes({ [name]: value }).then(() => {
-        this.onSave();
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
-    },
-
-    deleteAttr(e) {
-      e.preventDefault();
-      const { name } = this.get('model');
-
-      this.get('cognito.user').deleteAttributes([ name ]).then(() => {
-        this.onDelete();
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
+    try {
+      await this.cognito.user.updateAttributes({ [name]: value });
+      this.onSave();
+    } catch (err) {
+      this.set('errorMessage', err.message);
     }
   }
-});
+
+  @action
+  async deleteAttr(e) {
+    e.preventDefault();
+    const { name } = this.model;
+
+    try {
+      await this.cognito.user.deleteAttributes([ name ]);
+      this.onDelete();
+    } catch (err) {
+      this.set('errorMessage', err.message);
+    }
+  }
+}

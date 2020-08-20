@@ -1,32 +1,32 @@
 import Component from '@ember/component';
 import layout from '../templates/components/register-index-route';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  layout,
+export default class RegisterIndexRoute extends Component {
+  layout = layout;
 
-  cognito: service(),
+  @service cognito;
 
-  actions: {
-    register(e) {
-      const { username, password, phone, email } =
-        this.getProperties('username', 'password', 'phone', 'email');
-      const attributes = {
-        email,
-        phone_number: phone
-      };
+  @action
+  async register(e) {
+    const { username, password, phone, email } = this;
+    const attributes = {
+      email,
+      phone_number: phone
+    };
 
-      e.preventDefault();
-      this.get('cognito').signUp(username, password, attributes).then((result) => {
-        // If the user is confirmed, take then right to the
-        if (result.userConfirmed) {
-          this.onComplete(result.user);
-        } else {
-          this.onConfirmationRequired(result.user);
-        }
-      }).catch((err) => {
-        this.set('errorMessage', err.message);
-      });
+    e.preventDefault();
+    try {
+      const result = await this.cognito.signUp(username, password, attributes);
+      // If the user is confirmed, take then right to the index page
+      if (result.userConfirmed) {
+        this.onComplete(result.user);
+      } else {
+        this.onConfirmationRequired(result.user);
+      }
+    } catch (err) {
+      this.set('errorMessage', err.message);
     }
   }
-});
+}

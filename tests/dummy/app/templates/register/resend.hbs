@@ -1,2 +1,3 @@
-{{register-resend-route
-  onComplete=(action (transition-to-route this "register.confirm"))}}
+<RegisterResendRoute
+  @onComplete={{fn (transition-to-route this "register.confirm")}}
+/>
