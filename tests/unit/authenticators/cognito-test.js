@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { setupTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import config from '../../../config/environment';
@@ -10,9 +10,9 @@ module('Unit | Authenticator | cognito', function(hooks) {
 
   test('config is set correctly', function(assert) {
     let service = this.owner.lookup('authenticator:cognito');
-    assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
-    assert.equal(get(service, 'clientId'), 'TEST');
-    assert.equal(get(service, 'authenticationFlowType'), config.cognito.authenticationFlowType);
+    assert.equal(service.poolId, 'us-east-1_TEST');
+    assert.equal(service.clientId, 'TEST');
+    assert.equal(service.authenticationFlowType, config.cognito.authenticationFlowType);
   });
 
   test('restore', async function(assert) {
@@ -26,9 +26,9 @@ module('Unit | Authenticator | cognito', function(hooks) {
     assert.equal(resolvedData.poolId, 'us-east-1_TEST');
     assert.equal(resolvedData.clientId, 'TEST');
     assert.ok(resolvedData.access_token.startsWith('header.'));
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
-    assert.notOk(get(service, 'task'), 'No task was scheduled.');
+    assert.ok(service.cognito.user, 'The cognito service user is populated.');
+    assert.equal(service.cognito.user.username, 'testuser', 'The username is set correctly.');
+    assert.notOk(service.task, 'No task was scheduled.');
   });
 
   test('restore no current user', async function(assert) {
@@ -51,8 +51,8 @@ module('Unit | Authenticator | cognito', function(hooks) {
 
     const data = { poolId: 'us-east-1_TEST', clientId: 'TEST' };
     await service.restore(data);
-    assert.ok(get(service, 'cognito.task') !== undefined, 'Refresh timer was scheduled.');
-    let taskDuration = get(service, 'cognito._taskDuration');
+    assert.ok(service.cognito.task !== undefined, 'Refresh timer was scheduled.');
+    let taskDuration = service.cognito._taskDuration;
     assert.ok(taskDuration > (1000 * 1000));
   });
 
@@ -66,9 +66,9 @@ module('Unit | Authenticator | cognito', function(hooks) {
     const data = await service.authenticate({ username: 'testuser', password: 'password' });
     assert.equal(data.poolId, 'us-east-1_TEST');
     assert.equal(data.clientId, 'TEST');
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
-    assert.notOk(get(service, 'cognito.task'), 'Refresh session task not set.');
+    assert.ok(service.cognito.user, 'The cognito service user is populated.');
+    assert.equal(service.cognito.user.username, 'testuser', 'The username is set correctly.');
+    assert.notOk(service.cognito.task, 'Refresh session task not set.');
   });
 
   test('authenticateUser, failure', async function(assert) {
@@ -107,8 +107,8 @@ module('Unit | Authenticator | cognito', function(hooks) {
     let data = await service.authenticate({ password: 'newPassword', state });
     assert.equal(data.poolId, 'us-east-1_TEST');
     assert.equal(data.clientId, 'TEST');
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    assert.equal(get(service, 'cognito.user.username'), 'testuser', 'The username is set correctly.');
+    assert.ok(service.cognito.user, 'The cognito service user is populated.');
+    assert.equal(service.cognito.user.username, 'testuser', 'The username is set correctly.');
   });
 
   test('authenticateUser, newPasswordRequired failure', async function(assert) {
@@ -149,9 +149,9 @@ module('Unit | Authenticator | cognito', function(hooks) {
     await mockAuth(MockAuth.create({ _authenticatedUser: user }));
 
     await service.authenticate({ username: 'testuser', password: 'password' });
-    const task = get(service, 'cognito.task');
+    const task = service.cognito.task;
     assert.notEqual(task, undefined, 'Refresh session task is set.');
-    let taskDuration = get(service, 'cognito._taskDuration');
+    let taskDuration = service.cognito._taskDuration;
     assert.ok(taskDuration > (1000 * 1000));
   });
 
@@ -165,10 +165,10 @@ module('Unit | Authenticator | cognito', function(hooks) {
     assert.equal(data.poolId, 'us-east-1_TEST');
     assert.equal(data.clientId, 'TEST');
     assert.ok(data.access_token.startsWith('header.'));
-    assert.ok(get(service, 'cognito.user'), 'The cognito service user is populated.');
-    const task = get(service, 'cognito.task');
+    assert.ok(service.cognito.user, 'The cognito service user is populated.');
+    const task = service.cognito.task;
     assert.notEqual(task, undefined, 'Refresh session task is set.');
-    let taskDuration = get(service, 'cognito._taskDuration');
+    let taskDuration = service.cognito._taskDuration;
     assert.ok(taskDuration > (1000 * 1000));
   });
 
@@ -183,6 +183,6 @@ module('Unit | Authenticator | cognito', function(hooks) {
     let resolvedData = await service.invalidate(data);
     assert.deepEqual(data, resolvedData);
     // Cognito user no longer exists on service
-    assert.equal(get(service, 'cognito.user'), undefined);
+    assert.equal(service.cognito.user, undefined);
   });
 });

@@ -1,4 +1,3 @@
-import { get } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
@@ -12,9 +11,9 @@ module('Unit | Service | cognito', function(hooks) {
 
   test('config is set correctly', function(assert) {
     const service = this.owner.lookup('service:cognito');
-    assert.equal(get(service, 'poolId'), 'us-east-1_TEST');
-    assert.equal(get(service, 'clientId'), 'TEST');
-    assert.equal(get(service, 'authenticationFlowType'), config.cognito.authenticationFlowType);
+    assert.equal(service.poolId, 'us-east-1_TEST');
+    assert.equal(service.clientId, 'TEST');
+    assert.equal(service.authenticationFlowType, config.cognito.authenticationFlowType);
   });
 
   test('signup works', async function(assert) {
@@ -76,11 +75,11 @@ module('Unit | Service | cognito', function(hooks) {
     const validation = [{ 'foo': 'bar' }];
 
     await service.signUp('testuser', 'password', attrs, validation);
-    assert.deepEqual(get(auth, 'attributes'), {
+    assert.deepEqual(auth.attributes, {
       email: 'test@email.com',
       phone_number: '555-1212'
     });
-    assert.deepEqual(get(auth, 'validationData'), [{ 'foo': 'bar' }]);
+    assert.deepEqual(auth.validationData, [{ 'foo': 'bar' }]);
   });
 
   test('getIdToken auth', async function(assert) {

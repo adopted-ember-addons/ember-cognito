@@ -1,4 +1,3 @@
-import { get } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { resolve } from 'rsvp';
 import { setupTest } from 'ember-qunit';
@@ -13,7 +12,7 @@ module('Unit | Utility | cognito user', function(hooks) {
 
   test('username', function(assert) {
     const user = CognitoUser.create({ user: newUser('testuser') });
-    assert.equal(get(user, 'username'), 'testuser');
+    assert.equal(user.username, 'testuser');
   });
 
   test('changePassword', async function(assert) {

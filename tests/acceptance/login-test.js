@@ -1,6 +1,5 @@
 import { setupApplicationTest } from 'ember-qunit';
 import { module, test } from 'qunit';
-import { get } from '@ember/object';
 import { click, currentURL, fillIn, visit } from '@ember/test-helpers';
 import { currentSession } from 'ember-simple-auth/test-support';
 import { mockCognitoUser } from 'ember-cognito/test-support';
@@ -25,7 +24,7 @@ module('Acceptance | login', function(hooks) {
     await click('.login-form [type=submit]');
 
     let session = await currentSession();
-    assert.equal(get(session, 'isAuthenticated'), true);
+    assert.equal(session.isAuthenticated, true);
     assert.equal(currentURL(), '/');
   });
 });
