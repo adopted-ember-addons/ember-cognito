@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { MockUser } from 'ember-cognito/test-support/utils/ember-cognito';
-import { get } from '@ember/object';
 
 module('Unit | Utility | mock user', function() {
   test('groups', async function(assert) {
@@ -20,7 +19,7 @@ module('Unit | Utility | mock user', function() {
     });
 
     await user.updateAttributes([newAttr]);
-    assert.deepEqual(get(user, 'userAttributes'), [
+    assert.deepEqual(user.userAttributes, [
       { name: 'family_name', value: 'Coltrane' }
     ]);
   });
@@ -39,7 +38,7 @@ module('Unit | Utility | mock user', function() {
     });
 
     await user.updateAttributes([newAttr]);
-    assert.deepEqual(get(user, 'userAttributes'), [
+    assert.deepEqual(user.userAttributes, [
       { name: 'given_name', value: 'John' },
       { name: 'family_name', value: 'New Trane' }
     ]);
@@ -53,7 +52,7 @@ module('Unit | Utility | mock user', function() {
       ]
     });
     await user.updateAttributes({ family_name: "New Trane" });
-    assert.deepEqual(get(user, 'userAttributes'), [
+    assert.deepEqual(user.userAttributes, [
       { name: 'given_name', value: 'John' },
       { name: 'family_name', value: 'New Trane' }
     ]);
