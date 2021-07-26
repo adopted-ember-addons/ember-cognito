@@ -5,6 +5,8 @@
 [![Ember Observer Score](https://emberobserver.com/badges/ember-cognito.svg)](https://emberobserver.com/addons/ember-cognito)
 [![npm version](https://badge.fury.io/js/ember-cognito.svg)](https://badge.fury.io/js/ember-cognito)
 
+[*Maintainer Needed!*](https://github.com/paulcwatts/ember-cognito/issues/162)
+
 Ember Cognito is an Ember Addon that integrates 
 [ember-simple-auth](https://github.com/simplabs/ember-simple-auth/) 
 with [AWS Amplify](https://aws-amplify.github.io/docs/) and 
