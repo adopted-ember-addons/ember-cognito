@@ -1,7 +1,7 @@
 import { Promise } from 'rsvp';
 import EmberObject, { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 import { normalizeAttributes } from "./utils";
 
 //
