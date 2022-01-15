@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Confirm Registration</h1>
-      <form class="register-confirm-form" {{on "submit" (fn this.confirm)}}>
+      <form class="register-confirm-form" {{on "submit" this.confirm}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}
@@ -11,7 +11,7 @@
           <Input
             @value={{this.username}}
             class="form-control"
-            @id="username"
+            id="username"
             placeholder="Username"
             autofocus
             required
@@ -22,7 +22,7 @@
           <Input
             @value={{this.code}}
             class="form-control"
-            @id="code"
+            id="code"
             placeholder="123456"
             required
           />

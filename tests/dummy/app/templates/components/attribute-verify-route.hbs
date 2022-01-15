@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Verify {{@name}}</h1>
-      <form class="verify-attribute-form" {{on "submit" (fn this.verifyAttribute)}}>
+      <form class="verify-attribute-form" {{on "submit" this.verifyAttribute}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}
@@ -11,7 +11,7 @@
           <Input
             @value={{this.code}}
             class="form-control"
-            @id="code"
+            id="code"
             placeholder="123456"
             required
           />

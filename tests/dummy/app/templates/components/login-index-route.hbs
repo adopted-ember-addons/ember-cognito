@@ -1,35 +1,47 @@
-<div class="container">
-  <div class="row">
-    <div class="col-4">
-      <h1>Login</h1>
-      <form class="login-form" {{on "submit" (fn this.login)}}>
+<div class='container'>
+  <div class='row'>
+    <div class='col-4'>
+      <h1>
+        Login
+      </h1>
+      <form class='login-form' {{on 'submit' this.login}}>
         {{#if this.errorMessage}}
-          <div class="alert alert-danger">{{this.errorMessage}}</div>
+          <div class='alert alert-danger'>
+            {{this.errorMessage}}
+          </div>
         {{/if}}
-        <div class="form-group">
-          <label for="username">Username</label>
+        <div class='form-group'>
+          <label for='username'>
+            Username
+          </label>
           <Input
             @value={{this.username}}
-            class="form-control"
-            @id="username"
-            placeholder="Username"
+            class='form-control'
+            id='username'
+            placeholder='Username'
             autofocus
             required
           />
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
+        <div class='form-group'>
+          <label for='password'>
+            Password
+          </label>
           <Input
             @value={{this.password}}
-            @type="password"
-            class="form-control"
-            @id="password"
-            placeholder="Password"
+            @type='password'
+            class='form-control'
+            id='password'
+            placeholder='Password'
             required
           />
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-        <LinkTo @route="forgot-password.index" class="btn btn-link">Forgot password</LinkTo>
+        <button type='submit' class='btn btn-primary'>
+          Login
+        </button>
+        <LinkTo @route='forgot-password.index' class='btn btn-link'>
+          Forgot password
+        </LinkTo>
       </form>
     </div>
   </div>
