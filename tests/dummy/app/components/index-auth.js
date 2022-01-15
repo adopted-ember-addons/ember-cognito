@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/index-auth';
 import { inject as service } from '@ember/service';
-import { action, computed } from '@ember/object';
+import { action, computed, set } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 
 function attributeEqual(attributeName, value) {
@@ -40,7 +40,7 @@ export default class IndexAuth extends Component {
       const session = await cognitoUser.getSession();
       // It can happen in acceptance tests that 'session' is falsey
       if (session) {
-        this.set('cognitoSession', session);
+        set(this, 'cognitoSession', session);
       }
     }
   }

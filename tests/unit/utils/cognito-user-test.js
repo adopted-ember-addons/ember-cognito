@@ -127,6 +127,8 @@ module('Unit | Utility | cognito user', function (hooks) {
   });
 
   test('getSession error', async function (assert) {
+    assert.expect(1);
+
     const auth = MockAuth.create();
     const user = CognitoUser.create({ auth });
 

@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
+import { set } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import CognitoUser from 'dummy/utils/cognito-user';
 import config from '../../../config/environment';
@@ -47,6 +48,8 @@ module('Unit | Service | cognito', function (hooks) {
   });
 
   test('signup error', async function (assert) {
+    assert.expect(1);
+
     const service = this.owner.lookup('service:cognito');
 
     await mockAuth(
@@ -70,8 +73,8 @@ module('Unit | Service | cognito', function (hooks) {
 
     const auth = MockAuth.extend({
       signUp({ username, attributes, validationData }) {
-        this.set('attributes', attributes);
-        this.set('validationData', validationData);
+        set(this, 'attributes', attributes);
+        set(this, 'validationData', validationData);
         return resolve({
           user: newUser(username),
           userConfirmed: true,

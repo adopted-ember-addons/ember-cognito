@@ -23,8 +23,11 @@ module.exports = {
   rules: {
     eqeqeq: ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
+    'ember/no-classic-classes': 'off',
+    'ember/no-classic-components': 'off',
+    'ember/no-computed-properties-in-native-classes': 'off',
     'ember/no-jquery': 'error',
-    'ember/use-ember-get-and-set': [2, { ignoreThisExpressions: true }],
+    'ember/require-tagless-components': 'off',
   },
   overrides: [
     // node files

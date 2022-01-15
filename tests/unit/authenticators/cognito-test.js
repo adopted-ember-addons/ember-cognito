@@ -44,6 +44,8 @@ module('Unit | Authenticator | cognito', function (hooks) {
   });
 
   test('restore no current user', async function (assert) {
+    assert.expect(1);
+
     await mockAuth();
 
     let service = this.owner.lookup('authenticator:cognito');
@@ -95,6 +97,8 @@ module('Unit | Authenticator | cognito', function (hooks) {
   });
 
   test('authenticateUser, failure', async function (assert) {
+    assert.expect(1);
+
     const service = this.owner.lookup('authenticator:cognito');
     await mockAuth(
       MockAuth.extend({
@@ -116,6 +120,8 @@ module('Unit | Authenticator | cognito', function (hooks) {
   });
 
   test('authenticateUser, newPasswordRequired', async function (assert) {
+    assert.expect(5);
+
     const service = this.owner.lookup('authenticator:cognito');
     let user = newUser('testuser');
     user.challengeName = 'NEW_PASSWORD_REQUIRED';
@@ -147,6 +153,8 @@ module('Unit | Authenticator | cognito', function (hooks) {
   });
 
   test('authenticateUser, newPasswordRequired failure', async function (assert) {
+    assert.expect(2);
+
     const service = this.owner.lookup('authenticator:cognito');
     let user = newUser('testuser');
     user.challengeName = 'NEW_PASSWORD_REQUIRED';

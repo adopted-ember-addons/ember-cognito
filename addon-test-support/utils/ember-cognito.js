@@ -1,5 +1,5 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import EmberObject from '@ember/object';
+import EmberObject, { set } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { resolve } from 'rsvp';
 import { newSession } from './-mock-auth';
@@ -77,7 +77,7 @@ const MockUser = EmberObject.extend({
         attrs.push({ name: updated.getName(), value: updated.getValue() });
       }
     });
-    this.set('userAttributes', attrs);
+    set(this, 'userAttributes', attrs);
   },
 
   _updateAttrsHash(attributes) {
@@ -94,7 +94,7 @@ const MockUser = EmberObject.extend({
         attrs.push({ name, value: attributes[name] });
       }
     });
-    this.set('userAttributes', attrs);
+    set(this, 'userAttributes', attrs);
   },
 
   updateAttributes(attributes) {

@@ -1,3 +1,4 @@
+import { set } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 
@@ -11,7 +12,7 @@ export default class CurrentUserService extends Service {
     if (this.session.isAuthenticated) {
       const userAttributes = await this.cognitoUser.getUserAttributes();
       userAttributes.forEach((attr) => {
-        this.set(attr.getName(), attr.getValue());
+        set(this, attr.getName(), attr.getValue());
       });
     }
   }

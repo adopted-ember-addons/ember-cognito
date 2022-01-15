@@ -1,4 +1,5 @@
 import { readOnly } from '@ember/object/computed';
+import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Base from 'ember-simple-auth/authenticators/base';
 
@@ -93,7 +94,7 @@ export default class CognitoAuthenticator extends Base {
 
   async invalidate(data) {
     await this.cognito.user.signOut();
-    this.set('cognito.user', undefined);
+    set(this, 'cognito.user', undefined);
     return data;
   }
 }

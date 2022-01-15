@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import layout from '../templates/components/login-index-route';
 import { inject as service } from '@ember/service';
 
@@ -17,10 +17,10 @@ export default class LoginIndexRoute extends Component {
       await this.session.authenticate('authenticator:cognito', params);
     } catch (err) {
       if (err.state && err.state.name === 'newPasswordRequired') {
-        this.set('cognito.state', err.state);
+        set(this, 'cognito.state', err.state);
         this.onNewPasswordRequired();
       } else {
-        this.set('errorMessage', err.message || err);
+        set(this, 'errorMessage', err.message || err);
       }
     }
   }

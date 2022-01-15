@@ -79,7 +79,7 @@ export default class LoginComponent extends Component {
     try {
       await this.session.authenticate('authenticator:cognito', credentials);
     } catch (error) {
-      this.set('errorMessage', error.message || error);
+      set(this, 'errorMessage', error.message || error);
     }
   }
 }
@@ -143,7 +143,7 @@ export default class CurrentUserService extends Service {
     if (this.session.isAuthenticated) {
       const userAttributes = await this.cognitoUser.getUserAttributes();
       userAttributes.forEach((attr) => {
-        this.set(attr.getName(), attr.getValue());
+        set(this, attr.getName(), attr.getValue());
       });
     }
   }

@@ -2,6 +2,7 @@ import Service, { inject as service } from '@ember/service';
 import CognitoUser from '../utils/cognito-user';
 import { normalizeAttributes } from '../utils/utils';
 import Auth from '@aws-amplify/auth';
+import { set } from '@ember/object';
 import { cancel, later } from '@ember/runloop';
 import { reject } from 'rsvp';
 
@@ -113,8 +114,8 @@ export default class CognitoService extends Service {
     const exp = session.getIdToken().getExpiration();
     const adjusted = now - session.getClockDrift();
     const duration = (exp - adjusted) * 1000 + 100;
-    this.set('_taskDuration', duration);
-    this.set('task', later(this, 'refreshSession', duration));
+    set(this, '_taskDuration', duration);
+    set(this, 'task', later(this, 'refreshSession', duration));
   }
 
   /**
@@ -122,8 +123,8 @@ export default class CognitoService extends Service {
    */
   stopRefreshTask() {
     cancel(this.task);
-    this.set('task', undefined);
-    this.set('_taskDuration', undefined);
+    set(this, 'task', undefined);
+    set(this, '_taskDuration', undefined);
   }
 
   refreshSession() {
@@ -151,7 +152,7 @@ export default class CognitoService extends Service {
   _setUser(awsUser) {
     // Creates and sets the Cognito user.
     const user = CognitoUser.create({ auth: this.auth, user: awsUser });
-    this.set('user', user);
+    set(this, 'user', user);
     return user;
   }
 }

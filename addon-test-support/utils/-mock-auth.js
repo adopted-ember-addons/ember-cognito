@@ -1,4 +1,4 @@
-import EmberObject from '@ember/object';
+import EmberObject, { set } from '@ember/object';
 import { reject, resolve } from 'rsvp';
 import {
   CognitoAccessToken,
@@ -40,7 +40,7 @@ export function newSession({ idToken, refreshToken, accessToken } = {}) {
 
 export default EmberObject.extend({
   configure(awsconfig) {
-    this.set('awsconfig', awsconfig);
+    set(this, 'awsconfig', awsconfig);
   },
 
   signUp() {
