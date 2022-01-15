@@ -21,4 +21,3 @@ export default class RegisterConfirmRoute extends Component {
     }
   }
 }
-

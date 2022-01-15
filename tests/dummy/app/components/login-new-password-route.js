@@ -15,7 +15,7 @@ export default class LoginNewPasswordRoute extends Component {
     try {
       await this.session.authenticate('authenticator:cognito', {
         password: this.password,
-        state: this.model
+        state: this.model,
       });
     } catch (err) {
       // TODO: Handle another state, like TOTP

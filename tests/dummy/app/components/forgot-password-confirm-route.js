@@ -10,7 +10,7 @@ export default class ForgotPasswordConfirmRoute extends Component {
 
   @action
   async forgotPasswordSubmit(e) {
-    const { username, code, password, } = this;
+    const { username, code, password } = this;
 
     e.preventDefault();
 

@@ -27,7 +27,7 @@ export default class AttributeRoute extends Component {
     const { name } = this.model;
 
     try {
-      await this.cognito.user.deleteAttributes([ name ]);
+      await this.cognito.user.deleteAttributes([name]);
       this.onDelete();
     } catch (err) {
       this.set('errorMessage', err.message);

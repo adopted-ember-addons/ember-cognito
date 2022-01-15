@@ -5,7 +5,7 @@ import { action, computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 
 function attributeEqual(attributeName, value) {
-  return computed('model.attributes', function() {
+  return computed('model.attributes', function () {
     const attributes = this.model.attributes;
     for (const attr of attributes) {
       if (attr.name === attributeName) {
@@ -14,7 +14,7 @@ function attributeEqual(attributeName, value) {
     }
     // Maybe? It doesn't *need* to be verified
     return true;
-  })
+  });
 }
 
 export default class IndexAuth extends Component {
@@ -48,7 +48,7 @@ export default class IndexAuth extends Component {
   tokenInfo(token) {
     return {
       expiration: new Date(token.getExpiration() * 1000),
-      formatted: JSON.stringify(token.payload, undefined, 2)
+      formatted: JSON.stringify(token.payload, undefined, 2),
     };
   }
 
@@ -78,6 +78,8 @@ export default class IndexAuth extends Component {
   @action
   async verifyAttribute(attributeName) {
     await this.cognitoUser.getAttributeVerificationCode(attributeName);
-    this.router.transitionTo('attribute-verify', { queryParams: { name: attributeName } });
+    this.router.transitionTo('attribute-verify', {
+      queryParams: { name: attributeName },
+    });
   }
 }

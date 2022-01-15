@@ -2,7 +2,7 @@ import { Promise } from 'rsvp';
 import EmberObject, { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { deprecate } from '@ember/debug';
-import { normalizeAttributes } from "./utils";
+import { normalizeAttributes } from './utils';
 
 //
 // Wraps an AWS CognitoUser.
@@ -39,7 +39,12 @@ export default class CognitoUser extends EmberObject {
     deprecate(
       'This functionality has moved to forgotPasswordSubmit() on the Cognito service.',
       false,
-      { id: 'ember-cognito-confirm-password', until: '1.0' }
+      {
+        for: 'ember-cognito',
+        id: 'ember-cognito-confirm-password',
+        since: '0.12.0',
+        until: '1.0.0',
+      }
     );
 
     const { auth, username } = this;
@@ -50,11 +55,18 @@ export default class CognitoUser extends EmberObject {
     deprecate(
       'This functionality has moved to confirmSignUp() on the Cognito service.',
       false,
-      { id: 'ember-cognito-confirm-registration', until: '1.0' }
+      {
+        for: 'ember-cognito',
+        id: 'ember-cognito-confirm-registration',
+        since: '0.12.0',
+        until: '1.0.0',
+      }
     );
 
     const { auth, username } = this;
-    const options = forceAliasCreation ? { forceAliasCreation : true } : undefined;
+    const options = forceAliasCreation
+      ? { forceAliasCreation: true }
+      : undefined;
     return auth.confirmSignUp(username, confirmationCode, options);
   }
 
@@ -70,7 +82,12 @@ export default class CognitoUser extends EmberObject {
     deprecate(
       'This functionality has moved to forgotPassword() on the Cognito service.',
       false,
-      { id: 'ember-cognito-forgot-password', until: '1.0' }
+      {
+        for: 'ember-cognito',
+        id: 'ember-cognito-forgot-password',
+        since: '0.12.0',
+        until: '1.0.0',
+      }
     );
 
     const { auth, username } = this;
@@ -101,7 +118,12 @@ export default class CognitoUser extends EmberObject {
     deprecate(
       'This functionality has moved to resendSignUp() on the Cognito service.',
       false,
-      { id: 'ember-cognito-resend-confirmation-code', until: '1.0' }
+      {
+        for: 'ember-cognito',
+        id: 'ember-cognito-resend-confirmation-code',
+        since: '0.12.0',
+        until: '1.0.0',
+      }
     );
 
     const { auth, username } = this;
@@ -120,7 +142,11 @@ export default class CognitoUser extends EmberObject {
 
   verifyAttribute(attributeName, confirmationCode) {
     const { auth, user } = this;
-    return auth.verifyUserAttributeSubmit(user, attributeName, confirmationCode);
+    return auth.verifyUserAttributeSubmit(
+      user,
+      attributeName,
+      confirmationCode
+    );
   }
 
   // Non-AWS method
@@ -134,7 +160,12 @@ export default class CognitoUser extends EmberObject {
     deprecate(
       'getStorageData() no longer used, and always returns an empty object.',
       false,
-      { id: 'ember-cognito-get-storage-data', until: '1.0' }
+      {
+        for: 'ember-cognito',
+        id: 'ember-cognito-get-storage-data',
+        since: '0.12.0',
+        until: '1.0.0',
+      }
     );
     return {};
   }

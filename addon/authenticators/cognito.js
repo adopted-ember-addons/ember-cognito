@@ -12,7 +12,7 @@ export default class CognitoAuthenticator extends Base {
   async restore({ poolId, clientId }) {
     this.cognito.configure({
       userPoolId: poolId,
-      userPoolWebClientId: clientId
+      userPoolWebClientId: clientId,
     });
     const user = await this.auth.currentAuthenticatedUser();
     return this._resolveAuth(user);
@@ -22,7 +22,7 @@ export default class CognitoAuthenticator extends Base {
     return {
       poolId: user.pool.getUserPoolId(),
       clientId: user.pool.getClientId(),
-      access_token: session.getIdToken().getJwtToken()
+      access_token: session.getIdToken().getJwtToken(),
     };
   }
 

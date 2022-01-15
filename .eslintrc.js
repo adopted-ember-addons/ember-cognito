@@ -21,10 +21,10 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'eqeqeq': ['error', 'always'],
+    eqeqeq: ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'ember/no-jquery': 'error',
-    'ember/use-ember-get-and-set': [2, { ignoreThisExpressions: true }]
+    'ember/use-ember-get-and-set': [2, { ignoreThisExpressions: true }],
   },
   overrides: [
     // node files

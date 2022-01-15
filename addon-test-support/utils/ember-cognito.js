@@ -2,7 +2,7 @@ import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import EmberObject from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { resolve } from 'rsvp';
-import { newSession } from "./-mock-auth";
+import { newSession } from './-mock-auth';
 
 const MockUser = EmberObject.extend({
   init() {
@@ -39,16 +39,20 @@ const MockUser = EmberObject.extend({
   },
 
   getUserAttributes() {
-    return resolve(this.userAttributes.map(({ name, value }) => {
-      return new CognitoUserAttribute({ Name: name, Value: value });
-    }));
+    return resolve(
+      this.userAttributes.map(({ name, value }) => {
+        return new CognitoUserAttribute({ Name: name, Value: value });
+      })
+    );
   },
 
   getUserAttributesHash() {
-    return resolve(this.userAttributes.reduce((acc, { name, value }) => {
-      acc[name] = value;
-      return acc;
-    }, {}));
+    return resolve(
+      this.userAttributes.reduce((acc, { name, value }) => {
+        acc[name] = value;
+        return acc;
+      }, {})
+    );
   },
 
   resendConfirmationCode() {
@@ -73,7 +77,7 @@ const MockUser = EmberObject.extend({
         attrs.push({ name: updated.getName(), value: updated.getValue() });
       }
     });
-    this.set('userAttributes', attrs)
+    this.set('userAttributes', attrs);
   },
 
   _updateAttrsHash(attributes) {
@@ -90,7 +94,7 @@ const MockUser = EmberObject.extend({
         attrs.push({ name, value: attributes[name] });
       }
     });
-    this.set('userAttributes', attrs)
+    this.set('userAttributes', attrs);
   },
 
   updateAttributes(attributes) {
@@ -116,7 +120,7 @@ const MockUser = EmberObject.extend({
   // Non-AWS method
   getStorageData() {
     return this.storageData;
-  }
+  },
 });
 
 export { MockUser };

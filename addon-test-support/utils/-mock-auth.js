@@ -4,18 +4,25 @@ import {
   CognitoAccessToken,
   CognitoIdToken,
   CognitoRefreshToken,
-  CognitoUserSession
-} from "amazon-cognito-identity-js";
+  CognitoUserSession,
+} from 'amazon-cognito-identity-js';
 
 // Makes a JWT from a payload
-export function makeToken({ duration = 1000, header = 'header', extra = {} } = {}) {
+export function makeToken({
+  duration = 1000,
+  header = 'header',
+  extra = {},
+} = {}) {
   const now = Math.floor(new Date() / 1000);
   // To get a non-zero clock drift.
   const iat = now - 123;
-  const payload = Object.assign({
-    iat,
-    exp: iat + duration
-  }, extra);
+  const payload = Object.assign(
+    {
+      iat,
+      exp: iat + duration,
+    },
+    extra
+  );
   return `${header}.${btoa(JSON.stringify(payload))}`;
 }
 
@@ -24,19 +31,21 @@ export function newSession({ idToken, refreshToken, accessToken } = {}) {
   const token = makeToken();
   return new CognitoUserSession({
     IdToken: new CognitoIdToken({ IdToken: idToken || token }),
-    RefreshToken: new CognitoRefreshToken({ RefreshToken: refreshToken || token }),
-    AccessToken: new CognitoAccessToken({ AccessToken: accessToken || token })
+    RefreshToken: new CognitoRefreshToken({
+      RefreshToken: refreshToken || token,
+    }),
+    AccessToken: new CognitoAccessToken({ AccessToken: accessToken || token }),
   });
 }
 
 export default EmberObject.extend({
   configure(awsconfig) {
-    this.set("awsconfig", awsconfig);
+    this.set('awsconfig', awsconfig);
   },
 
   signUp() {
     const user = this._authenticatedUser;
-    return resolve({ user, userConfirmed: false, userSub: "xxxx" });
+    return resolve({ user, userConfirmed: false, userSub: 'xxxx' });
   },
 
   _resolveAuthedUser(msg) {
@@ -57,7 +66,7 @@ export default EmberObject.extend({
   },
 
   currentAuthenticatedUser() {
-    return this._resolveAuthedUser("user not authenticated");
+    return this._resolveAuthedUser('user not authenticated');
   },
 
   completeNewPassword() {
@@ -75,5 +84,5 @@ export default EmberObject.extend({
 
   userAttributes() {
     return resolve([]);
-  }
+  },
 });

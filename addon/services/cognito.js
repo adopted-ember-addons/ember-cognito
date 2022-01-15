@@ -1,7 +1,7 @@
 import Service, { inject as service } from '@ember/service';
 import CognitoUser from '../utils/cognito-user';
-import { normalizeAttributes } from "../utils/utils";
-import Auth from "@aws-amplify/auth";
+import { normalizeAttributes } from '../utils/utils';
+import Auth from '@aws-amplify/auth';
 import { cancel, later } from '@ember/runloop';
 import { reject } from 'rsvp';
 
@@ -26,10 +26,13 @@ export default class CognitoService extends Service {
    */
   configure(awsconfig) {
     const { poolId, clientId } = this;
-    const params =  Object.assign({
-      userPoolId: poolId,
-      userPoolWebClientId: clientId,
-    }, awsconfig);
+    const params = Object.assign(
+      {
+        userPoolId: poolId,
+        userPoolWebClientId: clientId,
+      },
+      awsconfig
+    );
 
     this.auth.configure(params);
   }
@@ -48,7 +51,7 @@ export default class CognitoService extends Service {
       username,
       password,
       attributes: normalizeAttributes(attributes),
-      validationData
+      validationData,
     });
     // Replace the user with a wrapped user.
     result.user = this._setUser(result.user);
@@ -126,7 +129,9 @@ export default class CognitoService extends Service {
   refreshSession() {
     let user = this.user;
     if (user) {
-      return this.session.authenticate('authenticator:cognito', { state: { name: 'refresh' } });
+      return this.session.authenticate('authenticator:cognito', {
+        state: { name: 'refresh' },
+      });
     }
   }
 

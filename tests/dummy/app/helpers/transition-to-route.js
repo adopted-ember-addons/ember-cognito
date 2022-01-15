@@ -1,4 +1,4 @@
-import { helper } from "@ember/component/helper";
+import { helper } from '@ember/component/helper';
 
 //
 // This can be used within a route template to define an action
@@ -6,7 +6,7 @@ import { helper } from "@ember/component/helper";
 // onConfirm={{action (transition-to-route this "confirm")}}
 //
 export function transitionToRoute([obj, route] /*, hash*/) {
-  return function() {
+  return function () {
     obj.transitionToRoute(route);
   };
 }

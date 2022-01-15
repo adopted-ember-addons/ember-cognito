@@ -13,7 +13,7 @@ export default class RegisterIndexRoute extends Component {
     const { username, password, phone, email } = this;
     const attributes = {
       email,
-      phone_number: phone
+      phone_number: phone,
     };
 
     e.preventDefault();

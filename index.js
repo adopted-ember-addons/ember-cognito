@@ -4,14 +4,19 @@
 module.exports = {
   name: require('./package').name,
   options: {
-    autoImport:{
+    autoImport: {
       webpack: {
-        node: { crypto: true }
-      }
-    }
+        devtool: false,
+        resolve: {
+          fallback: {
+            crypto: require.resolve('crypto-browserify'),
+          },
+        },
+      },
+    },
   },
-  included: function(app) {
+  included: function (app) {
     this._super.included.apply(this, arguments);
     app.import('vendor/shims/window-global.js');
-  }
+  },
 };

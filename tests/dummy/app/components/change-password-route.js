@@ -10,7 +10,7 @@ export default class ChangePasswordRoute extends Component {
 
   @action
   async changePassword(e) {
-    const { oldPassword, newPassword, } = this;
+    const { oldPassword, newPassword } = this;
 
     e.preventDefault();
 
