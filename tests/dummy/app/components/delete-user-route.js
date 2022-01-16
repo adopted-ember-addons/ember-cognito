@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/delete-user-route';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 
 export default class DeleteUserRoute extends Component {
   layout = layout;
@@ -14,7 +14,7 @@ export default class DeleteUserRoute extends Component {
     e.preventDefault();
     const deleteVal = this.deleteVal;
     if (deleteVal !== 'DELETE') {
-      this.set('errorMessage', 'Type "DELETE"');
+      set(this, 'errorMessage', 'Type "DELETE"');
       return;
     }
 
@@ -22,7 +22,7 @@ export default class DeleteUserRoute extends Component {
       await this.cognito.user.deleteUser();
       await this.session.invalidate();
     } catch (err) {
-      this.set('errorMessage', err.message);
+      set(this, 'errorMessage', err.message);
     }
   }
 }

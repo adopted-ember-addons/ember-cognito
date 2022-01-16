@@ -7,7 +7,7 @@
         <h1>Edit Attribute</h1>
       {{/if}}
 
-      <form class="attribute-form" {{on "submit" (fn this.save)}}>
+      <form class="attribute-form" {{on "submit" this.save}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}
@@ -16,7 +16,7 @@
           <Input
             @value={{this.model.name}}
             class="form-control"
-            @id="name"
+            id="name"
             autofocus
             required
           />
@@ -26,12 +26,12 @@
           <Input
             @value={{this.model.value}}
             class="form-control"
-            @id="value"
+            id="value"
             required
           />
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
-        <button class="btn btn-danger" {{on "click" (fn this.deleteAttr)}} type="button">Delete</button>
+        <button class="btn btn-danger" {{on "click" this.deleteAttr}} type="button">Delete</button>
       </form>
     </div>
   </div>

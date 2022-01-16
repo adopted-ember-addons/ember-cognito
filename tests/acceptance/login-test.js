@@ -9,11 +9,11 @@ import setupSinonTest from '../helpers/sinon';
 // This is an example of testing authentication by stubbing the authenticator.
 //
 
-module('Acceptance | login', function(hooks) {
+module('Acceptance | login', function (hooks) {
   setupApplicationTest(hooks);
   setupSinonTest(hooks);
 
-  test('login', async function(assert) {
+  test('login', async function (assert) {
     await mockCognitoUser({ username: 'testuser' });
     const authenticator = this.owner.lookup('authenticator:cognito');
     this.sinon.stub(authenticator, 'authenticate').resolves();
@@ -24,7 +24,7 @@ module('Acceptance | login', function(hooks) {
     await click('.login-form [type=submit]');
 
     let session = await currentSession();
-    assert.equal(session.isAuthenticated, true);
-    assert.equal(currentURL(), '/');
+    assert.true(session.isAuthenticated);
+    assert.strictEqual(currentURL(), '/');
   });
 });

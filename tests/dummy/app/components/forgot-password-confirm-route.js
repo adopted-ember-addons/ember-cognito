@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/forgot-password-confirm-route';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 
 export default class ForgotPasswordConfirmRoute extends Component {
   layout = layout;
@@ -10,7 +10,7 @@ export default class ForgotPasswordConfirmRoute extends Component {
 
   @action
   async forgotPasswordSubmit(e) {
-    const { username, code, password, } = this;
+    const { username, code, password } = this;
 
     e.preventDefault();
 
@@ -18,7 +18,7 @@ export default class ForgotPasswordConfirmRoute extends Component {
       await this.cognito.forgotPasswordSubmit(username, code, password);
       this.onComplete();
     } catch (err) {
-      this.set('errorMessage', err.message);
+      set(this, 'errorMessage', err.message);
     }
   }
 }

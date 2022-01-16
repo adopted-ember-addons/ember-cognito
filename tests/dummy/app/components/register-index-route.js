@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/register-index-route';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 
 export default class RegisterIndexRoute extends Component {
   layout = layout;
@@ -13,7 +13,7 @@ export default class RegisterIndexRoute extends Component {
     const { username, password, phone, email } = this;
     const attributes = {
       email,
-      phone_number: phone
+      phone_number: phone,
     };
 
     e.preventDefault();
@@ -26,7 +26,7 @@ export default class RegisterIndexRoute extends Component {
         this.onConfirmationRequired(result.user);
       }
     } catch (err) {
-      this.set('errorMessage', err.message);
+      set(this, 'errorMessage', err.message);
     }
   }
 }

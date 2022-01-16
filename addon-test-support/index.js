@@ -3,12 +3,15 @@ import { set } from '@ember/object';
 import { MockUser } from './utils/ember-cognito';
 import { typeOf } from '@ember/utils';
 import MockAuth from './utils/-mock-auth';
-import { CognitoUser as AWSUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+  CognitoUser as AWSUser,
+  CognitoUserPool,
+} from 'amazon-cognito-identity-js';
 
 export function newUser(username) {
   const { owner } = getContext();
   const cognito = owner.lookup('service:cognito');
-  const { poolId  = 'us-east-1_TEST', clientId = 'TEST' } = cognito;
+  const { poolId = 'us-east-1_TEST', clientId = 'TEST' } = cognito;
   const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
   return new AWSUser({ Username: username, Pool: pool });
 }
@@ -18,7 +21,7 @@ export function mockCognitoUser(userAttributes) {
 
   const { username } = userAttributes;
   const cognito = owner.lookup('service:cognito');
-  const { poolId  = 'us-east-1_TEST', clientId = 'TEST' } = cognito;
+  const { poolId = 'us-east-1_TEST', clientId = 'TEST' } = cognito;
   const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
   const user = new AWSUser({ Username: username, Pool: pool });
   const auth = MockAuth.create({ _authenticatedUser: user });
@@ -36,8 +39,10 @@ export function unmockCognitoUser() {
 export function mockAuth(authClassOrInstance = MockAuth) {
   const { owner } = getContext();
   const cognito = owner.lookup('service:cognito');
-  const auth = typeOf(authClassOrInstance) === 'class' ?
-    authClassOrInstance.create() : authClassOrInstance;
+  const auth =
+    typeOf(authClassOrInstance) === 'class'
+      ? authClassOrInstance.create()
+      : authClassOrInstance;
   set(cognito, 'auth', auth);
 }
 

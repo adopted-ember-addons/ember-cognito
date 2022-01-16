@@ -1,10 +1,10 @@
-import sinon from "sinon";
+import sinon from 'sinon';
 
 export default function setupSinonTest(hooks) {
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.sinon = sinon.createSandbox();
   });
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     this.sinon.restore();
   });
 }

@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/change-password-route';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 
 export default class ChangePasswordRoute extends Component {
   layout = layout;
@@ -10,7 +10,7 @@ export default class ChangePasswordRoute extends Component {
 
   @action
   async changePassword(e) {
-    const { oldPassword, newPassword, } = this;
+    const { oldPassword, newPassword } = this;
 
     e.preventDefault();
 
@@ -18,7 +18,7 @@ export default class ChangePasswordRoute extends Component {
       await this.cognito.user.changePassword(oldPassword, newPassword);
       this.onComplete();
     } catch (err) {
-      this.set('errorMessage', err.message);
+      set(this, 'errorMessage', err.message);
     }
   }
 }

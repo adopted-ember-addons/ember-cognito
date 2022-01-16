@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-4">
       <h1>Resend registration code</h1>
-      <form class="register-resend-form" {{on "submit" (fn this.resend)}}>
+      <form class="register-resend-form" {{on "submit" this.resend}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}
@@ -11,7 +11,7 @@
           <Input
             @value={{this.username}}
             class="form-control"
-            @id="username"
+            id="username"
             placeholder="Username"
             autofocus
             required

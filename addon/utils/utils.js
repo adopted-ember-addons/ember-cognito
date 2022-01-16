@@ -1,5 +1,5 @@
 import { typeOf } from '@ember/utils';
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 
 /**
  * This takes a hash of attributes or a list of CognitoUserAttributes list,
@@ -15,7 +15,12 @@ export function normalizeAttributes(attributes, showDeprecation = true) {
     deprecate(
       'You can pass a hash to this function rather than a list of CognitoUserAttribute objects.',
       !showDeprecation,
-      { id: 'ember-cognito-attribute-list', until: '1.0' }
+      {
+        for: 'ember-cognito',
+        id: 'ember-cognito-attribute-list',
+        since: '0.12.0',
+        until: '1.0.0',
+      }
     );
     let newAttrs = {};
     for (const attr of attributes) {

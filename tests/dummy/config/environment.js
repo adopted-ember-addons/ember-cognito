@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -25,8 +25,8 @@ module.exports = function(environment) {
       poolId: 'us-east-1_TEST',
       clientId: 'TEST',
       autoRefreshSession: true,
-      authenticationFlowType: 'USER_SRP_AUTH'
-    }
+      authenticationFlowType: 'USER_SRP_AUTH',
+    },
   };
 
   if (environment === 'development') {

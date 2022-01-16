@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/attribute-route';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 
 export default class AttributeRoute extends Component {
   layout = layout;
@@ -17,7 +17,7 @@ export default class AttributeRoute extends Component {
       await this.cognito.user.updateAttributes({ [name]: value });
       this.onSave();
     } catch (err) {
-      this.set('errorMessage', err.message);
+      set(this, 'errorMessage', err.message);
     }
   }
 
@@ -27,10 +27,10 @@ export default class AttributeRoute extends Component {
     const { name } = this.model;
 
     try {
-      await this.cognito.user.deleteAttributes([ name ]);
+      await this.cognito.user.deleteAttributes([name]);
       this.onDelete();
     } catch (err) {
-      this.set('errorMessage', err.message);
+      set(this, 'errorMessage', err.message);
     }
   }
 }

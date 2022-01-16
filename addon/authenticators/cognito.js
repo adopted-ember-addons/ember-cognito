@@ -1,4 +1,5 @@
 import { readOnly } from '@ember/object/computed';
+import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Base from 'ember-simple-auth/authenticators/base';
 
@@ -12,7 +13,7 @@ export default class CognitoAuthenticator extends Base {
   async restore({ poolId, clientId }) {
     this.cognito.configure({
       userPoolId: poolId,
-      userPoolWebClientId: clientId
+      userPoolWebClientId: clientId,
     });
     const user = await this.auth.currentAuthenticatedUser();
     return this._resolveAuth(user);
@@ -22,7 +23,7 @@ export default class CognitoAuthenticator extends Base {
     return {
       poolId: user.pool.getUserPoolId(),
       clientId: user.pool.getClientId(),
-      access_token: session.getIdToken().getJwtToken()
+      access_token: session.getIdToken().getJwtToken(),
     };
   }
 
@@ -93,7 +94,7 @@ export default class CognitoAuthenticator extends Base {
 
   async invalidate(data) {
     await this.cognito.user.signOut();
-    this.set('cognito.user', undefined);
+    set(this, 'cognito.user', undefined);
     return data;
   }
 }

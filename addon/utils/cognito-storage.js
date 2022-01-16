@@ -1,4 +1,4 @@
-import { deprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/debug';
 
 /**
  * @private
@@ -12,11 +12,12 @@ import { deprecate } from '@ember/application/deprecations';
  */
 export default class CognitoStorage {
   constructor(data = {}) {
-    deprecate(
-      'The CognitoStorage object has been deprecated.',
-      false,
-      { id: 'ember-cognito-storage', until: '1.0' }
-    );
+    deprecate('The CognitoStorage object has been deprecated.', false, {
+      for: 'ember-cognito',
+      id: 'ember-cognito-storage',
+      since: '0.12.0',
+      until: '1.0.0',
+    });
     this.data = data;
   }
 
@@ -44,7 +45,9 @@ export default class CognitoStorage {
    * @returns {string} the data item
    */
   getItem(key) {
-    return Object.prototype.hasOwnProperty.call(this.data, key) ? this.data[key] : undefined;
+    return Object.prototype.hasOwnProperty.call(this.data, key)
+      ? this.data[key]
+      : undefined;
   }
 
   /**
