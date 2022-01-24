@@ -93,16 +93,6 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "greenkeeper": {
-    "ignore": [
-      "ember-cli",
-      "ember-cli-babel",
-      "ember-cli-dependency-checker",
-      "ember-cli-htmlbars",
-      "ember-cli-htmlbars-inline-precompile",
-      "loader.js"
-    ]
-  },
   "volta": {
     "node": "12.13.0",
     "yarn": "1.22.17"
