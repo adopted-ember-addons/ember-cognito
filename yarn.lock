@@ -11,37 +11,23 @@
     sourcemap-codec "1.4.8"
 
 "@aws-amplify/auth@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-4.4.0.tgz#bc7bd1421e7228fe5cacb92ea11715026cd046e2"
-  integrity sha512-QQgYJ+bKKjhx1xptSC7S7ge0NYoABzfeDlH96HUzD+oFjsl1FvAYj1YRBMb5REJ7xi6EkkBbLTcsTjutxbrYqA==
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-4.4.1.tgz#412fb8c56b9f348cb864cbf25e452e9139243237"
+  integrity sha512-aq3BOQ+v+ibt8cOue2tYMq22dbZ11ePauxMIdT3/dCi76nkcRjZYup1PturDIihlTgTxHgzaX1cYkFE29unzWw==
   dependencies:
-    "@aws-amplify/cache" "4.0.33"
-    "@aws-amplify/core" "4.3.13"
-    amazon-cognito-identity-js "5.2.5"
+    "@aws-amplify/cache" "4.0.34"
+    "@aws-amplify/core" "4.3.14"
+    amazon-cognito-identity-js "5.2.6"
     crypto-js "^4.1.1"
 
-"@aws-amplify/cache@4.0.33":
-  version "4.0.33"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/cache/-/cache-4.0.33.tgz#86e02ffecf6dc379f4b54f9480b8224ca3f0ed6d"
-  integrity sha512-An5ckJA5yBsdBC+ZpWYOgihZg0MiV4Nc4ysHxvXl+qNjIRkb2kDUdY5ePWAOWrBKbrn6DyCVMH4BUXE5D45xdQ==
+"@aws-amplify/cache@4.0.34":
+  version "4.0.34"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/cache/-/cache-4.0.34.tgz#21afaaa15e6c0c902aa6bb7ff8b44b5aad7193d7"
+  integrity sha512-gWh3SwNsYBdVJ/zY3GM3wc3bAbwHl/aOF8MrjwxXLeiDWYNr97JfjU5FdeKLGdaXi/B1xa2HdClQQWsieg+q2g==
   dependencies:
-    "@aws-amplify/core" "4.3.13"
+    "@aws-amplify/core" "4.3.14"
 
-"@aws-amplify/core@4.3.13":
-  version "4.3.13"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.3.13.tgz#d4748e6b249f8b6b3109d18b25d0aadcb25ba783"
-  integrity sha512-SHT532MgmS0wBCz2sMUcX9z0o3LBquyZL8lDq8jNhsGzyet/uNvx8Q4b7o4QiwDStijsFrpX16WCRUyH6/Sffg==
-  dependencies:
-    "@aws-crypto/sha256-js" "1.0.0-alpha.0"
-    "@aws-sdk/client-cloudwatch-logs" "3.6.1"
-    "@aws-sdk/client-cognito-identity" "3.6.1"
-    "@aws-sdk/credential-provider-cognito-identity" "3.6.1"
-    "@aws-sdk/types" "3.6.1"
-    "@aws-sdk/util-hex-encoding" "3.6.1"
-    universal-cookie "^4.0.4"
-    zen-observable-ts "0.8.19"
-
-"@aws-amplify/core@^4.3.13":
+"@aws-amplify/core@4.3.14", "@aws-amplify/core@^4.3.13":
   version "4.3.14"
   resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.3.14.tgz#532827bf16e9f145f883d9a6a9fdb1d5cd89401c"
   integrity sha512-xJZigjhH3CwP6sMmTRRyobAfFtP151MtxjDP6lbGiBWMHeUYwzIvjM7YQoDCTWEj6Ix4yV+UKb2SYUY1wyc0uw==
@@ -2833,18 +2819,7 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-amazon-cognito-identity-js@5.2.5:
-  version "5.2.5"
-  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-5.2.5.tgz#580e6cae03a495f5fa98fa20d9940166f72b8c97"
-  integrity sha512-Puk6rLOOTl4vCvMixS9ecfFn0n8x0Etiow9iCg3vRa7vFeeCRLxJucdS3kHO9g0/YQi/vG59IPpOxUDEPoEbVw==
-  dependencies:
-    buffer "4.9.2"
-    crypto-js "^4.1.1"
-    fast-base64-decode "^1.0.0"
-    isomorphic-unfetch "^3.0.0"
-    js-cookie "^2.2.1"
-
-amazon-cognito-identity-js@^5.2.5:
+amazon-cognito-identity-js@5.2.6, amazon-cognito-identity-js@^5.2.5:
   version "5.2.6"
   resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-5.2.6.tgz#2fa57e965039d9e0a5990da1febbfe6a7a276cfd"
   integrity sha512-gtYLuhwDy8Badp9q5JB2Ad4/tMFo5JtbjoldFtgd0YXyiMjop4B5f0V/uYw3zhRwk5weZ2LZjfe2XPwhNhEebg==
