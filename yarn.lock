@@ -26,10 +26,24 @@
   dependencies:
     "@aws-amplify/core" "4.3.14"
 
-"@aws-amplify/core@4.3.14", "@aws-amplify/core@^4.3.13":
+"@aws-amplify/core@4.3.14":
   version "4.3.14"
   resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.3.14.tgz#532827bf16e9f145f883d9a6a9fdb1d5cd89401c"
   integrity sha512-xJZigjhH3CwP6sMmTRRyobAfFtP151MtxjDP6lbGiBWMHeUYwzIvjM7YQoDCTWEj6Ix4yV+UKb2SYUY1wyc0uw==
+  dependencies:
+    "@aws-crypto/sha256-js" "1.0.0-alpha.0"
+    "@aws-sdk/client-cloudwatch-logs" "3.6.1"
+    "@aws-sdk/client-cognito-identity" "3.6.1"
+    "@aws-sdk/credential-provider-cognito-identity" "3.6.1"
+    "@aws-sdk/types" "3.6.1"
+    "@aws-sdk/util-hex-encoding" "3.6.1"
+    universal-cookie "^4.0.4"
+    zen-observable-ts "0.8.19"
+
+"@aws-amplify/core@^4.3.13":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.4.0.tgz#31cb0375b1b97265a482840cbf7e676526ea7a6c"
+  integrity sha512-vbd9mc3o74MX655YnO3K4YPceSl+r4RX3piCkGnuWE7DhgwoEbF6o/65Wo3P4EBqpOfrl5BeULO67WYXtVXrqQ==
   dependencies:
     "@aws-crypto/sha256-js" "1.0.0-alpha.0"
     "@aws-sdk/client-cloudwatch-logs" "3.6.1"
