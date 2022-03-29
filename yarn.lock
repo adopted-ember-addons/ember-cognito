@@ -10,26 +10,26 @@
     "@jridgewell/trace-mapping" "^0.3.0"
 
 "@aws-amplify/auth@^4.4.0":
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-4.4.4.tgz#b1c78a3bc0f80bd5303de91bf836eb2b543d2fa0"
-  integrity sha512-/iQB8teOXxb6XkOK2nPBxldU5YZjMLy6vTpihWMOPP96TWqldgnKSZykYtsrTb6uYK8iF1VWr7DI9OE7UpKONQ==
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-4.5.0.tgz#cf85e881580952c0220edc025f6512acdbce4fbb"
+  integrity sha512-L8AgQPzseev7IdxwHG/qD1GCCCEGNvu4iSEnn1HZSsAHAr3G2Li/l+8/QzXGvavYyCx/ruJj5Whs9YPpZ/PEng==
   dependencies:
-    "@aws-amplify/cache" "4.0.37"
-    "@aws-amplify/core" "4.4.2"
+    "@aws-amplify/cache" "4.0.38"
+    "@aws-amplify/core" "4.5.0"
     amazon-cognito-identity-js "5.2.8"
     crypto-js "^4.1.1"
 
-"@aws-amplify/cache@4.0.37":
-  version "4.0.37"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/cache/-/cache-4.0.37.tgz#79fbb8a8bbb013bebc1385914fe5d157a570c02c"
-  integrity sha512-SlUYGVTCv848TAOVW+8PhMQKUaC6fAiflEqvW6LkXN0Etj1tetsUhXoSDFVevxkKQEXXouFrj9dSWnYE6SOIhA==
+"@aws-amplify/cache@4.0.38":
+  version "4.0.38"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/cache/-/cache-4.0.38.tgz#fc686fd3bacf1bf566b4e1c419a96ac9bfa09ab0"
+  integrity sha512-ZM9Z+D4HvCaL86DdlV7Iz2FwaYSXviDk6Bd1f/IU3KYWksqScGhz7/Lbxmi+O3qOayRDy6VToHaa3QEM/4F/bg==
   dependencies:
-    "@aws-amplify/core" "4.4.2"
+    "@aws-amplify/core" "4.5.0"
 
-"@aws-amplify/core@4.4.2", "@aws-amplify/core@^4.3.13":
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.4.2.tgz#59cef9c0d2c6f77a60e174798d5a8648a03ce1c8"
-  integrity sha512-5Q6Te5WcLaUcJpXPVVCb/i/HLBr7dS2KyODqiadb2G4ocqmr6DQaMGo7f77LjQ6WqMDETSijqsLjU8nK+2xOpg==
+"@aws-amplify/core@4.5.0", "@aws-amplify/core@^4.3.13":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.5.0.tgz#6ad5c02a94459ee87148b351236d66f425784f94"
+  integrity sha512-V6x7n26flxPNpQI9nrXUotfuIlxw2ctFaLAXXnfsKaR9GnwZjGn7ML4czjhzNypq5qUMSofr/cDno8fp43/elw==
   dependencies:
     "@aws-crypto/sha256-js" "1.0.0-alpha.0"
     "@aws-sdk/client-cloudwatch-logs" "3.6.1"
