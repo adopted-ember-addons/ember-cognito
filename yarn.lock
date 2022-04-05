@@ -10,37 +10,23 @@
     "@jridgewell/trace-mapping" "^0.3.0"
 
 "@aws-amplify/auth@^4.4.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-4.5.0.tgz#cf85e881580952c0220edc025f6512acdbce4fbb"
-  integrity sha512-L8AgQPzseev7IdxwHG/qD1GCCCEGNvu4iSEnn1HZSsAHAr3G2Li/l+8/QzXGvavYyCx/ruJj5Whs9YPpZ/PEng==
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-4.5.1.tgz#a3d6c2ce58e3976bf7eeebffee8620c86ce3b11c"
+  integrity sha512-c95Np9usoclAywk4bKPGQB/8iQ8L9n9pX/QqSt2coDlm21Ys+a89WwzLhF/tSFUFnPNF2azw4F7I5RP6HzRbnQ==
   dependencies:
-    "@aws-amplify/cache" "4.0.38"
-    "@aws-amplify/core" "4.5.0"
+    "@aws-amplify/cache" "4.0.39"
+    "@aws-amplify/core" "4.5.1"
     amazon-cognito-identity-js "5.2.8"
     crypto-js "^4.1.1"
 
-"@aws-amplify/cache@4.0.38":
-  version "4.0.38"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/cache/-/cache-4.0.38.tgz#fc686fd3bacf1bf566b4e1c419a96ac9bfa09ab0"
-  integrity sha512-ZM9Z+D4HvCaL86DdlV7Iz2FwaYSXviDk6Bd1f/IU3KYWksqScGhz7/Lbxmi+O3qOayRDy6VToHaa3QEM/4F/bg==
+"@aws-amplify/cache@4.0.39":
+  version "4.0.39"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/cache/-/cache-4.0.39.tgz#0859f2b24b3ac5026415019cd961c65a567b7824"
+  integrity sha512-mM/to+aWxoZ/XwrF4SMuxN2huiS/h2KHyqssy7dDK0urGi4x2GsKpeXB5DwKm+5gs2mVydwtULHYd3UGoURqKw==
   dependencies:
-    "@aws-amplify/core" "4.5.0"
+    "@aws-amplify/core" "4.5.1"
 
-"@aws-amplify/core@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.5.0.tgz#6ad5c02a94459ee87148b351236d66f425784f94"
-  integrity sha512-V6x7n26flxPNpQI9nrXUotfuIlxw2ctFaLAXXnfsKaR9GnwZjGn7ML4czjhzNypq5qUMSofr/cDno8fp43/elw==
-  dependencies:
-    "@aws-crypto/sha256-js" "1.0.0-alpha.0"
-    "@aws-sdk/client-cloudwatch-logs" "3.6.1"
-    "@aws-sdk/client-cognito-identity" "3.6.1"
-    "@aws-sdk/credential-provider-cognito-identity" "3.6.1"
-    "@aws-sdk/types" "3.6.1"
-    "@aws-sdk/util-hex-encoding" "3.6.1"
-    universal-cookie "^4.0.4"
-    zen-observable-ts "0.8.19"
-
-"@aws-amplify/core@^4.3.13":
+"@aws-amplify/core@4.5.1", "@aws-amplify/core@^4.3.13":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-4.5.1.tgz#e59a3f0a2c593376f0724ab342fa6cca6b0ac69b"
   integrity sha512-W7VKC6C7KlQ0RHGdPG0S8rcIb5mx9oBzd0LM4rqJVqY6AsE6K0pB0s7vXmr+A8S1h45mq6YMjQEmrpv98E4SXQ==
