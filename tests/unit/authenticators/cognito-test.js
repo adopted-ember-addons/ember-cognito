@@ -153,7 +153,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
   });
 
   test('authenticateUser, newPasswordRequired, with required attributes', async function (assert) {
-    assert.expect(8);
+    assert.expect(9);
 
     const service = this.owner.lookup('authenticator:cognito');
     let user = newUser('testuser');
@@ -189,12 +189,12 @@ module('Unit | Authenticator | cognito', function (hooks) {
     user.challengeName = undefined;
     user.challengeParam.userAttributes.given_name = 'Bryan';
     user.challengeParam.userAttributes.family_name = 'Crotaz';
-    user.challengeParam.userAttributes.not_to_be_sent = undefined;
     // Call authenticate again with the state and the new password.
     let data = await service.authenticate({ password: 'newPassword', state });
     assert.ok(attributesSentToServer);
     assert.strictEqual(attributesSentToServer.given_name, 'Bryan');
     assert.strictEqual(attributesSentToServer.family_name, 'Crotaz');
+    assert.strictEqual(attributesSentToServer.not_to_be_sent, undefined);
     assert.strictEqual(data.poolId, 'us-east-1_TEST');
     assert.strictEqual(data.clientId, 'TEST');
     assert.ok(service.cognito.user, 'The cognito service user is populated.');
