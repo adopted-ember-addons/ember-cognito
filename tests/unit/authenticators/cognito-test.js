@@ -153,7 +153,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
   });
 
   test('authenticateUser, newPasswordRequired, with required attributes', async function (assert) {
-    assert.expect(9);
+    assert.expect(8);
 
     const service = this.owner.lookup('authenticator:cognito');
     let user = newUser('testuser');
