@@ -51,7 +51,14 @@ export default class CognitoAuthenticator extends Base {
   }
 
   async _handleNewPasswordRequired({ password, state: { user } }) {
-    const user2 = await this.auth.completeNewPassword(user, password);
+    var attributes = {};
+    var userAttributes = user.challengeParam?.userAttributes;
+    if (userAttributes && user.challengeParam?.requiredAttributes) {
+      user.challengeParam?.requiredAttributes.forEach((name) => {
+        attributes[name] = userAttributes[name];
+      });
+    }
+    const user2 = await this.auth.completeNewPassword(user, password, attributes);
     return this._handleSignIn(user2);
   }
 

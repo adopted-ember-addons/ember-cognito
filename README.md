@@ -150,6 +150,17 @@ export default class CurrentUserService extends Service {
 }
 ```
 
+If the Cognito User Pool has required attributes on a new user, you need to set these on the user before completing the login process by calling `authenticate` again.
+```
+var state = // state comes from authentication failure with NEW_PASSWORD_REQUIRED
+// state.user.challengeParam.required_attributes is an array of required Cognito attributes that you must populate, eg 'given_name'
+state.user.challengeParam.userAttributes.given_name = 'Bryan'; // obvs, get this from an input
+await this.session.authenticate('authenticator:cognito', {
+  password: newPassword,
+  state: this.model,
+});.
+```
+
 You can see examples of usages of these API methods in the 
 [full-featured dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/dummy/app).
 
