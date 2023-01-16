@@ -27,7 +27,7 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
-    "@aws-amplify/auth": "^4.4.0",
+    "@aws-amplify/auth": "^5.1.4",
     "@aws-amplify/core": "^4.3.13",
     "amazon-cognito-identity-js": "^5.2.5",
     "crypto-browserify": "^3.12.0",
