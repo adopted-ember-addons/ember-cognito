@@ -1,21 +1,16 @@
-/* eslint-disable ember/no-mixins */
-import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import { inject as service } from '@ember/service';
 
-export default Route.extend(ApplicationRouteMixin, {
-  currentUser: service(),
+export default class Application extends Route {
+  @service currentUser;
+  @service session;
 
-  beforeModel() {
-    return this._loadCurrentUser();
-  },
-
-  sessionAuthenticated() {
-    this._super(...arguments);
-    this._loadCurrentUser();
-  },
-
-  _loadCurrentUser() {
-    return this.currentUser.load().catch(() => this.session.invalidate());
-  },
-});
+  async beforeModel() {
+    await this.session.setup();
+    try {
+      await this.currentUser.load();
+    } catch (err) {
+      await this.invalidate();
+    }
+  }
+}
