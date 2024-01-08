@@ -82,7 +82,7 @@
     "ember-simple-auth": "^4.0.0 || ^5.0.0 || >= 6.0.0"
   },
   "engines": {
-    "node": "14.* || 16.* || >= 18"
+    "node": "16.* || >= 18"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -110,9 +110,5 @@
     "git": {
       "tagName": "v${version}"
     }
-  },
-  "volta": {
-    "node": "18.19.0",
-    "yarn": "1.22.21"
   }
 }
