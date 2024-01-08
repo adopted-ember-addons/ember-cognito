@@ -43,6 +43,7 @@
     "@embroider/test-setup": "^1.8.3",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
+    "@release-it-plugins/lerna-changelog": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~4.8.1",
@@ -73,7 +74,7 @@
     "prettier": "^2.7.1",
     "qunit": "^2.19.2",
     "qunit-dom": "^2.0.0",
-    "release-it": "^14.2.2",
+    "release-it": "^16.2.1",
     "release-it-lerna-changelog": "^4.0.1",
     "webpack": "^5.74.0"
   },
@@ -101,7 +102,7 @@
       "publish": true
     },
     "plugins": {
-      "release-it-lerna-changelog": {
+      "@release-it-plugins/lerna-changelog": {
         "infile": "CHANGELOG.md",
         "launchEditor": true
       }
@@ -111,7 +112,7 @@
     }
   },
   "volta": {
-    "node": "12.13.0",
-    "yarn": "1.22.17"
+    "node": "18.19.0",
+    "yarn": "1.22.21"
   }
 }
