@@ -152,6 +152,59 @@ module('Unit | Authenticator | cognito', function (hooks) {
     );
   });
 
+  test('authenticateUser, newPasswordRequired, with required attributes', async function (assert) {
+    assert.expect(9);
+
+    const service = this.owner.lookup('authenticator:cognito');
+    let user = newUser('testuser');
+    user.challengeName = 'NEW_PASSWORD_REQUIRED';
+    user.challengeParam = {
+      requiredAttributes: ['given_name', 'family_name'],
+      userAttributes: {
+        not_to_be_sent: 'never',
+        given_name: '',
+        family_name: ''
+      }
+    };
+    await mockAuth(MockAuth.create({ _authenticatedUser: user }));
+
+    var attributesSentToServer = {};
+    // mock call to cognito server
+    service.auth.completeNewPassword = (user, _password, attributes) => {
+      attributesSentToServer = attributes;
+      return user;
+    }
+
+    let state;
+    try {
+      await service.authenticate({
+        username: 'testuser',
+        password: 'password',
+      });
+      assert.ok(false, 'Should not resolve');
+    } catch (err) {
+      state = err.state;
+      assert.strictEqual(err.state.name, 'newPasswordRequired');
+    }
+    user.challengeName = undefined;
+    user.challengeParam.userAttributes.given_name = 'Bryan';
+    user.challengeParam.userAttributes.family_name = 'Crotaz';
+    // Call authenticate again with the state and the new password.
+    let data = await service.authenticate({ password: 'newPassword', state });
+    assert.ok(attributesSentToServer);
+    assert.strictEqual(attributesSentToServer.given_name, 'Bryan');
+    assert.strictEqual(attributesSentToServer.family_name, 'Crotaz');
+    assert.strictEqual(attributesSentToServer.not_to_be_sent, undefined);
+    assert.strictEqual(data.poolId, 'us-east-1_TEST');
+    assert.strictEqual(data.clientId, 'TEST');
+    assert.ok(service.cognito.user, 'The cognito service user is populated.');
+    assert.strictEqual(
+      service.cognito.user.username,
+      'testuser',
+      'The username is set correctly.'
+    );
+  });
+
   test('authenticateUser, newPasswordRequired failure', async function (assert) {
     assert.expect(2);
 
