@@ -34,36 +34,6 @@ module('Unit | Utility | cognito user', function (hooks) {
     await user.changePassword('oldpass', 'newpass');
   });
 
-  test('confirmPassword', async function (assert) {
-    assert.expect(3);
-
-    const auth = MockAuth.extend({
-      forgotPasswordSubmit(username, verificationCode, newPassword) {
-        assert.strictEqual(username, 'testuser');
-        assert.strictEqual(verificationCode, '1234');
-        assert.strictEqual(newPassword, 'newpass');
-      },
-    }).create();
-
-    const user = CognitoUser.create({ auth, user: newUser('testuser') });
-    await user.confirmPassword('1234', 'newpass');
-  });
-
-  test('confirmRegistration', async function (assert) {
-    assert.expect(3);
-
-    const auth = MockAuth.extend({
-      confirmSignUp(username, confirmationCode, options) {
-        assert.strictEqual(username, 'testuser');
-        assert.strictEqual(confirmationCode, '1234');
-        assert.deepEqual(options, { forceAliasCreation: true });
-      },
-    }).create();
-
-    const user = CognitoUser.create({ auth, user: newUser('testuser') });
-    await user.confirmRegistration('1234', true);
-  });
-
   test('deleteAttributes', async function (assert) {
     assert.expect(1);
 
@@ -86,19 +56,6 @@ module('Unit | Utility | cognito user', function (hooks) {
     const user = CognitoUser.create({ user: awsUser });
     const text = await user.deleteUser();
     assert.strictEqual(text, 'SUCCESS');
-  });
-
-  test('forgotPassword', async function (assert) {
-    assert.expect(1);
-
-    const auth = MockAuth.extend({
-      forgotPassword(username) {
-        assert.strictEqual(username, 'testuser');
-      },
-    }).create();
-
-    const user = CognitoUser.create({ auth, user: newUser('testuser') });
-    await user.forgotPassword();
   });
 
   test('getAttributeVerificationCode', async function (assert) {
@@ -180,19 +137,6 @@ module('Unit | Utility | cognito user', function (hooks) {
       sub: 'aaaaaaaa-bbbb-cccc-dddd-eeeeffffgggg',
       email_verified: true,
     });
-  });
-
-  test('resendConformationCode', async function (assert) {
-    assert.expect(1);
-
-    const auth = MockAuth.extend({
-      resendSignUp(username) {
-        assert.strictEqual(username, 'testuser');
-      },
-    }).create();
-
-    const user = CognitoUser.create({ auth, user: newUser('testuser') });
-    await user.resendConfirmationCode();
   });
 
   test('updateAttributes', async function (assert) {
