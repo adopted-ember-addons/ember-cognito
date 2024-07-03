@@ -116,11 +116,6 @@ const MockUser = EmberObject.extend({
   getGroups() {
     return resolve(this.groups);
   },
-
-  // Non-AWS method
-  getStorageData() {
-    return this.storageData;
-  },
 });
 
 export { MockUser };

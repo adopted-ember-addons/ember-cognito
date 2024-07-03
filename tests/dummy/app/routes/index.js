@@ -11,9 +11,11 @@ export default class IndexRoute extends Route {
     if (this.session.isAuthenticated) {
       const cognitoAttrs = await this.cognitoUser.getUserAttributes();
       let attributes = [];
-      cognitoAttrs.forEach((attr) => {
-        attributes.push({ name: attr.getName(), value: attr.getValue() });
-      });
+
+      for (const attr in cognitoAttrs) {
+        attributes.push({ name: attr, value: cognitoAttrs[attr] });
+      }
+
       return { attributes };
     }
   }

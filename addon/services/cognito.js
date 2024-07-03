@@ -1,9 +1,9 @@
 import Service, { inject as service } from '@ember/service';
 import CognitoUser from '../utils/cognito-user';
 import { normalizeAttributes } from '../utils/utils';
-import Auth from '@aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import Auth from 'aws-amplify/auth';
 import { set } from '@ember/object';
-import { cancel, later } from '@ember/runloop';
 import { reject } from 'rsvp';
 
 /**
@@ -13,6 +13,7 @@ import { reject } from 'rsvp';
  */
 export default class CognitoService extends Service {
   @service session;
+  amplify = Amplify;
   auth = Auth;
 
   willDestroy() {
@@ -30,12 +31,21 @@ export default class CognitoService extends Service {
     const params = Object.assign(
       {
         userPoolId: poolId,
-        userPoolWebClientId: clientId,
+        userPoolClientId: clientId,
+        loginWith: {
+          username: false,
+          email: true,
+        },
       },
       awsconfig
     );
-
-    this.auth.configure(params);
+    this.amplify.configure({
+      Auth: {
+        Cognito: {
+          ...params,
+        },
+      },
+    });
   }
 
   /**
@@ -45,17 +55,34 @@ export default class CognitoService extends Service {
    * @param password Plain-text initial password entered by user.
    * @param attributes New user attributes.
    * @param validationData Application metadata.
+   * @param autoSignIn Set to true if you plan to call the autoSignIn event after signUp / confirmSignUp.
    */
-  async signUp(username, password, attributes, validationData) {
+  async signUp(
+    username,
+    password,
+    attributes,
+    validationData,
+    autoSignIn = false
+  ) {
     this.configure();
+    const userAttributes = normalizeAttributes(attributes);
     const result = await this.auth.signUp({
       username,
       password,
-      attributes: normalizeAttributes(attributes),
-      validationData,
+      options: {
+        userAttributes: {
+          email: userAttributes.email,
+        },
+        validationData,
+        autoSignIn,
+      },
     });
-    // Replace the user with a wrapped user.
-    result.user = this._setUser(result.user);
+
+    if (result.nextStep === 'DONE') {
+      const user = await this.auth.getCurrentUser();
+      result.user = this._setUser(user);
+    }
+
     return result;
   }
 
@@ -65,9 +92,20 @@ export default class CognitoService extends Service {
    * @param code The confirmation code.
    * @returns {Promise<any>}
    */
-  confirmSignUp(username, code, options) {
+  async confirmSignUp(username, code, options) {
     this.configure();
-    return this.auth.confirmSignUp(username, code, options);
+    return this.auth.confirmSignUp({ username, code, options });
+  }
+
+  /**
+   * Auto sign in after sign up completion, using the signUp result.
+   * @returns {Promise<any>}
+   */
+  async autoSignIn() {
+    const result = await this.auth.autoSignIn();
+    const user = await this.auth.getCurrentUser();
+    result.user = this._setUser(user);
+    return result;
   }
 
   /**
@@ -77,7 +115,7 @@ export default class CognitoService extends Service {
    */
   resendSignUp(username) {
     this.configure();
-    return this.auth.resendSignUp(username);
+    return this.auth.resendSignUpCode({ username });
   }
 
   /**
@@ -87,63 +125,40 @@ export default class CognitoService extends Service {
    */
   forgotPassword(username) {
     this.configure();
-    return this.auth.forgotPassword(username);
+    return this.auth.resetPassword({ username });
   }
 
   /**
    * Submits a new password.
    * @param username User's username.
-   * @param code The verification code sent by forgotPassword.
+   * @param confirmationCode The verification code sent by forgotPassword.
    * @param newPassword The user's new password.
    * @returns {*|Promise<void>|void}
    */
-  forgotPasswordSubmit(username, code, newPassword) {
+  forgotPasswordSubmit(username, confirmationCode, newPassword) {
     this.configure();
-    return this.auth.forgotPasswordSubmit(username, code, newPassword);
+    return this.auth.confirmResetPassword({
+      username,
+      confirmationCode,
+      newPassword,
+    });
   }
 
-  /**
-   * Enable the token refresh timer.
-   */
-  startRefreshTask(session) {
-    if (!this.autoRefreshSession) {
-      return;
-    }
-    // Schedule a task for just past when the token expires.
-    const now = Math.floor(new Date() / 1000);
-    const exp = session.getIdToken().getExpiration();
-    const adjusted = now - session.getClockDrift();
-    const duration = (exp - adjusted) * 1000 + 100;
-    set(this, '_taskDuration', duration);
-    set(this, 'task', later(this, 'refreshSession', duration));
-  }
-
-  /**
-   * Disable the token refresh timer.
-   */
-  stopRefreshTask() {
-    cancel(this.task);
-    set(this, 'task', undefined);
-    set(this, '_taskDuration', undefined);
-  }
-
-  refreshSession() {
-    let user = this.user;
-    if (user) {
-      return this.session.authenticate('authenticator:cognito', {
-        state: { name: 'refresh' },
-      });
-    }
+  /*
+    Get / Refresh the current session
+  */
+  async getCurrentSession() {
+    return await this.auth.fetchAuthSession();
   }
 
   /**
    * A helper that resolves to the logged in user's id token.
    */
-  async getIdToken() {
+  async getJwtToken() {
     const user = this.user;
     if (user) {
-      const session = await user.getSession();
-      return session.getIdToken().getJwtToken();
+      const session = await this.getCurrentSession();
+      return session.tokens.idToken?.toString();
     } else {
       return reject('user not authenticated');
     }

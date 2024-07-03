@@ -1,41 +1,27 @@
-import { Promise } from 'rsvp';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { deprecate } from '@ember/debug';
 import { normalizeAttributes } from './utils';
+import { tracked } from '@glimmer/tracking';
 
 //
 // Wraps an AWS CognitoUser.
 //
 export default class CognitoUser extends EmberObject {
-  @computed('user')
+  @tracked user;
+
   get username() {
-    return this.user.getUsername();
+    return this.user.username;
   }
+
   @readOnly('user.attributes') attributes;
 
-  _callback(method, ...args) {
-    return new Promise((resolve, reject) => {
-      try {
-        this.user[method](...args, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-      } catch (error) {
-        reject(error);
-      }
-    }, `cognito-user#${method}`);
-  }
-
   changePassword(oldPassword, newPassword) {
-    const { auth, user } = this;
-    return auth.changePassword(user, oldPassword, newPassword);
+    const { auth } = this;
+    return auth.updatePassword({ oldPassword, newPassword });
   }
 
-  confirmPassword(verificationCode, newPassword) {
+  confirmPassword(confirmationCode, newPassword) {
     deprecate(
       'This functionality has moved to forgotPasswordSubmit() on the Cognito service.',
       false,
@@ -48,7 +34,11 @@ export default class CognitoUser extends EmberObject {
     );
 
     const { auth, username } = this;
-    return auth.forgotPasswordSubmit(username, verificationCode, newPassword);
+    return auth.confirmResetPassword({
+      username,
+      confirmationCode,
+      newPassword,
+    });
   }
 
   confirmRegistration(confirmationCode, forceAliasCreation) {
@@ -67,15 +57,17 @@ export default class CognitoUser extends EmberObject {
     const options = forceAliasCreation
       ? { forceAliasCreation: true }
       : undefined;
-    return auth.confirmSignUp(username, confirmationCode, options);
+    return auth.confirmSignUp({ username, confirmationCode, options });
   }
 
-  deleteAttributes(attributeList) {
-    return this._callback('deleteAttributes', attributeList);
+  async deleteAttributes(attributes) {
+    this.auth.deleteuserAttributes({
+      attributes,
+    });
   }
 
-  deleteUser() {
-    return this._callback('deleteUser');
+  async deleteUser() {
+    return await this.auth.deleteUser();
   }
 
   forgotPassword() {
@@ -91,27 +83,27 @@ export default class CognitoUser extends EmberObject {
     );
 
     const { auth, username } = this;
-    return auth.forgotPassword(username);
+    return auth.forgotPassword({ username });
   }
 
-  getAttributeVerificationCode(attributeName) {
-    const { auth, user } = this;
-    return auth.verifyUserAttribute(user, attributeName);
+  getAttributeVerificationCode(userAttributeKey) {
+    const { auth } = this;
+    return auth.sendUserAttributeVerificationCode({ userAttributeKey });
   }
 
-  getSession() {
-    return this.auth.currentSession();
+  async getSession() {
+    return this.auth.fetchAuthSession();
   }
 
-  getUserAttributes() {
-    const { auth, user } = this;
-    return auth.userAttributes(user);
+  async getUserAttributes() {
+    const { auth } = this;
+    const attributes = await auth.fetchUserAttributes();
+    return attributes;
   }
 
   async getUserAttributesHash() {
-    const { auth, user } = this;
-    const result = await auth.userAttributes(user);
-    return normalizeAttributes(result, false);
+    const attributes = await this.getUserAttributes();
+    return normalizeAttributes(attributes, false);
   }
 
   resendConfirmationCode() {
@@ -127,7 +119,7 @@ export default class CognitoUser extends EmberObject {
     );
 
     const { auth, username } = this;
-    return auth.resendSignUp(username);
+    return auth.resendSignUp({ username });
   }
 
   signOut() {
@@ -135,38 +127,24 @@ export default class CognitoUser extends EmberObject {
   }
 
   updateAttributes(attributes) {
-    const { auth, user } = this;
-    const normalized = normalizeAttributes(attributes);
-    return auth.updateUserAttributes(user, normalized);
+    const { auth } = this;
+    const userAttributes = normalizeAttributes(attributes);
+    return auth.updateUserAttributes({ userAttributes });
   }
 
-  verifyAttribute(attributeName, confirmationCode) {
-    const { auth, user } = this;
-    return auth.verifyUserAttributeSubmit(
-      user,
-      attributeName,
-      confirmationCode
-    );
+  verifyAttribute(userAttributeKey, confirmationCode) {
+    const { auth } = this;
+
+    return auth.confirmUserAttribute({
+      userAttributeKey,
+      confirmationCode,
+    });
   }
 
   // Non-AWS method
   async getGroups() {
     const session = await this.getSession();
-    let payload = session.getIdToken().payload || {};
+    let payload = session.tokens.idToken?.payload || {};
     return payload['cognito:groups'] || [];
-  }
-
-  getStorageData() {
-    deprecate(
-      'getStorageData() no longer used, and always returns an empty object.',
-      false,
-      {
-        for: 'ember-cognito',
-        id: 'ember-cognito-get-storage-data',
-        since: '0.12.0',
-        until: '1.0.0',
-      }
-    );
-    return {};
   }
 }

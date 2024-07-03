@@ -121,7 +121,7 @@ module('Unit | Utility | cognito user', function (hooks) {
 
     const session = await user.getSession();
     assert.strictEqual(
-      session.getIdToken().getJwtToken().substring(0, 7),
+      session.tokens.idToken?.toString().substring(0, 7),
       'header.'
     );
   });

@@ -11,9 +11,9 @@ export default class CurrentUserService extends Service {
   async load() {
     if (this.session.isAuthenticated) {
       const userAttributes = await this.cognitoUser.getUserAttributes();
-      userAttributes.forEach((attr) => {
-        set(this, attr.getName(), attr.getValue());
-      });
+      for (const attr in userAttributes) {
+        set(this, attr, userAttributes[attr]);
+      }
     }
   }
 }

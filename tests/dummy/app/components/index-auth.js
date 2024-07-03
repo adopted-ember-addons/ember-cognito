@@ -47,7 +47,7 @@ export default class IndexAuth extends Component {
 
   tokenInfo(token) {
     return {
-      expiration: new Date(token.getExpiration() * 1000),
+      expiration: new Date(token?.payload.exp * 1000),
       formatted: JSON.stringify(token.payload, undefined, 2),
     };
   }
@@ -56,7 +56,7 @@ export default class IndexAuth extends Component {
   get accessToken() {
     let session = this.cognitoSession;
     if (session) {
-      return this.tokenInfo(session.getAccessToken());
+      return this.tokenInfo(session.tokens.accessToken);
     }
     return undefined;
   }
@@ -65,7 +65,7 @@ export default class IndexAuth extends Component {
   get idToken() {
     let session = this.cognitoSession;
     if (session) {
-      return this.tokenInfo(session.getIdToken());
+      return this.tokenInfo(session.tokens.idToken);
     }
     return undefined;
   }
