@@ -1,12 +1,15 @@
 {
-  "name": "ember-cognito",
+  "name": "@travefy/ember-cognito",
   "version": "2.0.0",
-  "description": "ember-simple-auth and AWS Cognito integration",
+  "description": "Amplify v6 form of ember-cognito",
   "keywords": [
     "ember-addon",
     "cognito"
   ],
-  "repository": "https://github.com/paulcwatts/ember-cognito",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Travefy/ember-cognito.git"
+  },
   "license": "MIT",
   "author": "Paul Watts <paulcwatts@gmail.com>",
   "directories": {
@@ -81,7 +84,7 @@
     "node": "16.* || >= 18"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://npm.pkg.github.com"
   },
   "ember": {
     "edition": "octane"
