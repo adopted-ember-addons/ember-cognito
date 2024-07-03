@@ -32,10 +32,6 @@ export default class CognitoService extends Service {
       {
         userPoolId: poolId,
         userPoolClientId: clientId,
-        loginWith: {
-          username: false,
-          email: true,
-        },
       },
       awsconfig
     );
