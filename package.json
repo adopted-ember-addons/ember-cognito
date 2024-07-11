@@ -1,5 +1,5 @@
 {
-  "name": "@travefy/ember-cognito",
+  "name": "ember-cognito",
   "version": "2.0.0",
   "description": "Amplify v6 form of ember-cognito",
   "keywords": [
