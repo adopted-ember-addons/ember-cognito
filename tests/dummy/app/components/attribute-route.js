@@ -1,11 +1,8 @@
 import Component from '@ember/component';
-import layout from '../templates/components/attribute-route';
 import { inject as service } from '@ember/service';
 import { action, set } from '@ember/object';
 
 export default class AttributeRoute extends Component {
-  layout = layout;
-
   @service cognito;
 
   @action

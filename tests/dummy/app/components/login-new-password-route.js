@@ -1,11 +1,8 @@
 import Component from '@ember/component';
-import layout from '../templates/components/login-new-password-route';
 import { inject as service } from '@ember/service';
 import { action, set } from '@ember/object';
 
 export default class LoginNewPasswordRoute extends Component {
-  layout = layout;
-
   @service cognito;
   @service session;
 
