@@ -53,7 +53,6 @@
     "@eslint/js": "^9.33.0",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
-    "@release-it-plugins/lerna-changelog": "^6.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^9.2.0",
     "ember-cli": "~6.6.0",
@@ -86,8 +85,7 @@
     "prettier-plugin-ember-template-tag": "^2.1.0",
     "qunit": "^2.24.1",
     "qunit-dom": "^3.5.0",
-    "release-it": "^16.3.0",
-    "release-it-lerna-changelog": "^4.0.1",
+    "release-plan": "^0.16.0",
     "stylelint": "^16.23.1",
     "stylelint-config-standard": "^36.0.1",
     "webpack": "^5.101.3"
@@ -107,23 +105,5 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
-  },
-  "release-it": {
-    "github": {
-      "release": true,
-      "tokenRef": "GITHUB_AUTH"
-    },
-    "npm": {
-      "publish": true
-    },
-    "plugins": {
-      "@release-it-plugins/lerna-changelog": {
-        "infile": "CHANGELOG.md",
-        "launchEditor": true
-      }
-    },
-    "git": {
-      "tagName": "v${version}"
-    }
   }
 }
