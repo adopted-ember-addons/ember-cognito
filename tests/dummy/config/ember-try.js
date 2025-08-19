@@ -8,6 +8,33 @@ module.exports = async function () {
     packageManager: 'pnpm',
     scenarios: [
       {
+        name: 'ember-lts-3.28',
+        npm: {
+          devDependencies: {
+            '@ember/test-helpers': '^2.8.1',
+            'ember-qunit': '^6.0.0',
+            'ember-resolver': '^8.0.3',
+            'ember-source': '~3.28.0',
+          },
+        },
+      },
+      {
+        name: 'ember-lts-4.4',
+        npm: {
+          devDependencies: {
+            'ember-source': '~4.4.0',
+          },
+        },
+      },
+      {
+        name: 'ember-lts-4.12',
+        npm: {
+          devDependencies: {
+            'ember-source': '~4.12.0',
+          },
+        },
+      },
+      {
         name: 'ember-lts-5.8',
         npm: {
           devDependencies: {
@@ -27,7 +54,7 @@ module.exports = async function () {
         name: 'ember-release',
         npm: {
           devDependencies: {
-            'ember-simple-auth': '^6.0.0',
+            'ember-simple-auth': '^8.0.0',
             'ember-source': await getChannelURL('release'),
           },
         },
@@ -36,7 +63,7 @@ module.exports = async function () {
         name: 'ember-beta',
         npm: {
           devDependencies: {
-            'ember-simple-auth': '^6.0.0',
+            'ember-simple-auth': '^8.0.0',
             'ember-source': await getChannelURL('beta'),
           },
         },
@@ -45,7 +72,7 @@ module.exports = async function () {
         name: 'ember-canary',
         npm: {
           devDependencies: {
-            'ember-simple-auth': '^6.0.0',
+            'ember-simple-auth': '^8.0.0',
             'ember-source': await getChannelURL('canary'),
           },
         },

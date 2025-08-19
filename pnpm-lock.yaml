@@ -109,8 +109,8 @@ importers:
         specifier: ^13.1.1
         version: 13.1.1
       ember-simple-auth:
-        specifier: ^4.2.2
-        version: 4.2.2(ember-fetch@8.1.2(encoding@0.1.13))
+        specifier: ^6.0.0
+        version: 6.1.0(@babel/core@7.28.3)(@ember/test-helpers@5.2.2(@babel/core@7.28.3))(ember-source@6.6.0(@glimmer/component@2.0.0)(rsvp@4.8.5))(eslint@9.33.0)
       ember-sinon:
         specifier: ^5.0.0
         version: 5.0.0
@@ -2238,9 +2238,6 @@ packages:
   balanced-match@2.0.0:
     resolution: {integrity: sha512-1ugUSr8BHXRnK23KfuYS+gVMC3LB8QGH9W1iGtDPsNWoQbgtXSExkBu2aDR4epiGWZOjZsj6lDl/N/AqqTC3UA==}
 
-  base-64@0.1.0:
-    resolution: {integrity: sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==}
-
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
@@ -3447,10 +3444,6 @@ packages:
     resolution: {integrity: sha512-0iKTZ+/wH6UB/VTWKvGuXlmwiE8HSIGcxHamwNhEC5x1mN3z8RfvsFZdQWYUzIWFN2Tek0gmepGRPTwWdBYl/A==}
     engines: {node: 10.* || >= 12.*}
 
-  ember-cli-version-checker@2.2.0:
-    resolution: {integrity: sha512-G+KtYIVlSOWGcNaTFHk76xR4GdzDLzAS4uxZUKdASuFX0KJE43C6DaqL+y3VTpUFLI2FIkAS6HZ4I1YBi+S3hg==}
-    engines: {node: '>= 4'}
-
   ember-cli-version-checker@3.1.3:
     resolution: {integrity: sha512-PZNSvpzwWgv68hcXxyjREpj3WWb81A7rtYNQq1lLEgrWIchF8ApKJjWP3NBpHjaatwILkZAV8klair5WFlXAKg==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -3468,9 +3461,11 @@ packages:
     engines: {node: '>= 20.11'}
     hasBin: true
 
-  ember-cookies@0.5.2:
-    resolution: {integrity: sha512-nZ7oG97kBcO9UHjO95ryABpnVx62Bhxo7lIsBJNmWvFXleILm9DGueiAynzXxuYWWPuKIeeSbYakrS1869tNTw==}
-    engines: {node: 8.* || 10.* || >= 12.*}
+  ember-cookies@1.3.0:
+    resolution: {integrity: sha512-nhVDm9lql4EVLpbjxyosyEITFvuNAmHr7cod8K2FmIyw2KcAFWSS0v88quIWc+GvcawBTz3KSMRXOJq/0InVpg==}
+    engines: {node: '>= 16.*'}
+    peerDependencies:
+      ember-source: '>=4.0'
 
   ember-eslint-parser@0.5.11:
     resolution: {integrity: sha512-YuYc+bxDGHhNdz2yEZebwwzdiErHLLGud/Q2VE6J7czuMQ/vdiL8SYWBHWyYK691MCFzrxVYpSJb89+yjXv8yg==}
@@ -3482,17 +3477,9 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  ember-factory-for-polyfill@1.3.1:
-    resolution: {integrity: sha512-y3iG2iCzH96lZMTWQw6LWNLAfOmDC4pXKbZP6FxG8lt7GGaNFkZjwsf+Z5GAe7kxfD7UG4lVkF7x37K82rySGA==}
-    engines: {node: ^4.5 || 6.* || >= 7.*}
-
   ember-fetch@8.1.2:
     resolution: {integrity: sha512-TVx24/jrvDIuPL296DV0hBwp7BWLcSMf0I8464KGz01sPytAB+ZAePbc9ooBTJDkKZEGFgatJa4nj3yF1S9Bpw==}
     engines: {node: '>= 10'}
-
-  ember-getowner-polyfill@2.2.0:
-    resolution: {integrity: sha512-rwGMJgbGzxIAiWYjdpAh04Abvt0s3HuS/VjHzUFhVyVg2pzAuz45B9AzOxYXzkp88vFC7FPaiA4kE8NxNk4A4Q==}
-    engines: {node: ^4.5 || 6.* || >= 7.*}
 
   ember-load-initializers@3.0.1:
     resolution: {integrity: sha512-qV3vxJKw5+7TVDdtdLPy8PhVsh58MlK8jwzqh5xeOwJPNP7o0+BlhvwoIlLYTPzGaHdfjEIFCgVSyMRGd74E1g==}
@@ -3517,11 +3504,13 @@ packages:
     resolution: {integrity: sha512-89oVHVJwmLDvGvAUWgS87KpBoRhy3aZ6U0Ql6HOmU4TrPkyaa8pM0W81wj9cIwjYprcQtN9EwzZMHnq46+oUyw==}
     engines: {node: 8.* || 10.* || >= 12}
 
-  ember-simple-auth@4.2.2:
-    resolution: {integrity: sha512-D7W6OREUvf5OzeB0ePptSNBilccchRYukH4f7mkbL6WT+z6VEqRRAIaQuBZdFM6lrcSFGmzctINLZJwsIpI3wg==}
-    engines: {node: '>= 12'}
+  ember-simple-auth@6.1.0:
+    resolution: {integrity: sha512-LhOl7TrOKlqb+0a/5STOoTSncDNuPELuFZ9+1SLduVX7DtdQr8VOEAmB8UaOnG0clJ9Bj6E3SczhXGjqd718Lw==}
     peerDependencies:
-      ember-fetch: ^8.0.1
+      '@ember/test-helpers': '>= 3 || > 2.7'
+    peerDependenciesMeta:
+      '@ember/test-helpers':
+        optional: true
 
   ember-sinon@5.0.0:
     resolution: {integrity: sha512-dTP2vhao1xWm3OlfpOALooso/OLM71SFg7PIBmZ6JdwKCC+CzcPb4BYRAXuoAFYzmhH8z28p8HdemjZBb0B3Bw==}
@@ -10630,8 +10619,6 @@ snapshots:
 
   balanced-match@2.0.0: {}
 
-  base-64@0.1.0: {}
-
   base64-js@1.5.1: {}
 
   base64id@2.0.0: {}
@@ -12175,11 +12162,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cli-version-checker@2.2.0:
-    dependencies:
-      resolve: 1.22.10
-      semver: 5.7.2
-
   ember-cli-version-checker@3.1.3:
     dependencies:
       resolve-package-path: 1.2.7
@@ -12342,10 +12324,10 @@ snapshots:
       - walrus
       - whiskers
 
-  ember-cookies@0.5.2:
+  ember-cookies@1.3.0(ember-source@6.6.0(@glimmer/component@2.0.0)(rsvp@4.8.5)):
     dependencies:
-      ember-cli-babel: 7.26.11
-      ember-getowner-polyfill: 2.2.0
+      '@embroider/addon-shim': 1.10.0
+      ember-source: 6.6.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -12363,10 +12345,6 @@ snapshots:
     transitivePeerDependencies:
       - eslint
       - typescript
-
-  ember-factory-for-polyfill@1.3.1:
-    dependencies:
-      ember-cli-version-checker: 2.2.0
 
   ember-fetch@8.1.2(encoding@0.1.13):
     dependencies:
@@ -12387,11 +12365,6 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
-
-  ember-getowner-polyfill@2.2.0:
-    dependencies:
-      ember-cli-version-checker: 2.2.0
-      ember-factory-for-polyfill: 1.3.1
 
   ember-load-initializers@3.0.1(ember-source@6.6.0(@glimmer/component@2.0.0)(rsvp@4.8.5)):
     dependencies:
@@ -12424,18 +12397,22 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-simple-auth@4.2.2(ember-fetch@8.1.2(encoding@0.1.13)):
+  ember-simple-auth@6.1.0(@babel/core@7.28.3)(@ember/test-helpers@5.2.2(@babel/core@7.28.3))(ember-source@6.6.0(@glimmer/component@2.0.0)(rsvp@4.8.5))(eslint@9.33.0):
     dependencies:
-      base-64: 0.1.0
-      broccoli-file-creator: 2.1.1
-      broccoli-funnel: 2.0.2
-      broccoli-merge-trees: 4.2.0
-      ember-cli-babel: 7.26.11
+      '@babel/eslint-parser': 7.28.0(@babel/core@7.28.3)(eslint@9.33.0)
+      '@ember/test-waiters': 3.1.0
+      '@embroider/addon-shim': 1.10.0
+      '@embroider/macros': 1.18.1
       ember-cli-is-package-missing: 1.0.0
-      ember-cookies: 0.5.2
-      ember-fetch: 8.1.2(encoding@0.1.13)
+      ember-cookies: 1.3.0(ember-source@6.6.0(@glimmer/component@2.0.0)(rsvp@4.8.5))
       silent-error: 1.1.1
+    optionalDependencies:
+      '@ember/test-helpers': 5.2.2(@babel/core@7.28.3)
     transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - ember-source
+      - eslint
       - supports-color
 
   ember-sinon@5.0.0:
