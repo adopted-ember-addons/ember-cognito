@@ -1,9 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  router: service('router'),
-cognito: service(),
+export default class LoginNewPasswordRoute extends Route {
+  @service cognito;
+  @service router;
 
   model() {
     let state = this.cognito.state;
@@ -12,5 +12,5 @@ cognito: service(),
     } else {
       this.router.transitionTo('login');
     }
-  },
-});
+  }
+}

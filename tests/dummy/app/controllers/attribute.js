@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  queryParams: ['name'],
-});
+export default class AttributeController extends Controller {
+  queryParams = ['name'];
+}

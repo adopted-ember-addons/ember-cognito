@@ -1,11 +1,13 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { readOnly } from '@ember/object/computed';
 
 export default class IndexRoute extends Route {
   @service cognito;
   @service session;
-  @readOnly('cognito.user') cognitoUser;
+
+  get cognitoUser() {
+    return this.cognito.user;
+  }
 
   async model() {
     if (this.session.isAuthenticated) {

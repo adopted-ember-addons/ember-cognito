@@ -21,7 +21,7 @@ export function makeToken({
       iat,
       exp: iat + duration,
     },
-    extra
+    extra,
   );
   return `${header}.${btoa(JSON.stringify(payload))}`;
 }
@@ -38,15 +38,15 @@ export function newSession({ idToken, refreshToken, accessToken } = {}) {
   });
 }
 
-export default EmberObject.extend({
+export default class MockAuth extends EmberObject {
   configure(awsconfig) {
     set(this, 'awsconfig', awsconfig);
-  },
+  }
 
   signUp() {
     const user = this._authenticatedUser;
     return resolve({ user, userConfirmed: false, userSub: 'xxxx' });
-  },
+  }
 
   _resolveAuthedUser(msg) {
     const user = this._authenticatedUser;
@@ -55,23 +55,23 @@ export default EmberObject.extend({
     } else {
       return reject(msg);
     }
-  },
+  }
 
   signIn() {
     return this._resolveAuthedUser('invalid user');
-  },
+  }
 
   signOut() {
     return resolve();
-  },
+  }
 
   currentAuthenticatedUser() {
     return this._resolveAuthedUser('user not authenticated');
-  },
+  }
 
   completeNewPassword() {
     return this._resolveAuthedUser('invalid user');
-  },
+  }
 
   currentSession() {
     const user = this._authenticatedUser;
@@ -80,9 +80,9 @@ export default EmberObject.extend({
     } else {
       return reject('user not authenticated');
     }
-  },
+  }
 
   userAttributes() {
     return resolve([]);
-  },
-});
+  }
+}

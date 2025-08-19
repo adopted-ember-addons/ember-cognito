@@ -19,7 +19,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
     assert.strictEqual(service.clientId, 'TEST');
     assert.strictEqual(
       service.authenticationFlowType,
-      config.cognito.authenticationFlowType
+      config.cognito.authenticationFlowType,
     );
   });
 
@@ -38,7 +38,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
     assert.strictEqual(
       service.cognito.user.username,
       'testuser',
-      'The username is set correctly.'
+      'The username is set correctly.',
     );
     assert.notOk(service.task, 'No task was scheduled.');
   });
@@ -68,7 +68,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
     assert.notStrictEqual(
       service.cognito.task,
       undefined,
-      'Refresh timer was scheduled.'
+      'Refresh timer was scheduled.',
     );
     let taskDuration = service.cognito._taskDuration;
     assert.ok(taskDuration > 1000 * 1000);
@@ -91,7 +91,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
     assert.strictEqual(
       service.cognito.user.username,
       'testuser',
-      'The username is set correctly.'
+      'The username is set correctly.',
     );
     assert.notOk(service.cognito.task, 'Refresh session task not set.');
   });
@@ -105,7 +105,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
         signIn() {
           return reject({ message: 'Username or password incorrect.' });
         },
-      })
+      }),
     );
 
     try {
@@ -148,7 +148,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
     assert.strictEqual(
       service.cognito.user.username,
       'testuser',
-      'The username is set correctly.'
+      'The username is set correctly.',
     );
   });
 
@@ -177,7 +177,7 @@ module('Unit | Authenticator | cognito', function (hooks) {
         completeNewPassword() {
           return reject({ message: 'Invalid password.' });
         },
-      })
+      }),
     );
 
     try {

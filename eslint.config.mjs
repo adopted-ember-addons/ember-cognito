@@ -58,6 +58,10 @@ export default [
     languageOptions: {
       parser: babelParser,
     },
+    rules: {
+      'ember/no-classic-components': 'off',
+      'ember/require-tagless-components': 'off',
+    },
   },
   {
     files: ['**/*.{js,gjs}'],

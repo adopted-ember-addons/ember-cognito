@@ -1,6 +1,6 @@
+/* eslint-disable ember/no-computed-properties-in-native-classes */
 import { Promise } from 'rsvp';
 import EmberObject, { computed } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
 import { normalizeAttributes } from './utils';
 
 //
@@ -11,7 +11,10 @@ export default class CognitoUser extends EmberObject {
   get username() {
     return this.user.getUsername();
   }
-  @readOnly('user.attributes') attributes;
+
+  get attributes() {
+    return this.user.attributes;
+  }
 
   _callback(method, ...args) {
     return new Promise((resolve, reject) => {
@@ -77,7 +80,7 @@ export default class CognitoUser extends EmberObject {
     return auth.verifyUserAttributeSubmit(
       user,
       attributeName,
-      confirmationCode
+      confirmationCode,
     );
   }
 

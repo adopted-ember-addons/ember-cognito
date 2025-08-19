@@ -21,7 +21,7 @@ module('Unit | Service | cognito', function (hooks) {
     assert.strictEqual(service.clientId, 'TEST');
     assert.strictEqual(
       service.authenticationFlowType,
-      config.cognito.authenticationFlowType
+      config.cognito.authenticationFlowType,
     );
   });
 
@@ -37,7 +37,7 @@ module('Unit | Service | cognito', function (hooks) {
             userSub: 'xxxx',
           });
         },
-      })
+      }),
     );
 
     let result = await service.signUp('testuser', 'password', [], null);
@@ -57,7 +57,7 @@ module('Unit | Service | cognito', function (hooks) {
         signUp() {
           return reject('error');
         },
-      })
+      }),
     );
 
     try {

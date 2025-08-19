@@ -9,7 +9,7 @@ export default class Application extends Route {
     await this.session.setup();
     try {
       await this.currentUser.load();
-    } catch (err) {
+    } catch {
       await this.invalidate();
     }
   }
