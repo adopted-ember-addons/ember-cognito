@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { set } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import CognitoUser from 'dummy/utils/cognito-user';
+import CognitoUser from 'ember-cognito/utils/cognito-user';
 import config from '../../../config/environment';
 import {
   mockAuth,

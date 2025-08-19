@@ -1,7 +1,7 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { resolve } from 'rsvp';
 import { setupTest } from 'ember-qunit';
-import CognitoUser from 'dummy/utils/cognito-user';
+import CognitoUser from 'ember-cognito/utils/cognito-user';
 import { module, test } from 'qunit';
 import {
   makeToken,
