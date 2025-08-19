@@ -1,11 +1,8 @@
 import Component from '@ember/component';
 import { action, set } from '@ember/object';
-import layout from '../templates/components/login-index-route';
 import { inject as service } from '@ember/service';
 
 export default class LoginIndexRoute extends Component {
-  layout = layout;
-
   @service cognito;
   @service session;
 

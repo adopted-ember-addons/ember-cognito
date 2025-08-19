@@ -20,7 +20,7 @@ export function normalizeAttributes(attributes, showDeprecation = true) {
         id: 'ember-cognito-attribute-list',
         since: '0.12.0',
         until: '1.0.0',
-      }
+      },
     );
     let newAttrs = {};
     for (const attr of attributes) {

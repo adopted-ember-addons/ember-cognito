@@ -1,6 +1,7 @@
+/* eslint-disable ember/no-runloop */
 import Service, { inject as service } from '@ember/service';
-import CognitoUser from '../utils/cognito-user';
-import { normalizeAttributes } from '../utils/utils';
+import CognitoUser from 'ember-cognito/utils/cognito-user';
+import { normalizeAttributes } from 'ember-cognito/utils/utils';
 import Auth from '@aws-amplify/auth';
 import { set } from '@ember/object';
 import { cancel, later } from '@ember/runloop';
@@ -32,7 +33,7 @@ export default class CognitoService extends Service {
         userPoolId: poolId,
         userPoolWebClientId: clientId,
       },
-      awsconfig
+      awsconfig,
     );
 
     this.auth.configure(params);

@@ -77,7 +77,7 @@ module('Unit | Utility | mock user', function () {
     assert.deepEqual(await user.confirmRegistration('123456'), {});
     assert.deepEqual(
       await user.deleteAttributes(['firstName', 'custom:a']),
-      {}
+      {},
     );
     assert.deepEqual(await user.forgotPassword(), {});
     assert.deepEqual(await user.getAttributeVerificationCode('email'), {});

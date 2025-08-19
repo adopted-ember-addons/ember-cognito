@@ -27,16 +27,28 @@
         {{/each}}
       </tbody>
     </table>
-    <LinkTo @route="attribute" @query={{hash name=undefined}} class="btn btn-light btn-block">
+    <LinkTo
+      @route="attribute"
+      @query={{hash name=undefined}}
+      class="btn btn-light btn-block"
+    >
       Add attribute
     </LinkTo>
     {{#unless this.emailVerified}}
-      <button class="btn btn-light btn-block" {{on "click" (fn this.verifyAttribute "email")}} type="button">
+      <button
+        class="btn btn-light btn-block"
+        {{on "click" (fn this.verifyAttribute "email")}}
+        type="button"
+      >
         Verify email
       </button>
     {{/unless}}
     {{#unless this.phoneNumberVerified}}
-      <button class="btn btn-light btn-block" {{on "click" (fn this.verifyAttribute "phone_number")}} type="button">
+      <button
+        class="btn btn-light btn-block"
+        {{on "click" (fn this.verifyAttribute "phone_number")}}
+        type="button"
+      >
         Verify phone number
       </button>
     {{/unless}}

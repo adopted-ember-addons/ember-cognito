@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-computed-properties-in-native-classes */
 import { readOnly } from '@ember/object/computed';
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';

@@ -1,8 +1,9 @@
+/* eslint-disable ember/no-computed-properties-in-native-classes */
 import Component from '@ember/component';
-import layout from '../templates/components/index-auth';
 import { inject as service } from '@ember/service';
-import { action, computed, set } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
+import { tracked } from '@glimmer/tracking';
 
 function attributeEqual(attributeName, value) {
   return computed('model.attributes', function () {
@@ -18,11 +19,13 @@ function attributeEqual(attributeName, value) {
 }
 
 export default class IndexAuth extends Component {
-  layout = layout;
   @service currentUser;
   @service cognito;
   @service router;
   @service session;
+
+  @tracked cognitoSession;
+
   @readOnly('cognito.user') cognitoUser;
 
   @attributeEqual('email_verified', 'true') emailVerified;
@@ -40,7 +43,7 @@ export default class IndexAuth extends Component {
       const session = await cognitoUser.getSession();
       // It can happen in acceptance tests that 'session' is falsey
       if (session) {
-        set(this, 'cognitoSession', session);
+        this.cognitoSession = session;
       }
     }
   }
@@ -52,7 +55,6 @@ export default class IndexAuth extends Component {
     };
   }
 
-  @computed('cognitoSession')
   get accessToken() {
     let session = this.cognitoSession;
     if (session) {
@@ -61,7 +63,6 @@ export default class IndexAuth extends Component {
     return undefined;
   }
 
-  @computed('cognitoSession')
   get idToken() {
     let session = this.cognitoSession;
     if (session) {
@@ -70,9 +71,8 @@ export default class IndexAuth extends Component {
     return undefined;
   }
 
-  @computed('session.data')
   get authenticatedData() {
-    return JSON.stringify(this.session.data, undefined, 2);
+    return JSON.stringify(this.session?.data, undefined, 2);
   }
 
   @action

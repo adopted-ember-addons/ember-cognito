@@ -1,12 +1,17 @@
 import { set } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 
 export default class CurrentUserService extends Service {
-  @service session;
   @service cognito;
-  @readOnly('cognito.user') cognitoUser;
-  @readOnly('cognitoUser.username') username;
+  @service session;
+
+  get cognitoUser() {
+    return this.cognito.user;
+  }
+
+  get username() {
+    return this.cognitoUser?.username;
+  }
 
   async load() {
     if (this.session.isAuthenticated) {

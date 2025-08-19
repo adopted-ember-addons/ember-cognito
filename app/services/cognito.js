@@ -5,7 +5,7 @@ const cognitoEnv = Object.assign(
   {
     autoRefreshSession: false,
   },
-  ENV.cognito
+  ENV.cognito,
 );
 
 export default CognitoService.extend({

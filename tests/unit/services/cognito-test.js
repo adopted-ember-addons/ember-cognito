@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { set } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import CognitoUser from 'dummy/utils/cognito-user';
+import CognitoUser from 'ember-cognito/utils/cognito-user';
 import config from '../../../config/environment';
 import {
   mockAuth,
@@ -21,7 +21,7 @@ module('Unit | Service | cognito', function (hooks) {
     assert.strictEqual(service.clientId, 'TEST');
     assert.strictEqual(
       service.authenticationFlowType,
-      config.cognito.authenticationFlowType
+      config.cognito.authenticationFlowType,
     );
   });
 
@@ -37,7 +37,7 @@ module('Unit | Service | cognito', function (hooks) {
             userSub: 'xxxx',
           });
         },
-      })
+      }),
     );
 
     let result = await service.signUp('testuser', 'password', [], null);
@@ -57,7 +57,7 @@ module('Unit | Service | cognito', function (hooks) {
         signUp() {
           return reject('error');
         },
-      })
+      }),
     );
 
     try {

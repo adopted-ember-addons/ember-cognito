@@ -1,33 +1,35 @@
 <div class="container">
   <div class="row">
     <div class="col-4">
-      <h1>Change Password</h1>
-      <form class="change-password-form" {{on "submit" this.changePassword}}>
+      <h1>Confirm Registration</h1>
+      <form class="register-confirm-form" {{on "submit" this.confirm}}>
         {{#if this.errorMessage}}
           <div class="alert alert-danger">{{this.errorMessage}}</div>
         {{/if}}
         <div class="form-group">
-          <label for="username">Old Password</label>
+          <label for="username">Username</label>
           <Input
-            @value={{this.oldPassword}}
-            @type="password"
+            @value={{this.username}}
             class="form-control"
             id="username"
+            placeholder="Username"
             autofocus
             required
           />
         </div>
         <div class="form-group">
-          <label for="code">New Password</label>
+          <label for="code">Code</label>
           <Input
-            @value={{this.newPassword}}
-            @type="password"
+            @value={{this.code}}
             class="form-control"
             id="code"
+            placeholder="123456"
             required
           />
         </div>
-        <button type="submit" class="btn btn-primary">Reset Password</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+        <LinkTo @route="register.resend" class="btn btn-link">Resend
+          confirmation code</LinkTo>
       </form>
     </div>
   </div>

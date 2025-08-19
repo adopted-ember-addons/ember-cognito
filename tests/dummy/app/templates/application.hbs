@@ -11,7 +11,7 @@
         aria-label="Cognito Pool ID"
         value={{this.poolId}}
         oninput={{this.setPoolId}}
-      >
+      />
       <label for="client_id" class="sr-only">Cognito Client ID</label>
       <input
         id="client_id"
@@ -20,15 +20,28 @@
         aria-label="Cognito Client ID"
         value={{this.clientId}}
         oninput={{this.setClientId}}
-      >
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Save</button>
+      />
+      <button
+        class="btn btn-outline-success my-2 my-sm-0"
+        type="submit"
+      >Save</button>
     </form>
     <ul class="navbar-nav ml-4">
       {{#if this.session.isAuthenticated}}
-        <li class="nav-item"><a href="#" class="logout-link" {{on "click" this.logout}}>Logout</a></li>
+        <li class="nav-item"><a
+            href="#"
+            class="logout-link"
+            {{on "click" this.logout}}
+          >Logout</a></li>
       {{else}}
-        <li class="nav-item"><LinkTo @route="login" class="nav-link login-link">Login</LinkTo></li>
-        <li class="nav-item"><LinkTo @route="register" class="nav-link register-link">Register</LinkTo></li>
+        <li class="nav-item"><LinkTo
+            @route="login"
+            class="nav-link login-link"
+          >Login</LinkTo></li>
+        <li class="nav-item"><LinkTo
+            @route="register"
+            class="nav-link register-link"
+          >Register</LinkTo></li>
       {{/if}}
     </ul>
   </div>
