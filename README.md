@@ -18,7 +18,13 @@ Cognito as a managed authentication system for mobile and web apps on Amazon Web
 
 ember-cognito implements an ember-simple-auth custom authenticator that can be used 
 in an AWS Amplify application, or any Ember application, to authenticate with 
-a Cognito User Pool. 
+a Cognito User Pool.
+
+## Compatibility
+
+- Ember.js v5.8 or above
+- Ember CLI v5.8 or above
+- Node.js v20 or above
 
 ## Installation
 
