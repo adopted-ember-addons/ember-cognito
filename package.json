@@ -6,7 +6,7 @@
     "ember-addon",
     "cognito"
   ],
-  "repository": "https://github.com/paulcwatts/ember-cognito",
+  "repository": "https://github.com/adopted-ember-addons/ember-cognito",
   "license": "MIT",
   "author": "Paul Watts <paulcwatts@gmail.com>",
   "directories": {
