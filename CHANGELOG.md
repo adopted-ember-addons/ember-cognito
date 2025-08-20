@@ -1,5 +1,22 @@
 # Changelog
 
+## Release (2025-08-20)
+
+* ember-cognito 3.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-cognito`
+  * [#500](https://github.com/adopted-ember-addons/ember-cognito/pull/500) remove most v1.0.0 deprecations ([@veelci](https://github.com/veelci))
+
+#### :house: Internal
+* `ember-cognito`
+  * [#503](https://github.com/adopted-ember-addons/ember-cognito/pull/503) release-it -> release-plan ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+  * [#502](https://github.com/adopted-ember-addons/ember-cognito/pull/502) Switch to pnpm, update to latest ember-cli ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 2
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+- Victor Elci ([@veelci](https://github.com/veelci))
+
 ## v2.0.0 (2024-01-08)
 
 #### :boom: Breaking Change
