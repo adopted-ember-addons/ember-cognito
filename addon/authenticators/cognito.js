@@ -1,22 +1,16 @@
-/* eslint-disable ember/no-computed-properties-in-native-classes */
-import { readOnly } from '@ember/object/computed';
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Base from 'ember-simple-auth/authenticators/base';
 
 export default class CognitoAuthenticator extends Base {
   @service cognito;
-  @readOnly('cognito.auth') auth;
-  @readOnly('cognito.poolId') poolId;
-  @readOnly('cognito.clientId') clientId;
-  @readOnly('cognito.authenticationFlowType') authenticationFlowType;
 
   async restore({ poolId, clientId }) {
     this.cognito.configure({
       userPoolId: poolId,
       userPoolWebClientId: clientId,
     });
-    const user = await this.auth.currentAuthenticatedUser();
+    const user = await this.cognito.auth.currentAuthenticatedUser();
     return this._resolveAuth(user);
   }
 
@@ -29,11 +23,10 @@ export default class CognitoAuthenticator extends Base {
   }
 
   async _resolveAuth(user) {
-    const { cognito } = this;
-    cognito._setUser(user);
+    this.cognito._setUser(user);
     // Now pull out the (promisified) user
-    const session = await cognito.user.getSession();
-    cognito.startRefreshTask(session);
+    const session = await this.cognito.user.getSession();
+    this.cognito.startRefreshTask(session);
     return this._makeAuthData(user, session);
   }
 
@@ -52,18 +45,16 @@ export default class CognitoAuthenticator extends Base {
   }
 
   async _handleNewPasswordRequired({ password, state: { user } }) {
-    const user2 = await this.auth.completeNewPassword(user, password);
+    const user2 = await this.cognito.auth.completeNewPassword(user, password);
     return this._handleSignIn(user2);
   }
 
   async _handleRefresh() {
-    const { cognito } = this;
-    const { auth, user } = cognito;
     // Get the session, which will refresh it if necessary
-    const session = await user.getSession();
+    const session = await this.cognito.user.getSession();
     if (session.isValid()) {
-      cognito.startRefreshTask(session);
-      const awsUser = await auth.currentAuthenticatedUser();
+      this.cognito.startRefreshTask(session);
+      const awsUser = await this.cognito.auth.currentAuthenticatedUser();
       return this._makeAuthData(awsUser, session);
     } else {
       throw new Error('session is invalid');
@@ -85,11 +76,11 @@ export default class CognitoAuthenticator extends Base {
     if (state) {
       return this._handleState(state.name, params);
     }
+    this.cognito.configure({
+      authenticationFlowType: this.cognito.authenticationFlowType,
+    });
 
-    const { auth, authenticationFlowType, cognito } = this;
-    cognito.configure({ authenticationFlowType });
-
-    const user = await auth.signIn(username, password);
+    const user = await this.cognito.auth.signIn(username, password);
     return this._handleSignIn(user);
   }
 
