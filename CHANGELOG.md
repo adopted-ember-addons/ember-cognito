@@ -2,6 +2,17 @@
 
 ## Release (2025-08-20)
 
+* ember-cognito 3.0.1 (patch)
+
+#### :house: Internal
+* `ember-cognito`
+  * [#505](https://github.com/adopted-ember-addons/ember-cognito/pull/505) Update repo ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+## Release (2025-08-20)
+
 * ember-cognito 3.0.0 (major)
 
 #### :boom: Breaking Change
