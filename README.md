@@ -6,7 +6,6 @@
 [![Ember Observer Score](https://emberobserver.com/badges/ember-cognito.svg)](https://emberobserver.com/addons/ember-cognito)
 [![npm version](https://badge.fury.io/js/ember-cognito.svg)](https://badge.fury.io/js/ember-cognito)
 
-[_Maintainer Needed!_](https://github.com/paulcwatts/ember-cognito/issues/162)
 
 Ember Cognito is an Ember Addon that integrates
 [ember-simple-auth](https://github.com/simplabs/ember-simple-auth/)
@@ -24,8 +23,7 @@ a Cognito User Pool.
 ## Compatibility
 
 - Ember.js v5.8 or above
-- Ember CLI v5.8 or above
-- Node.js v20 or above
+- Embroider or ember-auto-import v2
 
 ## Installation
 
