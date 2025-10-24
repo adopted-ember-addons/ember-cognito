@@ -31,10 +31,10 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
-    "@aws-amplify/auth": "^4.6.17",
-    "@aws-amplify/core": "^4.7.15",
+    "@aws-amplify/auth": "^6.15.0",
+    "@aws-amplify/core": "^6.13.1",
     "@babel/core": "^7.28.3",
-    "amazon-cognito-identity-js": "^5.2.14",
+    "amazon-cognito-identity-js": "^6.3.15",
     "crypto-browserify": "^3.12.1",
     "ember-auto-import": "^2.10.0",
     "ember-cli-babel": "^8.2.0",
