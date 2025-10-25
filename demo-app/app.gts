@@ -1,7 +1,10 @@
 import EmberApp from 'ember-strict-application-resolver';
 import EmberRouter from '@ember/routing/router';
 import PageTitleService from 'ember-page-title/services/page-title';
+import loadInitializers from 'ember-load-initializers';
 import emberCognitoRegistry from '../src/registry.ts';
+import emberSimpleAuth from 'ember-simple-auth/initializers/ember-simple-auth';
+import setupSession from 'ember-simple-auth/initializers/setup-session';
 
 class Router extends EmberRouter {
   location = 'history';
@@ -39,6 +42,12 @@ export class App extends EmberApp {
     ...emberCognitoRegistry(),
   };
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+loadInitializers(App, 'demo-app', {
+  'ember-simple-auth/initializers/ember-simple-auth': emberSimpleAuth,
+  'ember-simple-auth/initializers/setup-session': setupSession,
+});
 
 Router.map(function () {
   this.route('attribute');

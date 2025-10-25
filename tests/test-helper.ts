@@ -1,9 +1,10 @@
-import EmberApp from 'ember-strict-application-resolver';
-import EmberRouter from '@ember/routing/router';
-import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
-import { setup } from 'qunit-dom';
 import { start as qunitStart, setupEmberOnerrorValidation } from 'ember-qunit';
+import * as QUnit from 'qunit';
+import { setup } from 'qunit-dom';
+import EmberRouter from '@ember/routing/router';
+import loadInitializers from 'ember-load-initializers';
+import EmberApp from 'ember-strict-application-resolver';
 import emberCognitoRegistry from '../src/registry.ts';
 
 class Router extends EmberRouter {
@@ -18,6 +19,9 @@ class TestApp extends EmberApp {
     ...emberCognitoRegistry(),
   };
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+loadInitializers(TestApp, 'test-app');
 
 Router.map(function () {
   this.route('attribute');

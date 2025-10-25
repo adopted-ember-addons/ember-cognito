@@ -1,8 +1,8 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Controller from '@ember/controller';
-import { service } from '@ember/service';
 import { action, set } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { service } from '@ember/service';
 
 export default class ApplicationController extends Controller {
   @service cognito;

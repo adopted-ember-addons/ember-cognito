@@ -1,11 +1,11 @@
 /* eslint-disable ember/no-runloop */
-import Service, { service } from '@ember/service';
-import CognitoUser from '../utils/cognito-user.js';
-import { normalizeAttributes } from '../utils/utils.js';
-import * as Auth from '@aws-amplify/auth';
 import { set } from '@ember/object';
 import { cancel, later } from '@ember/runloop';
+import Service, { service } from '@ember/service';
+import * as Auth from '@aws-amplify/auth';
 import { reject } from 'rsvp';
+import CognitoUser from '../utils/cognito-user.js';
+import { normalizeAttributes } from '../utils/utils.js';
 
 /**
  * @public

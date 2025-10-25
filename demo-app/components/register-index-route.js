@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { service } from '@ember/service';
 import { action, set } from '@ember/object';
+import { service } from '@ember/service';
 
 export default class RegisterIndexRoute extends Component {
   @service cognito;

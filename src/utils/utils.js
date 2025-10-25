@@ -1,5 +1,5 @@
-import { typeOf } from '@ember/utils';
 import { deprecate } from '@ember/debug';
+import { typeOf } from '@ember/utils';
 
 /**
  * This takes a hash of attributes or a list of CognitoUserAttributes list,

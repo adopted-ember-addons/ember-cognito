@@ -1,16 +1,16 @@
-import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
-import { set } from '@ember/object';
-import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import CognitoUser from '#src/utils/cognito-user';
-import config from '../../../config/environment';
 import {
   mockAuth,
   MockAuth,
   mockCognitoUser,
   newUser,
 } from '#src/test-support';
+import { setupTest } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { set } from '@ember/object';
+import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { reject, resolve } from 'rsvp';
+import config from '../../../config/environment';
+import CognitoUser from '#src/utils/cognito-user';
 
 module('Unit | Service | cognito', function (hooks) {
   setupTest(hooks);

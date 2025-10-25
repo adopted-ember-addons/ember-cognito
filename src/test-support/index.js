@@ -1,12 +1,12 @@
 import { getContext } from '@ember/test-helpers';
 import { set } from '@ember/object';
-import { MockUser } from './utils/ember-cognito.js';
 import { typeOf } from '@ember/utils';
-import MockAuth from './utils/-mock-auth.js';
 import {
   CognitoUser as AWSUser,
   CognitoUserPool,
 } from 'amazon-cognito-identity-js';
+import MockAuth from './utils/-mock-auth.js';
+import { MockUser } from './utils/ember-cognito.js';
 
 export function newUser(username) {
   const { owner } = getContext();

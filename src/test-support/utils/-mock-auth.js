@@ -1,11 +1,11 @@
 import EmberObject, { set } from '@ember/object';
-import { reject, resolve } from 'rsvp';
 import {
   CognitoAccessToken,
   CognitoIdToken,
   CognitoRefreshToken,
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
+import { reject, resolve } from 'rsvp';
 
 // Makes a JWT from a payload
 export function makeToken({

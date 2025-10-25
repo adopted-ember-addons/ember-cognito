@@ -1,14 +1,14 @@
-import { set } from '@ember/object';
-import { setupTest } from 'ember-qunit';
-import { module, test } from 'qunit';
-import config from '../../../config/environment';
 import {
   mockAuth,
   MockAuth,
   mockCognitoUser,
   newUser,
 } from '#src/test-support';
+import { setupTest } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { set } from '@ember/object';
 import { reject } from 'rsvp';
+import config from '../../../config/environment';
 
 module('Unit | Authenticator | cognito', function (hooks) {
   setupTest(hooks);

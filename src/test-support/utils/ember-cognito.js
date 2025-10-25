@@ -1,6 +1,6 @@
-import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import EmberObject, { set } from '@ember/object';
 import { typeOf } from '@ember/utils';
+import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { resolve } from 'rsvp';
 import { newSession } from './-mock-auth.js';
 

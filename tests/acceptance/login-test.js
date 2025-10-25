@@ -1,8 +1,8 @@
-import { setupApplicationTest } from 'ember-qunit';
-import { module, test } from 'qunit';
 import { click, currentURL, fillIn, visit } from '@ember/test-helpers';
-import { currentSession } from 'ember-simple-auth/test-support';
 import { mockCognitoUser } from '#src/test-support';
+import { setupApplicationTest } from 'ember-qunit';
+import { currentSession } from 'ember-simple-auth/test-support';
+import { module, test } from 'qunit';
 import setupSinonTest from '../helpers/sinon';
 
 //

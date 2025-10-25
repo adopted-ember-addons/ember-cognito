@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
-import { Promise } from 'rsvp';
 import EmberObject, { computed } from '@ember/object';
+import { Promise } from 'rsvp';
 import { normalizeAttributes } from './utils';
 
 //
