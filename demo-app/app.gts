@@ -3,8 +3,42 @@ import EmberRouter from '@ember/routing/router';
 import PageTitleService from 'ember-page-title/services/page-title';
 import loadInitializers from 'ember-load-initializers';
 import emberCognitoRegistry from '../src/registry.ts';
-import emberSimpleAuth from 'ember-simple-auth/initializers/ember-simple-auth';
-import setupSession from 'ember-simple-auth/initializers/setup-session';
+import compatModules from '@embroider/virtual/compat-modules';
+
+import { assert } from '@ember/debug';
+
+export function compatToRFC1132(modulePrefix: string, modules: any) {
+  const result: any = {};
+
+  let madeReplacements = false;
+  for (const [key, module] of Object.entries(modules)) {
+    const newKey = key.replace(new RegExp(`^${modulePrefix}/`), './');
+
+    if (!madeReplacements) {
+      if (key !== newKey) {
+        madeReplacements = true;
+      }
+    }
+
+    result[newKey] = module;
+  }
+
+  assert(
+    `No replacements were made. Is the ${modulePrefix} correct? These candidates exist: ${[
+      ...new Set<string>(
+        /**
+         * 'full-name/foo' => 'full-name'
+         */
+        Object.keys(modules).map(
+          (full) => full.split('/')[0] ?? '<could not detect>',
+        ),
+      ).values(),
+    ].join(', ')}`,
+    madeReplacements,
+  );
+
+  return result;
+}
 
 class Router extends EmberRouter {
   location = 'history';
@@ -21,7 +55,11 @@ export class App extends EmberApp {
    * - require the consuming app import and configure themselves
    *   (which is what we're emulating here)
    */
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   modules = {
+    './config/environment': {
+      'ember-simple-auth': {},
+    },
     './router': Router,
     './services/page-title': PageTitleService,
     ...import.meta.glob('./components/**/*.{gjs,gts}', { eager: true }),
@@ -39,15 +77,12 @@ export class App extends EmberApp {
      * See: https://rfcs.emberjs.com/id/1132-default-strict-resolver
      */
     ...import.meta.glob('./templates/**/*.{gjs,gts}', { eager: true }),
+    ...compatToRFC1132('demo-app', compatModules),
     ...emberCognitoRegistry(),
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-loadInitializers(App, 'demo-app', {
-  'ember-simple-auth/initializers/ember-simple-auth': emberSimpleAuth,
-  'ember-simple-auth/initializers/setup-session': setupSession,
-});
+loadInitializers(App, 'demo-app', compatModules);
 
 Router.map(function () {
   this.route('attribute');

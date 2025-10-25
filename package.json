@@ -107,7 +107,11 @@
   "ember-addon": {
     "version": 2,
     "type": "addon",
-    "main": "addon-main.cjs"
+    "main": "addon-main.cjs",
+    "app-js": {
+      "./authenticators/cognito.js": "./dist/_app_/authenticators/cognito.js",
+      "./services/cognito.js": "./dist/_app_/services/cognito.js"
+    }
   },
   "pnpm": {
     "onlyBuiltDependencies": [

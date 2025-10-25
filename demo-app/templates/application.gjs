@@ -39,16 +39,25 @@ import { on } from '@ember/modifier';
               href="#"
               class="logout-link"
               {{on "click" @controller.logout}}
-            >Logout</a></li>
+            >
+              Logout
+            </a>
+          </li>
         {{else}}
           <li class="nav-item"><LinkTo
               @route="login"
               class="nav-link login-link"
-            >Login</LinkTo></li>
+            >
+              Login
+            </LinkTo>
+          </li>
           <li class="nav-item"><LinkTo
               @route="register"
               class="nav-link register-link"
-            >Register</LinkTo></li>
+            >
+              Register
+            </LinkTo>
+          </li>
         {{/if}}
       </ul>
     </div>
