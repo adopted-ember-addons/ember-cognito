@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action, set } from '@ember/object';
 import { alias } from '@ember/object/computed';
 

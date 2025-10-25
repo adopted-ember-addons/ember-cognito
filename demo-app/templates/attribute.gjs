@@ -1,7 +1,7 @@
 import { fn } from '@ember/helper';
 
 import AttributeRoute from '../components/attribute-route.gjs';
-import transitionToRoute from '../helpers/transition-to-route.js';
+import { transitionToRoute } from '../helpers/transition-to-route.js';
 
 <template>
   <AttributeRoute

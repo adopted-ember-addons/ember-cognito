@@ -8,8 +8,9 @@
         {{/if}}
         <div class="form-group">
           <label for="username">Username</label>
-          <Input
-            @value={{this.username}}
+          <input
+            value={{this.username}}
+            {{on "input" this.updateUsername}}
             class="form-control"
             id="username"
             placeholder="Username"
@@ -19,8 +20,9 @@
         </div>
         <div class="form-group">
           <label for="code">Code</label>
-          <Input
-            @value={{this.code}}
+          <input
+            value={{this.code}}
+            {{on "input" this.updateCode}}
             class="form-control"
             id="code"
             placeholder="123456"

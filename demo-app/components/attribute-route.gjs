@@ -1,14 +1,23 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import { tracked } from '@glimmer/tracking';
-import Input from '@ember/component/input';
 
 export default class AttributeRoute extends Component {
   @service cognito;
 
   @tracked errorMessage;
+
+  @action
+  updateName(event) {
+    this.args.model.name = event.target.value;
+  }
+
+  @action
+  updateValue(event) {
+    this.args.model.value = event.target.value;
+  }
 
   @action
   async save(e) {
@@ -52,8 +61,9 @@ export default class AttributeRoute extends Component {
             {{/if}}
             <div class="form-group">
               <label for="name">Name</label>
-              <Input
-                @value={{@model.name}}
+              <input
+                value={{@model.name}}
+                {{on "input" this.updateName}}
                 class="form-control"
                 id="name"
                 autofocus
@@ -62,8 +72,9 @@ export default class AttributeRoute extends Component {
             </div>
             <div class="form-group">
               <label for="value">Value</label>
-              <Input
-                @value={{@model.value}}
+              <input
+                value={{@model.value}}
+                {{on "input" this.updateValue}}
                 class="form-control"
                 id="value"
                 required

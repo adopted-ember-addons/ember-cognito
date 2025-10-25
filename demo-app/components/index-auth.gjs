@@ -1,12 +1,12 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action, computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { LinkTo } from '@ember/routing';
 import { on } from '@ember/modifier';
-import { fn } from '@ember/helper';
+import { fn, hash } from '@ember/helper';
 
 function attributeEqual(attributeName, value) {
   return computed('model.attributes', function () {

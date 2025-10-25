@@ -1,12 +1,26 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
 import { action, set } from '@ember/object';
-import Input from '@ember/component/input';
 import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
 
 export default class RegisterConfirmRoute extends Component {
   @service cognito;
+
+  @tracked code;
+  @tracked errorMessage;
+  @tracked username;
+
+  @action
+  updateUsername(event) {
+    this.username = event.target.value;
+  }
+
+  @action
+  updateCode(event) {
+    this.code = event.target.value;
+  }
 
   @action
   async confirm(e) {
@@ -15,9 +29,9 @@ export default class RegisterConfirmRoute extends Component {
     e.preventDefault();
     try {
       await this.cognito.confirmSignUp(username, code);
-      this.onComplete();
+      this.args.onComplete();
     } catch (err) {
-      set(this, 'errorMessage', err.message);
+      this.errorMessage = err.message;
     }
   }
 
@@ -32,8 +46,9 @@ export default class RegisterConfirmRoute extends Component {
             {{/if}}
             <div class="form-group">
               <label for="username">Username</label>
-              <Input
-                @value={{this.username}}
+              <input
+                value={{this.username}}
+                {{on "input" this.updateUsername}}
                 class="form-control"
                 id="username"
                 placeholder="Username"
@@ -43,8 +58,9 @@ export default class RegisterConfirmRoute extends Component {
             </div>
             <div class="form-group">
               <label for="code">Code</label>
-              <Input
-                @value={{this.code}}
+              <input
+                value={{this.code}}
+                {{on "input" this.updateCode}}
                 class="form-control"
                 id="code"
                 placeholder="123456"

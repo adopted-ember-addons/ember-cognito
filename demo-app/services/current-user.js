@@ -1,5 +1,5 @@
 import { set } from '@ember/object';
-import Service, { inject as service } from '@ember/service';
+import Service, { service } from '@ember/service';
 
 export default class CurrentUserService extends Service {
   @service cognito;

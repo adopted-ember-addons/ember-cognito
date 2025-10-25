@@ -2,7 +2,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import { click, currentURL, fillIn, visit } from '@ember/test-helpers';
 import { currentSession } from 'ember-simple-auth/test-support';
-import { mockCognitoUser } from 'ember-cognito/test-support';
+import { mockCognitoUser } from '#src/test-support';
 import setupSinonTest from '../helpers/sinon';
 
 //

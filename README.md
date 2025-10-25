@@ -72,7 +72,7 @@ Amplify/Cognito:
 ```js
 import Component from "@ember/component";
 import { action } from "@ember/object";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 
 export default class LoginComponent extends Component {
   @service session;
@@ -134,7 +134,7 @@ you can use the Cognito User to fetch user attributes:
 
 ```js
 import Service from "@ember/service";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 import { readOnly } from "@ember/object/computed";
 
 export default class CurrentUserService extends Service {

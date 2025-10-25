@@ -2,14 +2,14 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { set } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import CognitoUser from 'ember-cognito/utils/cognito-user';
+import CognitoUser from '#src/utils/cognito-user';
 import config from '../../../config/environment';
 import {
   mockAuth,
   MockAuth,
   mockCognitoUser,
   newUser,
-} from 'ember-cognito/test-support';
+} from '#src/test-support';
 import { reject, resolve } from 'rsvp';
 
 module('Unit | Service | cognito', function (hooks) {

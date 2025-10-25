@@ -1,14 +1,14 @@
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { resolve } from 'rsvp';
 import { setupTest } from 'ember-qunit';
-import CognitoUser from 'ember-cognito/utils/cognito-user';
+import CognitoUser from '#src/utils/cognito-user';
 import { module, test } from 'qunit';
 import {
   makeToken,
   MockAuth,
   newSession,
   newUser,
-} from 'ember-cognito/test-support';
+} from '#src/test-support';
 import setupSinonTest from '../../helpers/sinon';
 
 module('Unit | Utility | cognito user', function (hooks) {

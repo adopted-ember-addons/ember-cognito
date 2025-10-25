@@ -1,12 +1,17 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action, set } from '@ember/object';
-import Input from '@ember/component/input';
 import { on } from '@ember/modifier';
+import { LinkTo } from '@ember/routing';
 
 export default class DeleteUserRoute extends Component {
   @service cognito;
   @service session;
+
+  @action
+  updateDeleteVal(event) {
+    set(this, 'deleteVal', event.target.value);
+  }
 
   @action
   async deleteUser(e) {
@@ -39,8 +44,9 @@ export default class DeleteUserRoute extends Component {
             {{/if}}
             <div class="form-group">
               <label for="delete">Delete</label>
-              <Input
-                @value={{this.deleteVal}}
+              <input
+                value={{this.deleteVal}}
+                {{on "input" this.updateDeleteVal}}
                 class="form-control"
                 id="delete"
                 autofocus

@@ -6,7 +6,7 @@ import {
   mockCognitoUser,
   newUser,
   unmockCognitoUser,
-} from 'ember-cognito/test-support';
+} from '#src/test-support';
 
 module('Unit | Utility | mock helpers', function (hooks) {
   setupTest(hooks);

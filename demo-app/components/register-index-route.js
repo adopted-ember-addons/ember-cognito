@@ -1,9 +1,29 @@
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action, set } from '@ember/object';
 
 export default class RegisterIndexRoute extends Component {
   @service cognito;
+
+  @action
+  updateUsername(event) {
+    set(this, 'username', event.target.value);
+  }
+
+  @action
+  updateEmail(event) {
+    set(this, 'email', event.target.value);
+  }
+
+  @action
+  updatePhone(event) {
+    set(this, 'phone', event.target.value);
+  }
+
+  @action
+  updatePassword(event) {
+    set(this, 'password', event.target.value);
+  }
 
   @action
   async register(e) {

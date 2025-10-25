@@ -1,9 +1,8 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
-import Input from '@ember/component/input';
 
 export default class ChangePasswordRoute extends Component {
   @service cognito;
@@ -11,6 +10,16 @@ export default class ChangePasswordRoute extends Component {
   @tracked errorMessage;
   @tracked oldPassword;
   @tracked newPassword;
+
+  @action
+  updateOldPassword(event) {
+    this.oldPassword = event.target.value;
+  }
+
+  @action
+  updateNewPassword(event) {
+    this.newPassword = event.target.value;
+  }
 
   @action
   async changePassword(e) {
@@ -40,9 +49,10 @@ export default class ChangePasswordRoute extends Component {
             {{/if}}
             <div class="form-group">
               <label for="username">Old Password</label>
-              <Input
-                @value={{this.oldPassword}}
-                @type="password"
+              <input
+                value={{this.oldPassword}}
+                {{on "input" this.updateOldPassword}}
+                type="password"
                 class="form-control"
                 id="username"
                 autofocus
@@ -51,9 +61,10 @@ export default class ChangePasswordRoute extends Component {
             </div>
             <div class="form-group">
               <label for="code">New Password</label>
-              <Input
-                @value={{this.newPassword}}
-                @type="password"
+              <input
+                value={{this.newPassword}}
+                {{on "input" this.updateNewPassword}}
+                type="password"
                 class="form-control"
                 id="code"
                 required

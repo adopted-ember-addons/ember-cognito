@@ -1,14 +1,19 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
-import Input from '@ember/component/input';
 
 export default class RegisterResendRoute extends Component {
   @service cognito;
 
   @tracked errorMessage;
+  @tracked username;
+
+  @action
+  updateUsername(event) {
+    this.username = event.target.value;
+  }
 
   @action
   async resend(e) {
@@ -17,7 +22,7 @@ export default class RegisterResendRoute extends Component {
     e.preventDefault();
     try {
       await this.cognito.resendSignUp(username);
-      this.onComplete();
+      this.args.onComplete();
     } catch (err) {
       this.errorMessage = err.message;
     }
@@ -34,8 +39,9 @@ export default class RegisterResendRoute extends Component {
             {{/if}}
             <div class="form-group">
               <label for="username">Username</label>
-              <Input
-                @value={{this.username}}
+              <input
+                value={{this.username}}
+                {{on "input" this.updateUsername}}
                 class="form-control"
                 id="username"
                 placeholder="Username"

@@ -9,8 +9,9 @@
         {{/if}}
         <div class="form-group">
           <label for="username">Username</label>
-          <Input
-            @value={{this.username}}
+          <input
+            value={{this.username}}
+            {{on "input" this.updateUsername}}
             class="form-control"
             id="username"
             placeholder="Username"
@@ -20,9 +21,10 @@
         </div>
         <div class="form-group">
           <label for="email_address">Email address</label>
-          <Input
-            @value={{this.email}}
-            @type="email"
+          <input
+            value={{this.email}}
+            {{on "input" this.updateEmail}}
+            type="email"
             class="form-control"
             id="email_address"
             placeholder="email@example.com"
@@ -30,9 +32,10 @@
         </div>
         <div class="form-group">
           <label for="phone">Phone number</label>
-          <Input
-            @value={{this.phone}}
-            @type="tel"
+          <input
+            value={{this.phone}}
+            {{on "input" this.updatePhone}}
+            type="tel"
             class="form-control"
             id="phone"
             placeholder="+18885551212"
@@ -40,9 +43,10 @@
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <Input
-            @value={{this.password}}
-            @type="password"
+          <input
+            value={{this.password}}
+            {{on "input" this.updatePassword}}
+            type="password"
             class="form-control"
             id="password"
             placeholder="Password"

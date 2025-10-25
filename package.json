@@ -45,8 +45,8 @@
     "test": "vite build --mode=development --out-dir dist-tests && testem --file testem.cjs ci --port 0"
   },
   "dependencies": {
-    "@aws-amplify/auth": "^6.15.0",
-    "@aws-amplify/core": "^6.13.1",
+    "@aws-amplify/auth": "^6.16.0",
+    "@aws-amplify/core": "^6.13.3",
     "@embroider/addon-shim": "^1.8.9",
     "amazon-cognito-identity-js": "^6.3.15",
     "decorator-transforms": "^2.2.2"

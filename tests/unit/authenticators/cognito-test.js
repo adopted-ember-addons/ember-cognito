@@ -7,7 +7,7 @@ import {
   MockAuth,
   mockCognitoUser,
   newUser,
-} from 'ember-cognito/test-support';
+} from '#src/test-support';
 import { reject } from 'rsvp';
 
 module('Unit | Authenticator | cognito', function (hooks) {

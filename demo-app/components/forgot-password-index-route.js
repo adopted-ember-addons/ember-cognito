@@ -1,9 +1,14 @@
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action, set } from '@ember/object';
 
 export default class ForgotPasswordIndexRoute extends Component {
   @service cognito;
+
+  @action
+  updateUsername(event) {
+    set(this, 'username', event.target.value);
+  }
 
   @action
   async forgotPassword(e) {

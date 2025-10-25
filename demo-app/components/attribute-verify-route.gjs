@@ -1,14 +1,19 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
-import Input from '@ember/component/input';
 import { tracked } from '@glimmer/tracking';
 
 export default class AttributeVerifyRoute extends Component {
   @service cognito;
 
   @tracked errorMessage;
+  @tracked code;
+
+  @action
+  updateCode(event) {
+    this.code = event.target.value;
+  }
 
   @action
   async verifyAttribute(e) {
@@ -18,7 +23,7 @@ export default class AttributeVerifyRoute extends Component {
 
     try {
       await this.cognito.user.verifyAttribute(this.args.name, code);
-      this.onComplete();
+      this.args.onComplete();
     } catch (err) {
       this.errorMessage = err.message;
     }
@@ -38,8 +43,9 @@ export default class AttributeVerifyRoute extends Component {
             {{/if}}
             <div class="form-group">
               <label for="code">Verification Code</label>
-              <Input
-                @value={{this.code}}
+              <input
+                value={{this.code}}
+                {{on "input" this.updateCode}}
                 class="form-control"
                 id="code"
                 placeholder="123456"
