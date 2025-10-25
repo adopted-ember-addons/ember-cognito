@@ -76,6 +76,7 @@
     "concurrently": "^9.0.1",
     "ember-page-title": "^8.2.0",
     "ember-qunit": "^9.0.2",
+    "ember-simple-auth": "^6.1.0",
     "ember-source": "^6.7.0",
     "ember-strict-application-resolver": "^0.1.0",
     "ember-template-lint": "^7.9.0",
@@ -94,6 +95,9 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.19.1",
     "vite": "^7.1.9"
+  },
+  "peerDependencies": {
+    "ember-simple-auth": ">= 6.0.0"
   },
   "ember": {
     "edition": "octane"

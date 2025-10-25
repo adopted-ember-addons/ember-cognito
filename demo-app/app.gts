@@ -20,18 +20,21 @@ export class App extends EmberApp {
   modules = {
     './router': Router,
     './services/page-title': PageTitleService,
+    ...import.meta.glob('./components/**/*.{gjs,gts}', { eager: true }),
+    ...import.meta.glob('./controllers/**/*.{js,ts}', { eager: true }),
+    ...import.meta.glob('./routes/**/*.{js,ts}', { eager: true }),
     /**
      * NOTE: this glob will import everything matching the glob,
      *     and includes non-services in the services directory.
      */
-    ...import.meta.glob('./services/**/*', { eager: true }),
+    ...import.meta.glob('./services/**/*.{js,ts}', { eager: true }),
     /**
      * These imports are not magic, but we do require that all entries in the
      * modules object match a ./[type]/[name] pattern.
      *
      * See: https://rfcs.emberjs.com/id/1132-default-strict-resolver
      */
-    ...import.meta.glob('./templates/**/*', { eager: true }),
+    ...import.meta.glob('./templates/**/*.{gjs,gts}', { eager: true }),
   };
 }
 

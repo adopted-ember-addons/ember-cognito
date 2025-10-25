@@ -1,0 +1,20 @@
+import { LinkTo } from '@ember/routing';
+
+<template>
+  <div class="row index-unauth">
+    <div class="col">
+      <h2>Usage</h2>
+      <ol>
+        <li>Add your Cognito Pool ID and Client ID in the header above.</li>
+        <li>Click <b>Save</b> to save this to local storage.</li>
+        <li>
+          Click
+          <LinkTo @route="login">Login</LinkTo>
+          to login with an existing user or
+          <LinkTo @route="register">Register</LinkTo>
+          to create a new user.
+        </li>
+      </ol>
+    </div>
+  </div>
+</template>
