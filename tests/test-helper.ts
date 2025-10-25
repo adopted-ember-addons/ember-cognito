@@ -4,6 +4,7 @@ import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';
 import { start as qunitStart, setupEmberOnerrorValidation } from 'ember-qunit';
+import emberCognitoRegistry from '../src/registry.ts';
 
 class Router extends EmberRouter {
   location = 'none';
@@ -14,6 +15,7 @@ class TestApp extends EmberApp {
   modules = {
     './router': { default: Router },
     ...import.meta.glob('../demo-app/**/*.{js,ts,gjs,gts}', { eager: true }),
+    ...emberCognitoRegistry(),
   };
 }
 
