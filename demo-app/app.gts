@@ -7,10 +7,13 @@ import compatModules from '@embroider/virtual/compat-modules';
 
 import { assert } from '@ember/debug';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function compatToRFC1132(modulePrefix: string, modules: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result: any = {};
 
   let madeReplacements = false;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   for (const [key, module] of Object.entries(modules)) {
     const newKey = key.replace(new RegExp(`^${modulePrefix}/`), './');
 
@@ -20,6 +23,7 @@ export function compatToRFC1132(modulePrefix: string, modules: any) {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     result[newKey] = module;
   }
 
@@ -29,6 +33,7 @@ export function compatToRFC1132(modulePrefix: string, modules: any) {
         /**
          * 'full-name/foo' => 'full-name'
          */
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         Object.keys(modules).map(
           (full) => full.split('/')[0] ?? '<could not detect>',
         ),
@@ -37,6 +42,7 @@ export function compatToRFC1132(modulePrefix: string, modules: any) {
     madeReplacements,
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result;
 }
 
@@ -82,6 +88,7 @@ export class App extends EmberApp {
   };
 }
 
+ 
 loadInitializers(App, 'demo-app', compatModules);
 
 Router.map(function () {

@@ -105,6 +105,9 @@ importers:
       ember-simple-auth:
         specifier: ^8.0.1
         version: 8.0.1(@ember/test-helpers@5.2.2(@babel/core@7.28.3)(@glint/template@1.6.2))(@glint/template@1.6.2)(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5))
+      ember-sinon-qunit:
+        specifier: ^7.5.0
+        version: 7.5.0(@babel/core@7.28.3)(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5))(qunit@2.24.1)(sinon@21.0.0)
       ember-source:
         specifier: ^6.7.0
         version: 6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
@@ -147,6 +150,9 @@ importers:
       rollup:
         specifier: ^4.22.5
         version: 4.52.5
+      sinon:
+        specifier: ^21.0.0
+        version: 21.0.0
       testem:
         specifier: ^3.15.1
         version: 3.16.0(handlebars@4.7.8)(underscore@1.13.7)
@@ -1381,6 +1387,15 @@ packages:
   '@simple-dom/interface@1.4.0':
     resolution: {integrity: sha512-l5qumKFWU0S+4ZzMaLXFU8tQZsicHEMEyAxI5kDFGhJsRqDwe0a7/iPA/GdxlGyDKseQQAgIz5kzU7eXTrlSpA==}
 
+  '@sinonjs/commons@3.0.1':
+    resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
+
+  '@sinonjs/fake-timers@13.0.5':
+    resolution: {integrity: sha512-36/hTbH2uaWuGVERyC6da9YwGWnzUZXuPro/F2LfsdOsLnCojz/iSH8MxUt/FD2S5XBSVPhmArFUXcpCQ2Hkiw==}
+
+  '@sinonjs/samsam@8.0.3':
+    resolution: {integrity: sha512-hw6HbX+GyVZzmaYNh82Ecj1vdGZrqVIn/keDTg63IgAwiQPO+xCz99uG6Woqgb4tM0mUiFENKZ4cqd7IX94AXQ==}
+
   '@smithy/is-array-buffer@2.2.0':
     resolution: {integrity: sha512-GGP3O9QFD24uGeAXYUjwSTXARoqpZykHadOmA8G5vfJPK0/DC67qa//0qvqrJzL1xc8WQWX7/yc7fwudjPHPhA==}
     engines: {node: '>=14.0.0'}
@@ -1496,6 +1511,12 @@ packages:
 
   '@types/serve-static@1.15.8':
     resolution: {integrity: sha512-roei0UY3LhpOJvjbIP6ZZFngyLKl5dskOtDhxY5THRSpO+ZI+nzJ+m5yUMzGrp89YRa7lvknKkMYjqQFGwA7Sg==}
+
+  '@types/sinon@17.0.4':
+    resolution: {integrity: sha512-RHnIrhfPO3+tJT0s7cFaXGZvsL4bbR3/k7z3P312qMS4JaS2Tk+KiwiLx1S0rQ56ERj00u1/BtdyVd0FY+Pdew==}
+
+  '@types/sinonjs__fake-timers@15.0.0':
+    resolution: {integrity: sha512-lqKG4X0fO3aJF7Bz590vuCkFt/inbDyL7FXaVjPEYO+LogMZ2fwSDUiP7bJvdYHaCgCQGNOPxquzSrrnVH3fGw==}
 
   '@types/symlink-or-copy@1.2.2':
     resolution: {integrity: sha512-MQ1AnmTLOncwEf9IVU+B2e4Hchrku5N67NkgcAHW0p3sdzPe0FNMANxEm6OJUzPniEQGkeT3OROLlCwZJLWFZA==}
@@ -2498,6 +2519,10 @@ packages:
     resolution: {integrity: sha512-DtCOLG98P007x7wiiOmfI0fi3eIKyWiLTGJ2MDnVi/E04lWGbf+JzrRHMm0rgIIZJGtHpKpbVgLWHrv8xXpc3Q==}
     engines: {node: '>=0.10.0'}
 
+  diff@7.0.0:
+    resolution: {integrity: sha512-PJWHUb1RFevKCwaFA9RlG5tCd+FO5iRh9A8HEtkmBH2Li03iJriB6m6JIN4rGz3K3JLawI7/veA1xzRKP6ISBw==}
+    engines: {node: '>=0.3.1'}
+
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
@@ -2618,6 +2643,13 @@ packages:
     peerDependenciesMeta:
       '@ember/test-helpers':
         optional: true
+
+  ember-sinon-qunit@7.5.0:
+    resolution: {integrity: sha512-wSoRqBbiytUtDFIE6DLPDZFYhoS4FH+kgHhr707HJMF5tUYpKPIruBusF9kWezj/yOrJLyLqoWFoaAJ2aG2FQw==}
+    peerDependencies:
+      ember-source: '>=3.28.0'
+      qunit: ^2.0.0
+      sinon: '>=15.0.3'
 
   ember-source@6.8.0:
     resolution: {integrity: sha512-abDPPq9gHB5u5kOY125QBUlm5D1oc+n9Pm2zRciFpxwRV9WXfqiAHMmEhcIWD0uV1E3jhBgqXoHP8CCGBcI2WA==}
@@ -4615,6 +4647,9 @@ packages:
   simple-html-tokenizer@0.5.11:
     resolution: {integrity: sha512-C2WEK/Z3HoSFbYq8tI7ni3eOo/NneSPRoPpcM7WdLjFOArFuyXEjAoCdOC3DgMfRyziZQ1hCNR4mrNdWEvD0og==}
 
+  sinon@21.0.0:
+    resolution: {integrity: sha512-TOgRcwFPbfGtpqvZw+hyqJDvqfapr1qUlOizROIk4bBLjlsjlB00Pg6wMFXNtJRpu+eCZuVOaLatG7M8105kAw==}
+
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
@@ -4924,6 +4959,14 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
+
+  type-detect@4.0.8:
+    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
+    engines: {node: '>=4'}
+
+  type-detect@4.1.0:
+    resolution: {integrity: sha512-Acylog8/luQ8L7il+geoSxhEkazvkslg7PSNKOX59mbB9cOveP5aq9h74Y7YU8yDpJwetzQQrfIwtf4Wp4LKcw==}
+    engines: {node: '>=4'}
 
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
@@ -6861,6 +6904,19 @@ snapshots:
 
   '@simple-dom/interface@1.4.0': {}
 
+  '@sinonjs/commons@3.0.1':
+    dependencies:
+      type-detect: 4.0.8
+
+  '@sinonjs/fake-timers@13.0.5':
+    dependencies:
+      '@sinonjs/commons': 3.0.1
+
+  '@sinonjs/samsam@8.0.3':
+    dependencies:
+      '@sinonjs/commons': 3.0.1
+      type-detect: 4.1.0
+
   '@smithy/is-array-buffer@2.2.0':
     dependencies:
       tslib: 2.8.1
@@ -7003,6 +7059,12 @@ snapshots:
       '@types/http-errors': 2.0.5
       '@types/node': 24.3.0
       '@types/send': 0.17.5
+
+  '@types/sinon@17.0.4':
+    dependencies:
+      '@types/sinonjs__fake-timers': 15.0.0
+
+  '@types/sinonjs__fake-timers@15.0.0': {}
 
   '@types/symlink-or-copy@1.2.2': {}
 
@@ -8086,6 +8148,8 @@ snapshots:
 
   detect-file@1.0.0: {}
 
+  diff@7.0.0: {}
+
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
@@ -8291,6 +8355,18 @@ snapshots:
       '@ember/test-helpers': 5.2.2(@babel/core@7.28.3)(@glint/template@1.6.2)
     transitivePeerDependencies:
       - '@glint/template'
+      - supports-color
+
+  ember-sinon-qunit@7.5.0(@babel/core@7.28.3)(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5))(qunit@2.24.1)(sinon@21.0.0):
+    dependencies:
+      '@embroider/addon-shim': 1.10.0
+      '@types/sinon': 17.0.4
+      decorator-transforms: 2.3.0(@babel/core@7.28.3)
+      ember-source: 6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
+      qunit: 2.24.1
+      sinon: 21.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
       - supports-color
 
   ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5):
@@ -10691,6 +10767,14 @@ snapshots:
 
   simple-html-tokenizer@0.5.11: {}
 
+  sinon@21.0.0:
+    dependencies:
+      '@sinonjs/commons': 3.0.1
+      '@sinonjs/fake-timers': 13.0.5
+      '@sinonjs/samsam': 8.0.3
+      diff: 7.0.0
+      supports-color: 7.2.0
+
   slash@3.0.0: {}
 
   snake-case@3.0.4:
@@ -11129,6 +11213,10 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
+
+  type-detect@4.0.8: {}
+
+  type-detect@4.1.0: {}
 
   type-fest@4.41.0: {}
 

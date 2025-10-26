@@ -5,7 +5,10 @@ import { setup } from 'qunit-dom';
 import EmberRouter from '@ember/routing/router';
 import loadInitializers from 'ember-load-initializers';
 import EmberApp from 'ember-strict-application-resolver';
+import setupSinon from 'ember-sinon-qunit';
 import emberCognitoRegistry from '../src/registry.ts';
+import compatModules from '@embroider/virtual/compat-modules';
+import { compatToRFC1132 } from '../demo-app/app.gts';
 
 class Router extends EmberRouter {
   location = 'none';
@@ -13,15 +16,18 @@ class Router extends EmberRouter {
 }
 
 class TestApp extends EmberApp {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   modules = {
     './router': { default: Router },
     ...import.meta.glob('../demo-app/**/*.{js,ts,gjs,gts}', { eager: true }),
+     
+    ...compatToRFC1132('test-app', compatModules),
     ...emberCognitoRegistry(),
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-loadInitializers(TestApp, 'test-app');
+ 
+loadInitializers(TestApp, 'test-app', compatModules);
 
 Router.map(function () {
   this.route('attribute');
@@ -48,6 +54,7 @@ export function start() {
       rootElement: '#ember-testing',
     }),
   );
+  setupSinon();
   setup(QUnit.assert);
   setupEmberOnerrorValidation();
   qunitStart();

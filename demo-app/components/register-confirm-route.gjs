@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import { action, set } from '@ember/object';
+import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
 
