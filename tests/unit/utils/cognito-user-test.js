@@ -1,10 +1,10 @@
 import { makeToken, MockAuth, newSession, newUser } from '#src/test-support';
 import { setupTest } from 'ember-qunit';
 import { module, test } from 'qunit';
+import sinon from 'sinon';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { resolve } from 'rsvp';
 import CognitoUser from '#src/utils/cognito-user';
-import sinon from 'sinon';
 
 module('Unit | Utility | cognito user', function (hooks) {
   setupTest(hooks);

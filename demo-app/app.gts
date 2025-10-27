@@ -64,6 +64,12 @@ export class App extends EmberApp {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   modules = {
     './config/environment': {
+      cognito: {
+        poolId: 'us-east-1_TEST',
+        clientId: 'TEST',
+        autoRefreshSession: true,
+        authenticationFlowType: 'USER_SRP_AUTH',
+      },
       'ember-simple-auth': {},
     },
     './router': Router,
@@ -88,7 +94,6 @@ export class App extends EmberApp {
   };
 }
 
- 
 loadInitializers(App, 'demo-app', compatModules);
 
 Router.map(function () {
