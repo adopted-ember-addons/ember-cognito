@@ -1,7 +1,9 @@
 /* eslint-disable ember/no-runloop */
+import { getOwner } from '@ember/application';
 import { set } from '@ember/object';
 import { cancel, later } from '@ember/runloop';
 import Service, { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import * as Auth from '@aws-amplify/auth';
 import { reject } from 'rsvp';
 import CognitoUser from '../utils/cognito-user.js';
@@ -14,7 +16,23 @@ import { normalizeAttributes } from '../utils/utils.js';
  */
 export default class CognitoService extends Service {
   @service session;
+
+  @tracked clientId;
+  @tracked poolId;
+
   auth = Auth;
+
+  constructor() {
+    super(...arguments);
+
+    const config = getOwner(this).resolveRegistration('config:environment');
+    const cognitoEnv = config.cognito ?? {};
+
+    this.autoRefreshSession = cognitoEnv.autoRefreshSession ?? false;
+    this.authenticationFlowType = cognitoEnv.authenticationFlowType;
+    this.clientId = cognitoEnv.clientId;
+    this.poolId = cognitoEnv.poolId;
+  }
 
   willDestroy() {
     super.willDestroy(...arguments);

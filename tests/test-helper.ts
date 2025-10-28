@@ -9,10 +9,25 @@ import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-sim
 import EmberApp from 'ember-strict-application-resolver';
 import emberCognitoRegistry from '../src/registry.ts';
 
+function transformModuleKeys(moduleObject: object) {
+  return Object.fromEntries(
+    Object.entries(moduleObject).map(([key, value]) => [
+      key.replace(/^\.\.\/demo-app\//, './'),
+      value,
+    ]),
+  );
+}
+
 class Router extends EmberRouter {
   location = 'none';
   rootURL = '/';
 }
+
+const demoAppModules = transformModuleKeys(
+  import.meta.glob('../demo-app/**/*.{js,ts,gjs,gts}', {
+    eager: true,
+  }),
+);
 
 class TestApp extends EmberApp {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -27,7 +42,7 @@ class TestApp extends EmberApp {
       'ember-simple-auth': {},
     },
     './router': { default: Router },
-    ...import.meta.glob('../demo-app/**/*.{js,ts,gjs,gts}', { eager: true }),
+    ...demoAppModules,
     ...emberCognitoRegistry(),
   };
 }

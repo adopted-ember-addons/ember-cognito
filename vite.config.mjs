@@ -6,6 +6,9 @@ import { defineConfig } from 'vite';
 const isCompat = Boolean(process.env.ENABLE_COMPAT_BUILD);
 
 export default defineConfig({
+  define: {
+    global: 'globalThis',
+  },
   plugins: [
     ...(isCompat ? [classicEmberSupport()] : []),
     ember(),
