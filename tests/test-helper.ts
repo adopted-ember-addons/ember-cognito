@@ -5,9 +5,8 @@ import * as QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 import EmberRouter from '@ember/routing/router';
 import loadInitializers from 'ember-load-initializers';
+import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
 import EmberApp from 'ember-strict-application-resolver';
-import compatModules from '@embroider/virtual/compat-modules';
-import { compatToRFC1132 } from '../demo-app/app.gts';
 import emberCognitoRegistry from '../src/registry.ts';
 
 class Router extends EmberRouter {
@@ -29,13 +28,15 @@ class TestApp extends EmberApp {
     },
     './router': { default: Router },
     ...import.meta.glob('../demo-app/**/*.{js,ts,gjs,gts}', { eager: true }),
-
-    ...compatToRFC1132('test-app', compatModules),
     ...emberCognitoRegistry(),
   };
 }
 
-loadInitializers(TestApp, 'test-app', compatModules);
+loadInitializers(TestApp, 'test-app', {
+  'test-app/initializers/ember-simple-auth': {
+    default: emberSimpleAuthInitializer,
+  },
+});
 
 Router.map(function () {
   this.route('attribute');

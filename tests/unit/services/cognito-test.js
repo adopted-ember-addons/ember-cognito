@@ -9,13 +9,13 @@ import { module, test } from 'qunit';
 import { set } from '@ember/object';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { reject, resolve } from 'rsvp';
-import config from '../../../config/environment';
 import CognitoUser from '#src/utils/cognito-user';
 
 module('Unit | Service | cognito', function (hooks) {
   setupTest(hooks);
 
   test('config is set correctly', function (assert) {
+    const config = this.owner.resolveRegistration('config:environment');
     const service = this.owner.lookup('service:cognito');
     assert.strictEqual(service.poolId, 'us-east-1_TEST');
     assert.strictEqual(service.clientId, 'TEST');

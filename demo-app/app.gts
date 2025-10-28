@@ -3,48 +3,7 @@ import EmberRouter from '@ember/routing/router';
 import PageTitleService from 'ember-page-title/services/page-title';
 import loadInitializers from 'ember-load-initializers';
 import emberCognitoRegistry from '../src/registry.ts';
-import compatModules from '@embroider/virtual/compat-modules';
-
-import { assert } from '@ember/debug';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function compatToRFC1132(modulePrefix: string, modules: any) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const result: any = {};
-
-  let madeReplacements = false;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  for (const [key, module] of Object.entries(modules)) {
-    const newKey = key.replace(new RegExp(`^${modulePrefix}/`), './');
-
-    if (!madeReplacements) {
-      if (key !== newKey) {
-        madeReplacements = true;
-      }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    result[newKey] = module;
-  }
-
-  assert(
-    `No replacements were made. Is the ${modulePrefix} correct? These candidates exist: ${[
-      ...new Set<string>(
-        /**
-         * 'full-name/foo' => 'full-name'
-         */
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        Object.keys(modules).map(
-          (full) => full.split('/')[0] ?? '<could not detect>',
-        ),
-      ).values(),
-    ].join(', ')}`,
-    madeReplacements,
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return result;
-}
+import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
 
 class Router extends EmberRouter {
   location = 'history';
@@ -89,12 +48,15 @@ export class App extends EmberApp {
      * See: https://rfcs.emberjs.com/id/1132-default-strict-resolver
      */
     ...import.meta.glob('./templates/**/*.{gjs,gts}', { eager: true }),
-    ...compatToRFC1132('demo-app', compatModules),
     ...emberCognitoRegistry(),
   };
 }
 
-loadInitializers(App, 'demo-app', compatModules);
+loadInitializers(App, 'demo-app', {
+  'demo-app/initializers/ember-simple-auth': {
+    default: emberSimpleAuthInitializer,
+  },
+});
 
 Router.map(function () {
   this.route('attribute');

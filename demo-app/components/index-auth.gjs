@@ -9,8 +9,8 @@ import { on } from '@ember/modifier';
 import { fn, hash } from '@ember/helper';
 
 function attributeEqual(attributeName, value) {
-  return computed('model.attributes', function () {
-    const attributes = this.model.attributes;
+  return computed('args.model.attributes', function () {
+    const attributes = this.args.model?.attributes ?? [];
     for (const attr of attributes) {
       if (attr.name === attributeName) {
         return attr.value === value;
