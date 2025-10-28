@@ -30,7 +30,6 @@ const demoAppModules = transformModuleKeys(
 );
 
 class TestApp extends EmberApp {
-   
   modules = {
     './config/environment': {
       cognito: {

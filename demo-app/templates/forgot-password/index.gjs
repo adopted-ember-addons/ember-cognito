@@ -3,8 +3,10 @@ import ForgotPasswordIndexRoute from '../../components/forgot-password-index-rou
 import { fn } from '@ember/helper';
 import { transitionToRoute } from '../../helpers/transition-to-route.js';
 
-export default RouteTemplate(<template>
-  <ForgotPasswordIndexRoute
-    @onComplete={{fn (transitionToRoute this "forgot-password.confirm")}}
-  />
-</template>);
+export default RouteTemplate(
+  <template>
+    <ForgotPasswordIndexRoute
+      @onComplete={{fn (transitionToRoute this "forgot-password.confirm")}}
+    />
+  </template>,
+);
