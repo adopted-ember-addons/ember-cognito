@@ -135,13 +135,18 @@ you can use the Cognito User to fetch user attributes:
 ```js
 import Service from "@ember/service";
 import { service } from "@ember/service";
-import { readOnly } from "@ember/object/computed";
 
 export default class CurrentUserService extends Service {
   @service session;
   @service cognito;
-  @readOnly("cognito.user") cognitoUser;
-  @readOnly("cognitoUser.username") username;
+
+  get cognitoUser() {
+    return this.cognito.user;
+  }
+
+  get username() {
+    return this.cognitoUser.username;
+  }
 
   async load() {
     if (this.session.isAuthenticated) {

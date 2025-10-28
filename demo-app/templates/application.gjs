@@ -1,10 +1,7 @@
-import { pageTitle } from 'ember-page-title';
 import { LinkTo } from '@ember/routing';
 import { on } from '@ember/modifier';
 
 <template>
-  {{pageTitle "Ember Cognito Demo App"}}
-
   <nav class="navbar navbar-light navbar-expand bg-light">
     <LinkTo @route="index" class="navbar-brand">ember-cognito</LinkTo>
 

@@ -99,9 +99,6 @@ importers:
       ember-load-initializers:
         specifier: ^3.0.1
         version: 3.0.1(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5))
-      ember-page-title:
-        specifier: ^8.2.0
-        version: 8.2.4(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5))
       ember-qunit:
         specifier: ^9.0.2
         version: 9.0.3(@ember/test-helpers@5.2.2(@babel/core@7.28.3)(@glint/template@1.6.2))(@glint/template@1.6.2)(qunit@2.24.1)
@@ -2618,12 +2615,6 @@ packages:
     engines: {node: '>= 18.*'}
     peerDependencies:
       ember-source: '>= 5'
-
-  ember-page-title@8.2.4:
-    resolution: {integrity: sha512-ZZ912IRItIEfD5+35w65DT9TmqppK+suXJeaJenD5OSuvujUnYl6KxBpyAbfjw4mYtURwJO/TmSe+4GGJbsJ0w==}
-    engines: {node: 16.* || >= 18}
-    peerDependencies:
-      ember-source: '>= 3.28.0'
 
   ember-qunit@9.0.3:
     resolution: {integrity: sha512-t+FD5/EWAR3WvGVj1etblFJJ6CaJqddDxusNcYYFZmW7zrQpCnQ9ziwpXM5/sw1sWabkhJZgYPXCn8bDRRhOfg==}
@@ -8317,14 +8308,6 @@ snapshots:
   ember-load-initializers@3.0.1(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5)):
     dependencies:
       ember-source: 6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
-
-  ember-page-title@8.2.4(ember-source@6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5)):
-    dependencies:
-      '@embroider/addon-shim': 1.10.0
-      '@simple-dom/document': 1.4.0
-      ember-source: 6.8.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
-    transitivePeerDependencies:
-      - supports-color
 
   ember-qunit@9.0.3(@ember/test-helpers@5.2.2(@babel/core@7.28.3)(@glint/template@1.6.2))(@glint/template@1.6.2)(qunit@2.24.1):
     dependencies:

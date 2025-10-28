@@ -1,8 +1,6 @@
-/* eslint-disable ember/no-computed-properties-in-native-classes */
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { action, computed } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { LinkTo } from '@ember/routing';
 import { on } from '@ember/modifier';
@@ -29,7 +27,9 @@ export default class IndexAuth extends Component {
 
   @tracked cognitoSession;
 
-  @readOnly('cognito.user') cognitoUser;
+  get cognitoUser() {
+    return this.cognito.user;
+  }
 
   @attributeEqual('email_verified', 'true') emailVerified;
   @attributeEqual('phone_number_verified', 'true') phoneNumberVerified;

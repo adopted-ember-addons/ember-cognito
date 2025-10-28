@@ -1,6 +1,5 @@
 import EmberApp from 'ember-strict-application-resolver';
 import EmberRouter from '@ember/routing/router';
-import PageTitleService from 'ember-page-title/services/page-title';
 import loadInitializers from 'ember-load-initializers';
 import emberCognitoRegistry from '../src/registry.ts';
 import emberSimpleAuthInitializer from 'ember-simple-auth/initializers/ember-simple-auth';
@@ -32,7 +31,6 @@ export class App extends EmberApp {
       'ember-simple-auth': {},
     },
     './router': Router,
-    './services/page-title': PageTitleService,
     ...import.meta.glob('./components/**/*.{gjs,gts}', { eager: true }),
     ...import.meta.glob('./controllers/**/*.{js,ts}', { eager: true }),
     ...import.meta.glob('./routes/**/*.{js,ts}', { eager: true }),
