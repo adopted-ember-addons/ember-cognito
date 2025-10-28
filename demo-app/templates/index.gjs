@@ -7,10 +7,10 @@ import IndexUnauth from '../components/index-unauth.gjs';
       <h1>ember-cognito</h1>
       <h2>Amazon Cognito and ember-simple-auth integration</h2>
     </div>
-    {{#if this.session.isAuthenticated}}
-      <IndexAuth @model={{this.model}} />
+    {{#if @controller.session.isAuthenticated}}
+      <IndexAuth @model={{@model}} />
     {{else}}
-      <IndexUnauth @model={{this.model}} />
+      <IndexUnauth @model={{@model}} />
     {{/if}}
   </div>
 </template>
