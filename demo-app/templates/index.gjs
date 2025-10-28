@@ -1,5 +1,5 @@
 import IndexAuth from '../components/index-auth.gjs';
-import IndexUnauth from '../components/index-auth.gjs';
+import IndexUnauth from '../components/index-unauth.gjs';
 
 <template>
   <div class="container">
