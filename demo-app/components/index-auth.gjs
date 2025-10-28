@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
+// eslint-disable-next-line ember/no-computed-properties-in-native-classes
 import { action, computed } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { LinkTo } from '@ember/routing';

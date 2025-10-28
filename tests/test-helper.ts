@@ -30,7 +30,7 @@ const demoAppModules = transformModuleKeys(
 );
 
 class TestApp extends EmberApp {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+   
   modules = {
     './config/environment': {
       cognito: {

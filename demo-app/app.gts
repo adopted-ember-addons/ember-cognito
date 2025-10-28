@@ -19,7 +19,6 @@ export class App extends EmberApp {
    * - require the consuming app import and configure themselves
    *   (which is what we're emulating here)
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   modules = {
     './config/environment': {
       cognito: {
