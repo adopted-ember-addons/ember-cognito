@@ -72,6 +72,7 @@
     "@glint/template": "^1.6.2",
     "@glint/tsserver-plugin": "^2.0.4",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "@release-it-plugins/lerna-changelog": "^8.0.1",
     "@rollup/plugin-babel": "^6.1.0",
     "@types/qunit": "^2.19.13",
     "babel-plugin-ember-template-compilation": "^2.4.1",
@@ -94,6 +95,7 @@
     "prettier-plugin-ember-template-tag": "^2.1.0",
     "qunit": "^2.24.2",
     "qunit-dom": "^3.5.0",
+    "release-it": "^19.0.5",
     "rollup": "^4.52.5",
     "sinon": "^21.0.0",
     "testem": "^3.16.0",
@@ -121,5 +123,20 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "release-it": {
+    "plugins": {
+      "@release-it-plugins/lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": false
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    }
   }
 }
