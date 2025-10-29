@@ -1,5 +1,18 @@
 # Changelog
 
+
+## v4.0.0 (2025-10-29)
+
+#### :boom: Breaking Change
+* [#509](https://github.com/adopted-ember-addons/ember-cognito/pull/509) Convert to a V2 addon, require registry setup ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+* [#507](https://github.com/adopted-ember-addons/ember-cognito/pull/507) Update amplify/cognito to 6.x ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### :house: Internal
+* [#510](https://github.com/adopted-ember-addons/ember-cognito/pull/510) pnpm update ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## Release (2025-08-20)
 
 * ember-cognito 3.0.1 (patch)
