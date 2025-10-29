@@ -1,19 +1,13 @@
+import { makeToken, MockAuth, newSession, newUser } from '#src/test-support';
+import { setupTest } from 'ember-qunit';
+import { module, test } from 'qunit';
+import sinon from 'sinon';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { resolve } from 'rsvp';
-import { setupTest } from 'ember-qunit';
-import CognitoUser from 'ember-cognito/utils/cognito-user';
-import { module, test } from 'qunit';
-import {
-  makeToken,
-  MockAuth,
-  newSession,
-  newUser,
-} from 'ember-cognito/test-support';
-import setupSinonTest from '../../helpers/sinon';
+import CognitoUser from '#src/utils/cognito-user';
 
 module('Unit | Utility | cognito user', function (hooks) {
   setupTest(hooks);
-  setupSinonTest(hooks);
 
   test('username', function (assert) {
     const user = CognitoUser.create({ user: newUser('testuser') });
@@ -38,7 +32,7 @@ module('Unit | Utility | cognito user', function (hooks) {
     assert.expect(1);
 
     const awsUser = newUser('testuser');
-    this.sinon
+    sinon
       .stub(awsUser, 'deleteAttributes')
       .callsFake((attributeList, callback) => {
         assert.deepEqual(attributeList, ['first_name', 'last_name']);
@@ -50,7 +44,7 @@ module('Unit | Utility | cognito user', function (hooks) {
 
   test('deleteUser', async function (assert) {
     const awsUser = newUser('testuser');
-    this.sinon.stub(awsUser, 'deleteUser').callsFake((callback) => {
+    sinon.stub(awsUser, 'deleteUser').callsFake((callback) => {
       callback(null, 'SUCCESS');
     });
     const user = CognitoUser.create({ user: awsUser });

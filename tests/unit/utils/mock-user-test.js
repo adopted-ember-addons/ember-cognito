@@ -1,6 +1,6 @@
+import { MockUser } from '#src/test-support/utils/ember-cognito';
 import { module, test } from 'qunit';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import { MockUser } from 'ember-cognito/test-support/utils/ember-cognito';
 
 module('Unit | Utility | mock user', function () {
   test('groups', async function (assert) {

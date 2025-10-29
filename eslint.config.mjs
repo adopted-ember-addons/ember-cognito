@@ -12,38 +12,45 @@
  *     npx eslint --inspect-config
  *
  */
-import globals from 'globals';
-import js from '@eslint/js';
-
-import ember from 'eslint-plugin-ember/recommended';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import qunit from 'eslint-plugin-qunit';
-import n from 'eslint-plugin-n';
-
 import babelParser from '@babel/eslint-parser';
+import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
+import ember from 'eslint-plugin-ember/recommended';
+import importPlugin from 'eslint-plugin-import';
+import n from 'eslint-plugin-n';
+import globals from 'globals';
+import ts from 'typescript-eslint';
 
 const esmParserOptions = {
   ecmaFeatures: { modules: true },
   ecmaVersion: 'latest',
-  requireConfigFile: false,
-  babelOptions: {
-    plugins: [
-      ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
-    ],
-  },
 };
 
-export default [
+const tsParserOptions = {
+  projectService: true,
+  project: true,
+  tsconfigRootDir: import.meta.dirname,
+};
+
+const config = [
   js.configs.recommended,
-  eslintConfigPrettier,
+  prettier,
   ember.configs.base,
   ember.configs.gjs,
+  ember.configs.gts,
   /**
    * Ignores must be in their own object
    * https://eslint.org/docs/latest/use/configure/ignore
    */
   {
-    ignores: ['dist/', 'node_modules/', 'coverage/', '!**/.*'],
+    ignores: [
+      'dist/',
+      'dist-*/',
+      'declarations/',
+      'node_modules/',
+      'coverage/',
+      '!**/.*',
+    ],
   },
   /**
    * https://eslint.org/docs/latest/use/configure/configuration-files#configuring-linter-options
@@ -58,10 +65,6 @@ export default [
     languageOptions: {
       parser: babelParser,
     },
-    rules: {
-      'ember/no-classic-components': 'off',
-      'ember/require-tagless-components': 'off',
-    },
   },
   {
     files: ['**/*.{js,gjs}'],
@@ -73,9 +76,21 @@ export default [
     },
   },
   {
-    files: ['tests/**/*-test.{js,gjs}'],
+    files: ['**/*.{ts,gts}'],
+    languageOptions: {
+      parser: ember.parser,
+      parserOptions: tsParserOptions,
+    },
+    extends: [...ts.configs.recommendedTypeChecked, ember.configs.gts],
+  },
+  {
+    files: ['src/**/*'],
     plugins: {
-      qunit,
+      import: importPlugin,
+    },
+    rules: {
+      // require relative imports use full extensions
+      'import/extensions': ['error', 'always', { ignorePackages: true }],
     },
   },
   /**
@@ -84,15 +99,9 @@ export default [
   {
     files: [
       '**/*.cjs',
-      'config/**/*.js',
-      'tests/dummy/config/**/*.js',
-      'testem.js',
-      'testem*.js',
-      'index.js',
-      '.prettierrc.js',
-      '.stylelintrc.js',
-      '.template-lintrc.js',
-      'ember-cli-build.js',
+      '.prettierrc.cjs',
+      '.template-lintrc.cjs',
+      'addon-main.cjs',
     ],
     plugins: {
       n,
@@ -125,3 +134,5 @@ export default [
     },
   },
 ];
+
+export default ts.config(...config);

@@ -1,20 +1,20 @@
-import { set } from '@ember/object';
-import { setupTest } from 'ember-qunit';
-import { module, test } from 'qunit';
-import config from '../../../config/environment';
 import {
   mockAuth,
   MockAuth,
   mockCognitoUser,
   newUser,
-} from 'ember-cognito/test-support';
+} from '#src/test-support';
+import { setupTest } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { set } from '@ember/object';
 import { reject } from 'rsvp';
 
 module('Unit | Authenticator | cognito', function (hooks) {
   setupTest(hooks);
 
   test('config is set correctly', function (assert) {
-    let authenticator = this.owner.lookup('authenticator:cognito');
+    const authenticator = this.owner.lookup('authenticator:cognito');
+    const config = this.owner.resolveRegistration('config:environment');
     assert.strictEqual(authenticator.cognito.poolId, 'us-east-1_TEST');
     assert.strictEqual(authenticator.cognito.clientId, 'TEST');
     assert.strictEqual(

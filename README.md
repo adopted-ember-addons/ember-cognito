@@ -6,7 +6,6 @@
 [![Ember Observer Score](https://emberobserver.com/badges/ember-cognito.svg)](https://emberobserver.com/addons/ember-cognito)
 [![npm version](https://badge.fury.io/js/ember-cognito.svg)](https://badge.fury.io/js/ember-cognito)
 
-[_Maintainer Needed!_](https://github.com/paulcwatts/ember-cognito/issues/162)
 
 Ember Cognito is an Ember Addon that integrates
 [ember-simple-auth](https://github.com/simplabs/ember-simple-auth/)
@@ -24,16 +23,26 @@ a Cognito User Pool.
 ## Compatibility
 
 - Ember.js v5.8 or above
-- Ember CLI v5.8 or above
-- Node.js v20 or above
+- Embroider or ember-auto-import v2
 
 ## Installation
-
-Install as a standard Ember Addon:
 
 - `ember install ember-cognito`
 
 ## Configure
+
+ember-cognito was recently converted to a v2 addon, which means the registry must be imported and added to your modules.
+
+```ts
+import emberCognitoRegistry from 'ember-cognito/registry';
+
+modules = {
+  // if the app is using ember-strict-application-resolver
+  ...emberCognitoRegistry(),
+  // or if using ember-resolver
+  ...emberCognitoRegistry('name-of-app'),
+}
+```
 
 In your `config/environment.js` file:
 
@@ -74,7 +83,7 @@ Amplify/Cognito:
 ```js
 import Component from "@ember/component";
 import { action } from "@ember/object";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 
 export default class LoginComponent extends Component {
   @service session;
@@ -136,14 +145,19 @@ you can use the Cognito User to fetch user attributes:
 
 ```js
 import Service from "@ember/service";
-import { inject as service } from "@ember/service";
-import { readOnly } from "@ember/object/computed";
+import { service } from "@ember/service";
 
 export default class CurrentUserService extends Service {
   @service session;
   @service cognito;
-  @readOnly("cognito.user") cognitoUser;
-  @readOnly("cognitoUser.username") username;
+
+  get cognitoUser() {
+    return this.cognito.user;
+  }
+
+  get username() {
+    return this.cognitoUser.username;
+  }
 
   async load() {
     if (this.session.isAuthenticated) {

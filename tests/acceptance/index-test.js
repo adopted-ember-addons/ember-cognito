@@ -1,8 +1,8 @@
-import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
 import { currentURL, find, findAll, visit } from '@ember/test-helpers';
+import { mockCognitoUser } from '#src/test-support';
+import { setupApplicationTest } from 'ember-qunit';
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { mockCognitoUser } from 'ember-cognito/test-support';
+import { module, test } from 'qunit';
 
 module('Acceptance | index', function (hooks) {
   setupApplicationTest(hooks);

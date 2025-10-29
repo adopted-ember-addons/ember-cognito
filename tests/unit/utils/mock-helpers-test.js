@@ -1,12 +1,12 @@
-import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import {
   mockAuth,
   MockAuth,
   mockCognitoUser,
   newUser,
   unmockCognitoUser,
-} from 'ember-cognito/test-support';
+} from '#src/test-support';
+import { setupTest } from 'ember-qunit';
+import { module, test } from 'qunit';
 
 module('Unit | Utility | mock helpers', function (hooks) {
   setupTest(hooks);
