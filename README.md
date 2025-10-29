@@ -173,6 +173,93 @@ export default class CurrentUserService extends Service {
 You can see examples of usages of these API methods in the
 [full-featured dummy app](https://github.com/paulcwatts/ember-cognito/blob/master/tests/dummy/app).
 
+### Allowing a user to sign up
+
+You can allow a user to create and confirm a new account with a
+controller like this:
+
+```js
+import { equal } from '@ember/object/computed';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
+
+export default Controller.extend({
+  session: service(),
+  cognito: service(),
+
+  actions: {
+    signup(e) {
+      e.preventDefault();
+      let params = this.getProperties('username', 'password');
+      this.get('cognito').signUp( params.username, params.password, [], null).then((newUser) => {
+        this.set('newUser', newUser);
+      }).catch((error) => {
+        console.log('caught an error', error);
+      });
+    },
+    signupConfirm(e) {
+      e.preventDefault();
+      let { confirmationCode, newUser, username, password, cognito } = this.getProperties('confirmationCode', 'newUser', 'username', 'password', 'cognito');
+      let _controller = this;
+      let cognitoUser = newUser.user;
+      cognitoUser.confirmRegistration(confirmationCode).then(() => {
+        _controller.authenticate({ username, password });
+      }).catch((error) => {
+        console.log('we caught an error', error);
+      });
+    }
+  },
+
+  authenticate(params) {
+    this.get('session').authenticate('authenticator:cognito', params).then(() => {
+      this.transitionToRoute('/');
+    }).catch((err) => {
+      if (err.state && err.state.name === 'newPasswordRequired') {
+        this.set('errorMessage', '');
+        this.set('state', err.state);
+      } else {
+        this.set('errorMessage', err.message || err);
+      }
+    });
+  }
+});
+```
+
+And a template like this:
+
+```hbs
+{{#if newUser}}
+  <h1>Your confirmation code</h1>
+  <form onsubmit={{action 'signupConfirm'}}>
+    {{#if errorMessage}}
+      <div>{{errorMessage}}</div>
+    {{/if}}
+    <div>
+      <label for="confirmationCode">Confirmation Code</label>
+      {{input value=confirmationCode id="confirmationCode" placeholder="Check your email" autofocus=true required=true}}
+    </div>
+    <button type="submit">Sign Up</button>
+  </form>
+{{else}}
+  <h1>Sign Up Today!</h1>
+  <form onsubmit={{action 'signup'}}>
+    {{#if errorMessage}}
+      <div>{{errorMessage}}</div>
+    {{/if}}
+    <div>
+      <label for="username">Username</label>
+      {{input value=username id="username" placeholder="Username" autofocus=true required=true}}
+    </div>
+    <div>
+      <label for="password">Password</label>
+      {{input value=password type="password" id="password" placeholder="Password" required=true}}
+    </div>
+    <button type="submit">Sign Up</button>
+  </form>
+{{/if}}
+```
+
+
 #### Advanced Configuration
 
 If you don't want to specify the Pool ID and Client ID in the Ember environment, you
