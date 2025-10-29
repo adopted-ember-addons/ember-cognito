@@ -27,11 +27,22 @@ a Cognito User Pool.
 
 ## Installation
 
-Install as a standard Ember Addon:
-
 - `ember install ember-cognito`
 
 ## Configure
+
+ember-cognito was recently converted to a v2 addon, which means the registry must be imported and added to your modules.
+
+```ts
+import emberCognitoRegistry from 'ember-cognito/registry';
+
+modules = {
+  // if the app is using ember-strict-application-resolver
+  ...emberCognitoRegistry(),
+  // or if using ember-resolver
+  ...emberCognitoRegistry('name-of-app'),
+}
+```
 
 In your `config/environment.js` file:
 
