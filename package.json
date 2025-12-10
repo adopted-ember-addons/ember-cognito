@@ -97,6 +97,7 @@
     "qunit-dom": "^3.5.0",
     "release-it": "^19.0.5",
     "rollup": "^4.52.5",
+    "rollup-plugin-import-meta-glob": "^2.0.0",
     "sinon": "^21.0.0",
     "testem": "^3.16.0",
     "typescript": "~5.8.3",
