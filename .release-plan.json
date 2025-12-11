@@ -2,17 +2,17 @@
   "solution": {
     "ember-cognito": {
       "impact": "patch",
-      "oldVersion": "3.0.0",
-      "newVersion": "3.0.1",
+      "oldVersion": "4.0.0",
+      "newVersion": "4.0.1",
       "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2025-08-20)\n\n* ember-cognito 3.0.1 (patch)\n\n#### :house: Internal\n* `ember-cognito`\n  * [#505](https://github.com/adopted-ember-addons/ember-cognito/pull/505) Update repo ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+  "description": "## Release (2025-12-11)\n\n* ember-cognito 4.0.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-cognito`\n  * [#518](https://github.com/adopted-ember-addons/ember-cognito/pull/518) Compile away import.meta.glob and don't publish it ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
