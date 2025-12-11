@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-12-11)
+
+* ember-cognito 4.0.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-cognito`
+  * [#518](https://github.com/adopted-ember-addons/ember-cognito/pull/518) Compile away import.meta.glob and don't publish it ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 
 ## v4.0.0 (2025-10-29)
 
