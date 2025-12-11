@@ -2,6 +2,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Addon } from '@embroider/addon-dev/rollup';
 import { babel } from '@rollup/plugin-babel';
+import importMetaGlob from 'rollup-plugin-import-meta-glob';
 
 const addon = new Addon({
   srcDir: 'src',
@@ -18,6 +19,7 @@ export default {
   output: addon.output(),
 
   plugins: [
+    importMetaGlob(),
     // These are the modules that users should be able to import from your
     // addon. Anything not listed here may get optimized away.
     // By default all your JavaScript modules (**/*.js) will be importable.
