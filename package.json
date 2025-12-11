@@ -100,7 +100,7 @@
     "rollup-plugin-import-meta-glob": "^2.0.0",
     "sinon": "^21.0.0",
     "testem": "^3.16.0",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.2",
     "vite": "^7.1.12"
   },
