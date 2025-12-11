@@ -95,7 +95,7 @@
     "prettier-plugin-ember-template-tag": "^2.1.0",
     "qunit": "^2.24.2",
     "qunit-dom": "^3.5.0",
-    "release-it": "^19.0.5",
+    "release-plan": "^0.17.0",
     "rollup": "^4.52.5",
     "rollup-plugin-import-meta-glob": "^2.0.0",
     "sinon": "^21.0.0",
@@ -108,6 +108,11 @@
     "ember-simple-auth": ">= 8.0.0"
   },
   "packageManager": "pnpm@10.19.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
   "ember": {
     "edition": "octane"
   },
@@ -118,26 +123,6 @@
     "app-js": {
       "./authenticators/cognito.js": "./dist/_app_/authenticators/cognito.js",
       "./services/cognito.js": "./dist/_app_/services/cognito.js"
-    }
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  },
-  "release-it": {
-    "plugins": {
-      "@release-it-plugins/lerna-changelog": {
-        "infile": "CHANGELOG.md",
-        "launchEditor": false
-      }
-    },
-    "git": {
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true,
-      "tokenRef": "GITHUB_AUTH"
     }
   }
 }
