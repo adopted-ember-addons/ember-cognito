@@ -204,7 +204,7 @@ this using `mockCognitoUser`:
 
 ```js
 import { authenticateSession } from "ember-simple-auth/test-support";
-import { mockCognitoUser } from "ember-cognito/test-support";
+import { mockCognitoUser } from "ember-cognito/test-support/index";
 
 module("Acceptance | authenticated route", function (hooks) {
   test("authenticated route", async function (assert) {
