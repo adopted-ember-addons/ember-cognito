@@ -1,6 +1,6 @@
 {
   "name": "ember-cognito",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "ember-simple-auth and AWS Cognito integration",
   "keywords": [
     "ember-addon",
