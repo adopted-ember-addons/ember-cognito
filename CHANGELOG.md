@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2025-12-12)
 
 * ember-cognito 4.0.2 (patch)
