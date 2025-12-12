@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-12-12)
+
+* ember-cognito 4.0.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-cognito`
+  * [#521](https://github.com/adopted-ember-addons/ember-cognito/pull/521) Make @ember/test-helpers a dependency ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## Release (2025-12-11)
 
 * ember-cognito 4.0.1 (patch)
