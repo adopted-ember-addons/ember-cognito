@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@aws-amplify/auth':
         specifier: ^6.16.0
-        version: 6.16.0(@aws-amplify/core@6.13.3)
+        version: 6.17.1(@aws-amplify/core@6.13.3)
       '@aws-amplify/core':
         specifier: ^6.13.3
         version: 6.13.3
@@ -183,8 +183,8 @@ packages:
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
 
-  '@aws-amplify/auth@6.16.0':
-    resolution: {integrity: sha512-iKvpkKCSLeQBR2f7M4+xS3UUY1ucvdf5BD++djPD4QQj+Hlqqe/gyHRzrLP8WAWjzVs1PmQbW5fyVDoTa1sUZA==}
+  '@aws-amplify/auth@6.17.1':
+    resolution: {integrity: sha512-1zDSmX8fzhDFEUroPMyxuqkUFN2lEKPqSFcstl50/stvxVPiymTEpH6FWVTga9mTjK/Hifd7ye4m5gM6gF/Y4A==}
     peerDependencies:
       '@aws-amplify/core': ^6.1.0
       '@aws-amplify/react-native': ^1.1.10
@@ -214,6 +214,10 @@ packages:
 
   '@aws-sdk/types@3.914.0':
     resolution: {integrity: sha512-kQWPsRDmom4yvAfyG6L1lMmlwnTzm1XwMHOU+G5IFlsP4YEaMtXidDzW/wiivY0QFrhfCz/4TVmu0a2aPU57ug==}
+    engines: {node: '>=18.0.0'}
+
+  '@aws-sdk/types@3.936.0':
+    resolution: {integrity: sha512-uz0/VlMd2pP5MepdrHizd+T+OKfyK4r3OA9JI+L/lPKg0YFQosdJNCKisr6o70E3dh8iMpFYxF1UN/4uZsyARg==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/util-utf8-browser@3.259.0':
@@ -1744,8 +1748,8 @@ packages:
     resolution: {integrity: sha512-bNwBYYmN8Eh9RyjS1p2gW6MIhSO2rl7X9QeLM8iTdcGRP+eDiIWDt66c9IysCc22gefKszZv+ubV9qZc7hdESg==}
     engines: {node: '>=16.0.0'}
 
-  '@smithy/types@4.8.0':
-    resolution: {integrity: sha512-QpELEHLO8SsQVtqP+MkEgCYTFW0pleGozfs3cZ183ZBj9z3VC1CX1/wtFMK64p+5bhtZo41SeLK1rBRtd25nHQ==}
+  '@smithy/types@4.9.0':
+    resolution: {integrity: sha512-MvUbdnXDTwykR8cB1WZvNNwqoWVaTRA0RLlLmf/cIFNMM2cKWz01X4Ly6SMC4Kks30r8tT3Cty0jmeWfiuyHTA==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/util-buffer-from@2.2.0':
@@ -6638,7 +6642,7 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
-  '@aws-amplify/auth@6.16.0(@aws-amplify/core@6.13.3)':
+  '@aws-amplify/auth@6.17.1(@aws-amplify/core@6.13.3)':
     dependencies:
       '@aws-amplify/core': 6.13.3
       '@aws-crypto/sha256-js': 5.2.0
@@ -6665,7 +6669,7 @@ snapshots:
   '@aws-crypto/sha256-js@5.2.0':
     dependencies:
       '@aws-crypto/util': 5.2.0
-      '@aws-sdk/types': 3.914.0
+      '@aws-sdk/types': 3.936.0
       tslib: 2.8.1
 
   '@aws-crypto/util@1.2.2':
@@ -6676,7 +6680,7 @@ snapshots:
 
   '@aws-crypto/util@5.2.0':
     dependencies:
-      '@aws-sdk/types': 3.914.0
+      '@aws-sdk/types': 3.936.0
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
@@ -6687,7 +6691,12 @@ snapshots:
 
   '@aws-sdk/types@3.914.0':
     dependencies:
-      '@smithy/types': 4.8.0
+      '@smithy/types': 4.9.0
+      tslib: 2.8.1
+
+  '@aws-sdk/types@3.936.0':
+    dependencies:
+      '@smithy/types': 4.9.0
       tslib: 2.8.1
 
   '@aws-sdk/util-utf8-browser@3.259.0':
@@ -8563,7 +8572,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@smithy/types@4.8.0':
+  '@smithy/types@4.9.0':
     dependencies:
       tslib: 2.8.1
 
