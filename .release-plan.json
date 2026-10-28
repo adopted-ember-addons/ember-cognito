@@ -1,18 +1,8 @@
 {
   "solution": {
     "ember-cognito": {
-      "impact": "patch",
-      "oldVersion": "4.0.1",
-      "newVersion": "4.0.2",
-      "tagName": "latest",
-      "constraints": [
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
-        }
-      ],
-      "pkgJSONPath": "./package.json"
+      "oldVersion": "4.0.2"
     }
   },
-  "description": "## Release (2025-12-12)\n\n* ember-cognito 4.0.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-cognito`\n  * [#521](https://github.com/adopted-ember-addons/ember-cognito/pull/521) Make @ember/test-helpers a dependency ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+  "description": "\n\n\n\n"
 }
